@@ -1,0 +1,15 @@
+# Directorio de caché de Godot 4
+.godot/
+
+# Configuraciones de exportación (opcional, pero recomendado si trabajas en equipo y tienes rutas locales)
+export_presets.cfg
+
+# Archivos temporales del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos compilados (si llegas a usar C# o GDExtension)
+*.a
+*.so
+*.dylib
+*.dll
