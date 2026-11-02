@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://personaje.gd" id="1_personaje"]
 [ext_resource type="Script" path="res://consumir.gd" id="2_consumir"]
 [ext_resource type="PackedScene" path="res://guardia.tscn" id="3_guardia"]
+[ext_resource type="Script" path="res://camara_sigue.gd" id="4_camara"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -71,8 +72,14 @@ mesh = SubResource("CapsuleMesh_zombi")
 [node name="Consumir" type="Node" parent="Personaje"]
 script = ExtResource("2_consumir")
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
+script = ExtResource("4_camara")
+objetivo = NodePath("../Personaje")
+distancia = Vector3(6, 8, 6)
+suavizado = 2.5
+limite_min = Vector2(-14, -14)
+limite_max = Vector2(14, 14)
 
 [node name="Guardia" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("3_guardia")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
