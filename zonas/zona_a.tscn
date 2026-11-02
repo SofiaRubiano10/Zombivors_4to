@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/sistema_sol.gd" id="1_sistemasol"]
 [ext_resource type="Script" path="res://scripts/ciclo_dia.gd" id="2_ciclodia"]
 [ext_resource type="Script" path="res://scripts/fotometro.gd" id="3_fotometro"]
+[ext_resource type="Script" path="res://scripts/luz_jugador.gd" id="4_luzjugador"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -22,7 +23,20 @@ roughness = 0.8
 material = SubResource("StandardMaterial3D_suelo")
 size = Vector3(30, 0.2, 30)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_4id6s"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_zombi"]
+albedo_color = Color(0.341, 0.451, 0.212, 1)
+roughness = 0.6
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_zombi"]
+material = SubResource("StandardMaterial3D_zombi")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_alimento"]
+albedo_color = Color(0.831, 0.639, 0.451, 1)
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_alimento"]
+material = SubResource("StandardMaterial3D_alimento")
+size = Vector3(0.6, 0.6, 0.6)
 
 [node name="ZonaA" type="Node3D"]
 
@@ -55,9 +69,20 @@ shape = SubResource("BoxShape3D_suelo")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo"]
 mesh = SubResource("BoxMesh_suelo")
 
-[node name="CajaReferencia" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53198, 0)
-mesh = SubResource("CapsuleMesh_4id6s")
+[node name="Jugador" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Jugador"]
+mesh = SubResource("CapsuleMesh_zombi")
+
+[node name="LuzJugador" type="SpotLight3D" parent="Jugador"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.2, 0)
+shadow_enabled = true
+script = ExtResource("4_luzjugador")
+
+[node name="Alimento" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -3)
+mesh = SubResource("BoxMesh_alimento")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 8, 8)
