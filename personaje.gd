@@ -54,6 +54,7 @@ func _physics_process(delta: float) -> void:
 	
 	velocity.x = avance.x + empuje.x
 	velocity.z = avance.z + empuje.z
+	empuje = empuje.move_toward(Vector3.ZERO, 12.0 * delta)
 	
 	# Orientar el modelo hacia la dirección de avance
 	if direction.length() > 0.0:
