@@ -62,6 +62,7 @@ light_energy = 0.0
 omni_range = 4.0
 omni_attenuation = 2.0
 
-[node name="SistemaEventos" type="Node" parent="." unique_id=1037207324 node_paths=PackedStringArray("luz_evento")]
+[node name="SistemaEventos" type="Node" parent="." unique_id=1037207324 node_paths=PackedStringArray("luz_evento", "luz_variable")]
 script = ExtResource("3_dbxaw")
 luz_evento = NodePath("../LuzEvento")
+luz_variable = NodePath("../SpotLight3D")
