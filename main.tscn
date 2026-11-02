@@ -126,6 +126,7 @@ curacion = 20.0
 [node name="Interactuar" type="Node" parent="Personaje"]
 script = ExtResource("5_interactuar")
 alcance = 1.5
+tiempo_necesario = 1.5
 
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
