@@ -1,6 +1,7 @@
 class_name SistemaSol
 extends Node
 
+
 signal cambio_noche(es_noche: bool)
 
 @export var sol: DirectionalLight3D
@@ -10,11 +11,14 @@ signal cambio_noche(es_noche: bool)
 @export var ambiente_dia: float = 0.30
 @export var ambiente_noche: float = 0.05
 
+
 var era_noche: bool = false
+
 @onready var ciclo: CicloDia = $CicloDia
 
 func _ready() -> void:
 	aplicar_hora()
+
 	if ciclo:
 		era_noche = CicloDia.factor_sol(ciclo.hora) <= 0.0
 	
@@ -23,17 +27,26 @@ func _ready() -> void:
 	print("Estado inicial a las 8.0 h: es_noche = ", era_noche, " (Sol activo a 30°)")
 	_probar_transicion_noche()
 
+	# Prueba de verificación inicial en consola (Nivel 1):
+	print("--- Prueba Nivel 1: CicloDia y SistemaSol ---")
+	print("Elevación a las 8.0 h: ", CicloDia.elevacion(8.0), "° (Esperado: 30.0°)")
+	print("Factor solar: ", CicloDia.factor_sol(8.0), " (Esperado: 0.5)")
+	print("Color del sol: ", CicloDia.color_sol(8.0), " (Esperado: 0.5843, 0.5882, 0.5961)")
+
+
 func _process(delta: float) -> void:
 	if not ciclo:
 		return
 	ciclo.avanzar(delta)
 	aplicar_hora()
+
 	
 	var es_noche: bool = CicloDia.factor_sol(ciclo.hora) <= 0.0
 	if es_noche != era_noche:
 		era_noche = es_noche
 		cambio_noche.emit(es_noche)
 		print("Aviso único de flanco emitido: cambio_noche(", es_noche, ") a las ", snappedf(ciclo.hora, 0.1), " h")
+
 
 func aplicar_hora() -> void:
 	if not ciclo:
@@ -71,3 +84,4 @@ func prediccion_piso() -> float:
 		return 0.0
 	var hacia_luz: Vector3 = sol.global_transform.basis.z
 	return sol.light_energy * sol.light_color.r * lambert(Vector3.UP, hacia_luz)
+
