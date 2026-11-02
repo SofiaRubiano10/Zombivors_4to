@@ -1,51 +1,105 @@
 class_name Personaje
 extends CharacterBody3D
 
+enum Estado { QUIETO, CAMINAR, CORRER, COMIENDO }
+const RUIDO = [0.0, 1.0, 3.0, 0.0] # metros de propagación sonora por estado
+
 @export var camara: Camera3D
 @export var speed_caminar: float = 2.5
 @export var speed_correr: float = 2.5
-@export_enum("Ninguna", "Avanzar 60 cuadros", "Avanzar con la acción 60 cuadros", "Diagonal W+D 60 cuadros") var Prueba: String = "Ninguna"
+@export var tiempo_arranque: float = 0.5
+@export_enum("Ninguna", "Avanzar 60 cuadros", "Avanzar 60 y soltar", "Avanzar y la acción desde el cuadro 30", "Mantener la acción 2 s", "Avanzar con la acción 60 cuadros", "Diagonal W+D 60 cuadros") var Prueba: String = "Ninguna"
 @export var AccionPrueba: String = ""
 
-# Los tres enchufes para la Tarea B (María Sofía)
+# Los tres enchufes del personaje (modificados por nodos hijos como Consumir/Interactuar)
 var multiplicador: float = 1.0
 var empuje: Vector3 = Vector3.ZERO
 var accion: String = ""
+
+# Variables internas de movimiento y estado
+var avance: Vector3 = Vector3.ZERO
+var estado: Estado = Estado.QUIETO
+var ruido: float = 0.0
+
+# Sistema de salud y descomposición biológica
+var salud_maxima: float = 100.0
+var salud: float = 100.0
+var tiempo_descomposicion: float = 0.0
 
 @onready var anim: AnimationPlayer = $Modelo/AnimationPlayer if has_node("Modelo/AnimationPlayer") else null
 
 func _physics_process(delta: float) -> void:
 	velocity += get_gravity() * delta
 	
+	# Procesamiento de descomposición pasiva: pierde 2% de salud máxima cada 10 segundos
+	tiempo_descomposicion += delta
+	if tiempo_descomposicion >= 10.0:
+		tiempo_descomposicion -= 10.0
+		salud = maxf(0.0, salud - (salud_maxima * 0.02))
+		print("Descomposición biológica: salud actual = ", snappedf(salud, 0.1), " / ", salud_maxima)
+	
+	# Obtención de entrada direccional
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var entrada: Vector3 = Vector3(input_dir.x, 0.0, input_dir.y)
 	
-	# Rotación horizontal de la cámara (corrige la diagonal torcida)
+	# Rotación horizontal relativa a la orientación de la cámara (diagonal corregida)
 	var giro_cam: float = camara.global_rotation.y if camara else 0.0
 	var direction: Vector3 = entrada.rotated(Vector3.UP, giro_cam).normalized()
 	
 	var corre: bool = Input.is_action_pressed("correr")
 	var speed: float = speed_correr if corre else speed_caminar
+	var objetivo: Vector3 = direction * speed * multiplicador
+	var paso: float = (speed / maxf(0.05, tiempo_arranque)) * delta
+	avance = avance.move_toward(objetivo, paso)
 	
-	velocity.x = direction.x * speed * multiplicador + empuje.x
-	velocity.z = direction.z * speed * multiplicador + empuje.z
+	velocity.x = avance.x + empuje.x
+	velocity.z = avance.z + empuje.z
 	
+	# Orientar el modelo hacia la dirección de avance
 	if direction.length() > 0.0:
 		basis = Basis.looking_at(direction)
 	
-	if accion != "":
-		if anim: anim.play(accion)
-	elif direction.length() > 0.0 and corre:
-		if anim: anim.play("sprint")
-	elif direction.length() > 0.0:
-		if anim: anim.play("walk")
-	else:
-		if anim: anim.play("idle")
-	
 	move_and_slide()
+	
+	# Máquina de estados con actualización de ruido
+	var antes: Estado = estado
+	estado = elegir_estado()
+	ruido = RUIDO[estado]
+	if estado != antes:
+		print("estado ", Estado.keys()[estado], " · ruido ", ruido, " m")
+	
+	animar()
 	_prueba()
 
-# Bloque de pruebas automáticas del Taller 7 - Nivel 1
+func elegir_estado() -> Estado:
+	if accion == "pick-up" or Input.is_action_pressed("consumir"):
+		return Estado.COMIENDO
+	if not is_on_floor():
+		return Estado.QUIETO
+	var rapidez: float = Vector2(velocity.x, velocity.z).length()
+	if rapidez < 0.1:
+		return Estado.QUIETO
+	if rapidez > speed_caminar + 0.1:
+		return Estado.CORRER
+	return Estado.CAMINAR
+
+func animar() -> void:
+	if not anim:
+		return
+	if accion != "":
+		anim.play(accion)
+		return
+	match estado:
+		Estado.QUIETO:
+			anim.play("idle")
+		Estado.CAMINAR:
+			anim.play("walk")
+		Estado.CORRER:
+			anim.play("sprint")
+		Estado.COMIENDO:
+			anim.play("crouch")
+
+# Bloque de pruebas automatizadas del taller
 var _cuadro_prueba: int = 0
 func _prueba() -> void:
 	if Prueba == "Ninguna":
@@ -60,19 +114,28 @@ func _prueba() -> void:
 				Input.action_press("move_up")
 			else:
 				Input.action_release("move_up")
-			if _cuadro_prueba in [1, 30, 60]:
+			if _cuadro_prueba in [1, 10, 15, 30, 60]:
 				print("cuadro ", _cuadro_prueba, ": pos ", pos, " · rapidez ", snappedf(rap, 0.01))
-		"Avanzar con la acción 60 cuadros":
+		"Avanzar 60 y soltar":
 			if _cuadro_prueba <= 60:
 				Input.action_press("move_up")
-				if AccionPrueba != "":
-					Input.action_press(AccionPrueba)
 			else:
 				Input.action_release("move_up")
-				if AccionPrueba != "":
-					Input.action_release(AccionPrueba)
-			if _cuadro_prueba in [1, 30, 60]:
+			if _cuadro_prueba in [60, 61, 65, 70, 75, 80, 90]:
 				print("cuadro ", _cuadro_prueba, ": pos ", pos, " · rapidez ", snappedf(rap, 0.01))
+		"Avanzar y la acción desde el cuadro 30":
+			if _cuadro_prueba <= 90:
+				Input.action_press("move_up")
+			if _cuadro_prueba >= 30 and _cuadro_prueba <= 90:
+				if AccionPrueba != "":
+					Input.action_press(AccionPrueba)
+			if _cuadro_prueba in [30, 31, 35, 40, 60, 90]:
+				print("cuadro ", _cuadro_prueba, ": pos ", pos, " · rapidez ", snappedf(rap, 0.01))
+		"Mantener la acción 2 s":
+			if AccionPrueba != "" and _cuadro_prueba <= 120:
+				Input.action_press(AccionPrueba)
+			if _cuadro_prueba in [1, 2, 20, 60, 90, 92, 120]:
+				print("cuadro ", _cuadro_prueba, ": acción mantenida...")
 		"Diagonal W+D 60 cuadros":
 			if _cuadro_prueba <= 60:
 				Input.action_press("move_up")
@@ -80,5 +143,5 @@ func _prueba() -> void:
 			else:
 				Input.action_release("move_up")
 				Input.action_release("move_right")
-			if _cuadro_prueba in [1, 30, 60]:
+			if _cuadro_prueba in [30, 60]:
 				print("cuadro ", _cuadro_prueba, ": pos ", pos, " · rapidez ", snappedf(rap, 0.01))
