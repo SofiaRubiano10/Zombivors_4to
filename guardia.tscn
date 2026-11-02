@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://b5yar38v4k2lq"]
+
+[ext_resource type="Script" path="res://guardia.gd" id="1_guardia"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
+radius = 0.35
+height = 1.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rojo"]
+albedo_color = Color(0.698, 0.133, 0.133, 1)
+roughness = 0.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_1"]
+material = SubResource("StandardMaterial3D_rojo")
+radius = 0.35
+height = 1.75
+
+[node name="Guardia" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
+script = ExtResource("1_guardia")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CapsuleShape3D_1")
+
+[node name="Modelo" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Modelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+mesh = SubResource("CapsuleMesh_1")
