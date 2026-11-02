@@ -59,3 +59,15 @@ func _probar_transicion_noche() -> void:
 		if es_noche_sim != estado_simulado:
 			estado_simulado = es_noche_sim
 			print(" -> Cruce detectado a las ", hp, " h: emitido cambio_noche(", es_noche_sim, ") [1 solo aviso]")
+
+# --- FUNCIONES DEL NIVEL 3: LAMBERT Y PREDICCIÓN DEL PISO ---
+static func lambert(normal: Vector3, hacia_luz: Vector3) -> float:
+	var n: Vector3 = normal.normalized()
+	var l: Vector3 = hacia_luz.normalized()
+	return maxf(0.0, n.dot(l))
+
+func prediccion_piso() -> float:
+	if not sol:
+		return 0.0
+	var hacia_luz: Vector3 = sol.global_transform.basis.z
+	return sol.light_energy * sol.light_color.r * lambert(Vector3.UP, hacia_luz)

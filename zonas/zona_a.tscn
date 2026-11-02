@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://c7yam1a2b3c4d"]
+
+[ext_resource type="Script" path="res://scripts/sistema_sol.gd" id="1_sistemasol"]
+[ext_resource type="Script" path="res://scripts/ciclo_dia.gd" id="2_ciclodia"]
+[ext_resource type="Script" path="res://scripts/fotometro.gd" id="3_fotometro"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.169, 0.176, 0.192, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.169, 0.176, 0.192, 1)
+ambient_light_energy = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_suelo"]
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_suelo"]
+albedo_color = Color(0.169, 0.176, 0.192, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_suelo"]
+material = SubResource("StandardMaterial3D_suelo")
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4id6s"]
+
+[node name="ZonaA" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="Sol" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, 0.25, -0.433013, 0, 0.866025, 0.5, 0.5, -0.433013, 0.75, 0, 10, 0)
+light_energy = 0.35
+shadow_enabled = true
+
+[node name="SistemaSol" type="Node" parent="." node_paths=PackedStringArray("sol", "entorno")]
+script = ExtResource("1_sistemasol")
+sol = NodePath("../Sol")
+entorno = NodePath("../WorldEnvironment")
+
+[node name="CicloDia" type="Node" parent="SistemaSol"]
+script = ExtResource("2_ciclodia")
+
+[node name="Fotometro" type="Node" parent="." node_paths=PackedStringArray("sol")]
+script = ExtResource("3_fotometro")
+sol = NodePath("../SistemaSol")
+
+[node name="Suelo" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo"]
+shape = SubResource("BoxShape3D_suelo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo"]
+mesh = SubResource("BoxMesh_suelo")
+
+[node name="CajaReferencia" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53198, 0)
+mesh = SubResource("CapsuleMesh_4id6s")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 8, 8)
