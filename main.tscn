@@ -3,6 +3,9 @@
 [ext_resource type="Script" path="res://personaje.gd" id="1_personaje"]
 [ext_resource type="Script" path="res://consumir.gd" id="2_consumir"]
 [ext_resource type="PackedScene" path="res://guardia.tscn" id="3_guardia"]
+[ext_resource type="Script" path="res://camara_sigue.gd" id="4_camara"]
+[ext_resource type="Script" path="res://interactuar.gd" id="5_interactuar"]
+[ext_resource type="Script" path="res://alimento.gd" id="6_alimento"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -21,6 +24,17 @@ roughness = 0.8
 [sub_resource type="BoxMesh" id="BoxMesh_suelo"]
 material = SubResource("StandardMaterial3D_suelo")
 size = Vector3(30, 0.2, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_caja"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carne"]
+albedo_color = Color(0.831, 0.639, 0.451, 1)
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_caja"]
+material = SubResource("StandardMaterial3D_carne")
+size = Vector3(1, 1, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_zombi"]
 radius = 0.35
@@ -54,9 +68,44 @@ shape = SubResource("BoxShape3D_suelo")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo"]
 mesh = SubResource("BoxMesh_suelo")
 
+[node name="Cajas" type="Node3D" parent="."]
+
+[node name="Caja1" type="StaticBody3D" parent="Cajas" groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -4)
+script = ExtResource("6_alimento")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja1"]
+shape = SubResource("BoxShape3D_caja")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja1"]
+mesh = SubResource("BoxMesh_caja")
+
+[node name="Caja2" type="StaticBody3D" parent="Cajas" groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -2)
+script = ExtResource("6_alimento")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja2"]
+shape = SubResource("BoxShape3D_caja")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja2"]
+mesh = SubResource("BoxMesh_caja")
+
+[node name="Caja3" type="StaticBody3D" parent="Cajas" groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, 3)
+script = ExtResource("6_alimento")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja3"]
+shape = SubResource("BoxShape3D_caja")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja3"]
+mesh = SubResource("BoxMesh_caja")
+
 [node name="Personaje" type="CharacterBody3D" parent="." groups=["jugador"] node_paths=PackedStringArray("camara")]
 script = ExtResource("1_personaje")
 camara = NodePath("../Camera3D")
+speed_caminar = 2.5
+speed_correr = 2.5
+tiempo_arranque = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Personaje"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
@@ -70,9 +119,22 @@ mesh = SubResource("CapsuleMesh_zombi")
 
 [node name="Consumir" type="Node" parent="Personaje"]
 script = ExtResource("2_consumir")
+duracion = 1.5
+recarga = 0.5
+curacion = 20.0
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Interactuar" type="Node" parent="Personaje"]
+script = ExtResource("5_interactuar")
+alcance = 1.5
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
+script = ExtResource("4_camara")
+objetivo = NodePath("../Personaje")
+distancia = Vector3(6, 8, 6)
+suavizado = 2.5
+limite_min = Vector2(-14, -14)
+limite_max = Vector2(14, 14)
 
 [node name="Guardia" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("3_guardia")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
