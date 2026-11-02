@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Zombivors_4to"
-
+run/main_scene="uid://c6y7p8q4r1e2n"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 

@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://c6y7p8q4r1e2n"]
+
+[ext_resource type="Script" path="res://personaje.gd" id="1_personaje"]
+[ext_resource type="Script" path="res://consumir.gd" id="2_consumir"]
+[ext_resource type="PackedScene" path="res://guardia.tscn" id="3_guardia"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.169, 0.176, 0.192, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.169, 0.176, 0.192, 1)
+ambient_light_energy = 0.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_suelo"]
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_suelo"]
+albedo_color = Color(0.169, 0.176, 0.192, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_suelo"]
+material = SubResource("StandardMaterial3D_suelo")
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_zombi"]
+radius = 0.35
+height = 1.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_zombi"]
+albedo_color = Color(0.341, 0.451, 0.212, 1)
+roughness = 0.7
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_zombi"]
+material = SubResource("StandardMaterial3D_zombi")
+radius = 0.35
+height = 1.75
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 10, 0)
+light_energy = 0.35
+shadow_enabled = true
+
+[node name="Suelo" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo"]
+shape = SubResource("BoxShape3D_suelo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo"]
+mesh = SubResource("BoxMesh_suelo")
+
+[node name="Personaje" type="CharacterBody3D" parent="." groups=["jugador"] node_paths=PackedStringArray("camara")]
+script = ExtResource("1_personaje")
+camara = NodePath("../Camera3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Personaje"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CapsuleShape3D_zombi")
+
+[node name="Modelo" type="Node3D" parent="Personaje"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Personaje/Modelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+mesh = SubResource("CapsuleMesh_zombi")
+
+[node name="Consumir" type="Node" parent="Personaje"]
+script = ExtResource("2_consumir")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
+
+[node name="Guardia" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("3_guardia")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
+objetivo = NodePath("../Personaje")
+rapidez = 2.0
+radio_ver = 6.0
+radio_perder = 9.0
