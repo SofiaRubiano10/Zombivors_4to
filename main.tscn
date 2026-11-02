@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://scripts/fotometro.gd" id="9_fotometro"]
 [ext_resource type="Script" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
 [ext_resource type="Script" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
+[ext_resource type="Script" path="res://hud.gd" id="12_hud"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -188,3 +189,9 @@ objetivo = NodePath("../Personaje")
 rapidez = 2.0
 radio_ver = 6.0
 radio_perder = 9.0
+
+[node name="HUD" type="CanvasLayer" parent="." node_paths=PackedStringArray("personaje", "guardia", "sistema_sol")]
+script = ExtResource("12_hud")
+personaje = NodePath("../Personaje")
+guardia = NodePath("../Guardia")
+sistema_sol = NodePath("../SistemaSol")
