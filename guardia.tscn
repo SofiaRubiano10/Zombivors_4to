@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://b5yar38v4k2lq"]
 
 [ext_resource type="Script" path="res://guardia.gd" id="1_guardia"]
+[ext_resource type="Script" path="res://luz_parpadeante.gd" id="2_luzparp"]
+[ext_resource type="Script" path="res://disparador.gd" id="3_disparador"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.35
@@ -15,6 +17,9 @@ material = SubResource("StandardMaterial3D_rojo")
 radius = 0.35
 height = 1.75
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_ataque"]
+radius = 1.1
+
 [node name="Guardia" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
 script = ExtResource("1_guardia")
@@ -28,3 +33,27 @@ shape = SubResource("CapsuleShape3D_1")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Modelo"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
 mesh = SubResource("CapsuleMesh_1")
+
+[node name="LinternaGuardia" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.2, 0)
+light_color = Color(0.698, 0.133, 0.133, 1)
+light_energy = 2.0
+shadow_enabled = true
+spot_range = 6.0
+spot_attenuation = 1.5
+spot_angle = 30.0
+script = ExtResource("2_luzparp")
+energia_base = 2.0
+amplitud = 0.35
+velocidad = 5.0
+semilla = 7
+
+[node name="Disparador" type="Area3D" parent="." groups=["disparadores"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+script = ExtResource("3_disparador")
+que_representa = "ataque del centinela humano"
+dano = 15.0
+fuerza_empuje = 6.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Disparador"]
+shape = SubResource("SphereShape3D_ataque")

@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/ciclo_dia.gd" id="8_ciclodia"]
 [ext_resource type="Script" path="res://scripts/fotometro.gd" id="9_fotometro"]
 [ext_resource type="Script" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
+[ext_resource type="Script" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -81,6 +82,20 @@ pausado = false
 [node name="Fotometro" type="Node" parent="." node_paths=PackedStringArray("sol")]
 script = ExtResource("9_fotometro")
 sol = NodePath("../SistemaSol")
+
+[node name="LuzEvento" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+light_color = Color(0.698, 0.133, 0.133, 1)
+light_energy = 0.0
+omni_range = 5.0
+omni_attenuation = 1.5
+
+[node name="SistemaEventos" type="Node" parent="." node_paths=PackedStringArray("luz_evento", "luz_variable")]
+script = ExtResource("11_sistemaeventos")
+luz_evento = NodePath("../LuzEvento")
+pico_destello = 4.0
+k_destello = 10.0
+luz_variable = NodePath("../Personaje/LuzJugador")
 
 [node name="Suelo" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
