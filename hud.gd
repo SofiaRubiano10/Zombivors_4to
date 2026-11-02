@@ -81,12 +81,13 @@ func _process(_delta: float) -> void:
 	if restantes == 0:
 		etiqueta_interaccion.text = "Alimentos: ¡3/3 consumidos! Biología estabilizada."
 		etiqueta_interaccion.add_theme_color_override("font_color", Color("#577336"))
-	elif nodo_inter and nodo_inter.has_method("mas_cercano"):
-		var cercano: Node3D = nodo_inter.mas_cercano()
+	elif nodo_inter and nodo_inter.has_method("mas_cercano_global"):
+		var cercano: Node = nodo_inter.mas_cercano_global()
 		if cercano:
 			var dist: float = snappedf(nodo_inter.distancia_a(cercano), 0.01)
 			var en_rango: bool = dist <= nodo_inter.alcance
-			var porc: int = int(clampf((nodo_inter.tiempo / nodo_inter.tiempo_necesario) * 100.0, 0.0, 100.0))
+			var prog: float = nodo_inter.progreso if "progreso" in nodo_inter else 0.0
+			var porc: int = int(clampf(prog * 100.0, 0.0, 100.0))
 			var estado_rango: String = "[EN ALCANCE - Mantén E: " + str(porc) + "%]" if en_rango else "[Acércate a < 1.5 m]"
 			etiqueta_interaccion.text = "Alimentos restantes: " + str(restantes) + "  |  Más cercano: " + cercano.name + " a " + str(dist) + " m " + estado_rango
 			etiqueta_interaccion.add_theme_color_override("font_color", Color("#D4A373") if en_rango else Color("#F2EDE4"))

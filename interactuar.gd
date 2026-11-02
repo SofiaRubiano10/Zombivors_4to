@@ -33,6 +33,9 @@ func _physics_process(delta: float) -> void:
 	# Interacción sostenida / mantener para completar (Nivel 3)
 	var obj = mas_cercano()
 	if not Input.is_action_pressed(tecla) or obj == null:
+		if progreso > 0.0 and pj:
+			pj.multiplicador = 1.0
+			pj.accion = ""
 		progreso = 0.0
 		actual = null
 		return
@@ -40,6 +43,10 @@ func _physics_process(delta: float) -> void:
 	if obj != actual: # Cambió de objeto: se reinicia el progreso
 		actual = obj
 		progreso = 0.0
+	
+	if pj:
+		pj.multiplicador = 0.0
+		pj.accion = "pick-up"
 	
 	var antes = progreso
 	progreso += delta / maxf(0.01, tiempo_necesario)
@@ -51,9 +58,13 @@ func _physics_process(delta: float) -> void:
 	# Completado al 100%
 	if progreso >= 0.999:
 		print("completado: ", obj.name)
+		if pj:
+			pj.multiplicador = 1.0
+			pj.accion = ""
 		if obj.has_method("usar"):
 			obj.usar()
 		progreso = 0.0
+		actual = null
 
 func mas_cercano_global() -> Node:
 	var mejor: Node = null
