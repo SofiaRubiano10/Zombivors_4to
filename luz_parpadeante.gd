@@ -7,7 +7,7 @@ extends SpotLight3D
 @export var semilla := 7
 
 var ruido := FastNoiseLite.new()
-var t := 0.0
+var t := 0.0	
 
 func _ready() -> void:
 	ruido.seed = semilla
