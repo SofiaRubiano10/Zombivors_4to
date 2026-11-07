@@ -3,12 +3,16 @@ extends CharacterBody3D
 # Taller 9 - Tarea A (Juan Diego): el humano que patrulla.
 # Nivel 1: patrulla por un array de puntos recorrido con un índice.
 # Nivel 2: ve con un rayo (RayCast3D "Vision") y persigue.
+# Nivel 3: ataca de cerca, lo pierde con histéresis y lo busca donde lo vio.
 
-enum Estado { PATRULLAR, ESPERAR, PERSEGUIR }
+enum Estado { PATRULLAR, ESPERAR, PERSEGUIR, ATACAR, BUSCAR }
 
 @export var rapidez = 2.0
 @export var espera = 1.0
 @export var rango_vision = 7.0
+@export var rango_ataque = 1.2
+@export var rango_perder = 10.0
+@export var tiempo_busqueda = 3.0
 # Desplazamientos desde donde se colocó el NPC, no posiciones absolutas.
 @export var ruta: Array[Vector3] = [Vector3.ZERO, Vector3(0, 0, -6)]
 
@@ -17,6 +21,8 @@ var puntos: Array[Vector3] = []
 var indice = 0
 var reloj = 0.0
 var jugador = null
+var ultimo_visto = Vector3.ZERO
+var busca = 0.0
 # El proyecto no tiene el modelo .glb del taller: si no hay AnimationPlayer, no se anima.
 @onready var anim = get_node_or_null("Modelo/AnimationPlayer")
 @onready var vision = $Vision
@@ -29,9 +35,12 @@ func _ready():
 func _physics_process(delta):
 	velocity += get_gravity() * delta
 	reloj = maxf(reloj - delta, 0.0)
+	busca = maxf(busca - delta, 0.0)
 	# 1. MEDIR
 	var d = distancia_a(jugador.global_position)
 	var ve = lo_ve()
+	if ve:
+		ultimo_visto = jugador.global_position
 	# 2. DECIDIR
 	var nuevo = decidir(d, ve)
 	if nuevo != estado:
@@ -46,12 +55,30 @@ func _physics_process(delta):
 			frenar()
 		Estado.PERSEGUIR:
 			ir_a(jugador.global_position)
+		Estado.ATACAR:
+			frenar()
+			reproducir("attack-melee-right")
+		Estado.BUSCAR:
+			if distancia_a(ultimo_visto) > 0.1:
+				ir_a(ultimo_visto)
+			else:
+				frenar()
 	move_and_slide()
 
 # El orden ES la regla: el primer if que se cumple gana.
 func decidir(d, ve):
-	if d <= rango_vision and ve:
+	var alerta = estado == Estado.PERSEGUIR or estado == Estado.ATACAR
+	# Ya alerta, necesita más distancia para soltarlo: histéresis.
+	var limite = rango_perder if alerta else rango_vision
+	if ve and d <= rango_ataque:
+		return Estado.ATACAR
+	if ve and d <= limite:
 		return Estado.PERSEGUIR
+	if alerta:
+		busca = tiempo_busqueda
+		return Estado.BUSCAR
+	if busca > 0.001:
+		return Estado.BUSCAR
 	if reloj > 0.001:
 		return Estado.ESPERAR
 	return Estado.PATRULLAR
