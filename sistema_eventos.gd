@@ -30,9 +30,8 @@ func _process(delta: float) -> void:
 		variable = minf(1.0, variable + delta * 0.5)
 	elif Input.is_key_pressed(KEY_DOWN):
 		variable = maxf(0.0, variable - delta * 0.5)
-	elif jugador and jugador.has_node("Salud"):
-		var salud = jugador.get_node("Salud")
-		variable = clampf(1.0 - (float(salud.vida) / maxf(1.0, salud.vida_inicial)), 0.0, 1.0)
+	elif jugador and "salud" in jugador and "salud_maxima" in jugador:
+		variable = clampf(1.0 - (jugador.salud / maxf(1.0, jugador.salud_maxima)), 0.0, 1.0)
 		
 	# Actualizar la luz variable (Nivel 3)
 	if luz_variable != null:

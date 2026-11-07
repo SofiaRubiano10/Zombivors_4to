@@ -4,7 +4,6 @@
 [ext_resource type="Script" path="res://scripts/ciclo_dia.gd" id="2_ciclodia"]
 [ext_resource type="Script" path="res://scripts/fotometro.gd" id="3_fotometro"]
 [ext_resource type="Script" path="res://scripts/luz_jugador.gd" id="4_luzjugador"]
-[ext_resource type="Shader" path="res://material_mundo.gdshader" id="5_agua"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -38,23 +37,6 @@ roughness = 0.4
 [sub_resource type="BoxMesh" id="BoxMesh_alimento"]
 material = SubResource("StandardMaterial3D_alimento")
 size = Vector3(0.6, 0.6, 0.6)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_agua"]
-render_priority = 0
-shader = ExtResource("5_agua")
-shader_parameter/color_bajo = Color(0.169, 0.176, 0.192, 1)
-shader_parameter/amplitud = 0.08
-shader_parameter/longitud = 2.0
-shader_parameter/periodo = 2.5
-shader_parameter/color_alto = Color(0.341, 0.451, 0.212, 1)
-shader_parameter/amplitud2 = 0.03
-shader_parameter/longitud2 = 1.3
-shader_parameter/periodo2 = 1.7
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_agua"]
-size = Vector2(6, 6)
-subdivide_width = 43
-subdivide_depth = 1
 
 [node name="ZonaA" type="Node3D"]
 
@@ -104,8 +86,3 @@ mesh = SubResource("BoxMesh_alimento")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 8, 8)
-
-[node name="AguaSucia" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.05, 2)
-mesh = SubResource("PlaneMesh_agua")
-material_override = SubResource("ShaderMaterial_agua")

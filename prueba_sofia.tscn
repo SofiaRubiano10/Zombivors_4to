@@ -11,11 +11,10 @@
 [ext_resource type="Script" path="res://scripts/fotometro.gd" id="9_fotometro"]
 [ext_resource type="Script" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
 [ext_resource type="Script" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
+[ext_resource type="Script" path="res://hud.gd" id="12_hud"]
 [ext_resource type="PackedScene" path="res://humano.tscn" id="13_humano"]
 [ext_resource type="PackedScene" path="res://cazador_humano.tscn" id="14_cazador"]
 [ext_resource type="Script" path="res://salud.gd" id="15_salud"]
-[ext_resource type="PackedScene" path="res://hud.tscn" id="17_hud"]
-[ext_resource type="Script" path="res://partida.gd" id="16_partida"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -182,8 +181,6 @@ tiempo_necesario = 1.5
 script = ExtResource("15_salud")
 vida = 3
 invulnerable = 1.0
-reapariciones = 1
-espera_reaparecer = 2.0
 
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
@@ -201,6 +198,12 @@ objetivo = NodePath("../Personaje")
 rapidez = 2.0
 radio_ver = 6.0
 radio_perder = 9.0
+
+[node name="HUD" type="CanvasLayer" parent="." node_paths=PackedStringArray("personaje", "guardia", "sistema_sol")]
+script = ExtResource("12_hud")
+personaje = NodePath("../Personaje")
+guardia = NodePath("../Guardia")
+sistema_sol = NodePath("../SistemaSol")
 
 [node name="Humano" parent="." instance=ExtResource("13_humano")]
 process_mode = 4
@@ -221,10 +224,3 @@ tiempo_aviso = 0.5
 tiempo_recarga = 1.0
 alcance_golpe = 1.8
 danio = 1
-
-[node name="HUD" parent="." instance=ExtResource("17_hud")]
-
-[node name="Partida" type="Node" parent="."]
-script = ExtResource("16_partida")
-tiempo_limite = 60.0
-metas = 0

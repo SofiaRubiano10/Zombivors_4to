@@ -21,12 +21,22 @@ var avance: Vector3 = Vector3.ZERO
 var estado: Estado = Estado.QUIETO
 var ruido: float = 0.0
 
-# La salud y la descomposición viven en el nodo hijo Salud (salud.gd).
+# Sistema de salud y descomposición biológica
+var salud_maxima: float = 100.0
+var salud: float = 100.0
+var tiempo_descomposicion: float = 0.0
 
 @onready var anim: AnimationPlayer = $Modelo/AnimationPlayer if has_node("Modelo/AnimationPlayer") else null
 
 func _physics_process(delta: float) -> void:
 	velocity += get_gravity() * delta
+	
+	# Procesamiento de descomposición pasiva: pierde 2% de salud máxima cada 10 segundos
+	tiempo_descomposicion += delta
+	if tiempo_descomposicion >= 10.0:
+		tiempo_descomposicion -= 10.0
+		salud = maxf(0.0, salud - (salud_maxima * 0.02))
+		print("Descomposición biológica: salud actual = ", snappedf(salud, 0.1), " / ", salud_maxima)
 	
 	# Obtención de entrada direccional
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -63,7 +73,7 @@ func _physics_process(delta: float) -> void:
 	_prueba()
 
 func elegir_estado() -> Estado:
-	if accion == "pick-up":
+	if accion == "pick-up" or Input.is_action_pressed("consumir"):
 		return Estado.COMIENDO
 	if not is_on_floor():
 		return Estado.QUIETO

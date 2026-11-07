@@ -20,10 +20,9 @@ func _on_body_entered(cuerpo: Node3D) -> void:
 	if cuerpo == get_parent() or cuerpo is StaticBody3D:
 		return
 	if cuerpo.is_in_group("jugador") or cuerpo.name == "Personaje":
-		var salud = cuerpo.get_node_or_null("Salud")
-		if salud != null:
-			salud.recibir_golpe(int(dano))
-			print("¡Evento (", que_representa, ")! Salud del zombi: ", salud.vida)
+		if "salud" in cuerpo:
+			cuerpo.salud = maxf(0.0, cuerpo.salud - dano)
+			print("¡Evento (", que_representa, ")! Salud del zombi: ", snappedf(cuerpo.salud, 0.1))
 		if "empuje" in cuerpo:
 			var dir_empuje: Vector3 = (cuerpo.global_position - global_position)
 			dir_empuje.y = 0.0

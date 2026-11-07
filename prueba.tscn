@@ -11,10 +11,8 @@
 [ext_resource type="Script" uid="uid://b0dgo74cfp3ap" path="res://interactuar.gd" id="9_o67f3"]
 [ext_resource type="Script" uid="uid://cqe74xl2ef4c1" path="res://camara_sigue.gd" id="10_36xdq"]
 [ext_resource type="PackedScene" uid="uid://b5yar38v4k2lq" path="res://guardia.tscn" id="11_04saj"]
+[ext_resource type="Script" uid="uid://dqh7l87yn43w0" path="res://hud.gd" id="12_nhlc6"]
 [ext_resource type="PackedScene" path="res://humano.tscn" id="13_n7351"]
-[ext_resource type="Script" path="res://partida.gd" id="16_partida"]
-[ext_resource type="PackedScene" path="res://hud.tscn" id="17_hud"]
-[ext_resource type="Script" path="res://salud.gd" id="15_salud"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -158,12 +156,6 @@ script = ExtResource("8_ih1lc")
 [node name="Interactuar" type="Node" parent="Personaje" unique_id=1485974667]
 script = ExtResource("9_o67f3")
 
-[node name="Salud" type="Node" parent="Personaje"]
-script = ExtResource("15_salud")
-vida = 100
-invulnerable = 0.5
-reapariciones = 0
-
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1625999005 node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
 script = ExtResource("10_36xdq")
@@ -173,14 +165,11 @@ objetivo = NodePath("../Personaje")
 process_mode = 4
 objetivo = NodePath("../Personaje")
 
+[node name="HUD" type="CanvasLayer" parent="." unique_id=923199752 node_paths=PackedStringArray("personaje", "guardia", "sistema_sol")]
+script = ExtResource("12_nhlc6")
+personaje = NodePath("../Personaje")
+guardia = NodePath("../Guardia")
+sistema_sol = NodePath("../SistemaSol")
+
 [node name="Humano" parent="." unique_id=1720618032 instance=ExtResource("13_n7351")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
-
-[node name="Partida" type="Node" parent="."]
-script = ExtResource("16_partida")
-gana_con_tiempo = false
-tiempo_limite = 5.0
-metas = 1
-espera_reinicio = 2.0
-
-[node name="HUD" parent="." instance=ExtResource("17_hud")]

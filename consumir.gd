@@ -40,10 +40,8 @@ func empezar() -> void:
 func terminar() -> void:
 	estado = Estado.RECARGA
 	tiempo = recarga
-	var salud = pj.get_node_or_null("Salud")
-	if salud != null:
-		salud.curar(int(curacion))
-		print("termina: ", tecla, " · curó +", curacion, " HP · salud resultante: ", salud.vida)
+	pj.salud = minf(pj.salud_maxima, pj.salud + curacion)
+	print("termina: ", tecla, " · curó +", curacion, " HP · salud resultante: ", pj.salud)
 	pj.empuje = Vector3.ZERO
 	pj.multiplicador = 1.0
 	pj.accion = ""
