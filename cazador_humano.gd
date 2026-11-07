@@ -3,9 +3,8 @@ extends CharacterBody3D
 # Taller 9 - Tarea B (María Sofía): el golpe del humano.
 # Nivel 1: el ciclo del ataque ACERCARSE -> AVISO -> GOLPE -> RECARGA.
 # Nivel 2: el golpe mira dónde está el jugador y le quita vida a su Salud.
-# Nivel 3: el cazador también tiene vida y huye cuando le queda poca.
 
-enum Estado { ACERCARSE, AVISO, GOLPE, RECARGA, HUIR }
+enum Estado { ACERCARSE, AVISO, GOLPE, RECARGA }
 
 @export var rapidez = 2.0
 @export var rango_ataque = 1.5
@@ -15,9 +14,6 @@ enum Estado { ACERCARSE, AVISO, GOLPE, RECARGA, HUIR }
 @export var danio = 1
 # Retroceso del documento (enchufe empuje del Personaje). 0 = sin retroceso.
 @export var fuerza_empuje = 0.0
-@export var vida = 100.0
-@export var vida_huida = 30.0
-@export var danio_prueba = 25.0
 
 var estado = Estado.ACERCARSE
 var reloj = 0.0
@@ -44,17 +40,10 @@ func _physics_process(delta):
 			golpear()
 		Estado.RECARGA:
 			frenar("idle")
-		Estado.HUIR:
-			# Huir es perseguir con la flecha al revés.
-			var lejos = global_position - jugador.global_position
-			ir_a(global_position + lejos)
 	move_and_slide()
 
 # Desde cada estado solo se puede pasar a uno: el ciclo del ataque.
 func decidir():
-	# Va primero: le gana a cualquier estado, también al AVISO.
-	if vida <= vida_huida:
-		return Estado.HUIR
 	match estado:
 		Estado.ACERCARSE:
 			if distancia() <= rango_ataque:
@@ -91,14 +80,6 @@ func golpear():
 		var lejos = jugador.global_position - global_position
 		lejos.y = 0.0
 		jugador.empuje = lejos.normalized() * fuerza_empuje
-
-# Se llama igual que en la diana del Taller 8: el rayo ya la sabe usar.
-func recibir_golpe(cuanto):
-	vida -= cuanto
-	print(name, " vida ", vida)
-	if vida <= 0.0:
-		print(name, " vencido")
-		queue_free()
 
 func ir_a(destino):
 	var hacia = destino - global_position

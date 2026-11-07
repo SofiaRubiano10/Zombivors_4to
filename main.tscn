@@ -222,6 +222,3 @@ tiempo_aviso = 0.5
 tiempo_recarga = 1.5
 alcance_golpe = 1.6
 danio = 10
-vida = 40.0
-vida_huida = 10.0
-danio_prueba = 15.0
