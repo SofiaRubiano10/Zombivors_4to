@@ -177,7 +177,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
 
 [node name="Partida" type="Node" parent="."]
 script = ExtResource("16_partida")
-tiempo_limite = 2.0
 gana_con_tiempo = false
+tiempo_limite = 30.0
+metas = 3
 
 [node name="HUD" parent="." instance=ExtResource("17_hud")]

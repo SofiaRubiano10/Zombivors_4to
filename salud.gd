@@ -3,6 +3,7 @@ extends Node
 # Taller 9 - Tarea B (María Sofía): la vida del jugador vive aquí, en un nodo
 # hijo del Personaje, para no tocar personaje.gd.
 # Taller 10 - Tarea B, Nivel 1: avisa con la señal cambio; no sabe quién escucha.
+# Nivel 2: sin vida, le avisa a la Partida y se acaba la partida.
 
 signal cambio(vida)
 signal sin_vida
@@ -10,6 +11,9 @@ signal sin_vida
 @export var vida = 3
 @export var invulnerable = 1.0
 var reloj = 0.0
+
+func _ready():
+	sin_vida.connect(_al_quedar_sin_vida)
 
 func _physics_process(delta):
 	reloj = maxf(reloj - delta, 0.0)
@@ -22,3 +26,9 @@ func recibir_golpe(danio):
 	cambio.emit(vida)
 	if vida == 0:
 		sin_vida.emit()
+
+# Se busca aquí y no en _ready(): la Partida quizá todavía no existía.
+func _al_quedar_sin_vida():
+	var partida = get_tree().get_first_node_in_group("partida")
+	if partida != null:
+		partida.perder("sin vida")

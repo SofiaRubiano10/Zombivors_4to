@@ -225,5 +225,6 @@ danio = 20
 script = ExtResource("16_partida")
 tiempo_limite = 120.0
 gana_con_tiempo = false
+metas = 3
 
 [node name="HUD" parent="." instance=ExtResource("17_hud")]

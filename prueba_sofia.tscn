@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" path="res://cazador_humano.tscn" id="14_cazador"]
 [ext_resource type="Script" path="res://salud.gd" id="15_salud"]
 [ext_resource type="PackedScene" path="res://hud.tscn" id="17_hud"]
+[ext_resource type="Script" path="res://partida.gd" id="16_partida"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -220,3 +221,8 @@ alcance_golpe = 1.8
 danio = 1
 
 [node name="HUD" parent="." instance=ExtResource("17_hud")]
+
+[node name="Partida" type="Node" parent="."]
+script = ExtResource("16_partida")
+tiempo_limite = 60.0
+metas = 0
