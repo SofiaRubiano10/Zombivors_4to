@@ -87,3 +87,16 @@ material_override = SubResource("ShaderMaterial_trampa")
 [node name="ControlEfectos" type="Node" parent="Trampa" node_paths=PackedStringArray("objetivo")]
 script = ExtResource("5_control")
 objetivo = NodePath("..")
+radio = 3.0
+dura_flash = 0.3
+
+[node name="Trampa2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.65, 0)
+mesh = SubResource("BoxMesh_trampa")
+material_override = SubResource("ShaderMaterial_trampa")
+
+[node name="ControlEfectos" type="Node" parent="Trampa2" node_paths=PackedStringArray("objetivo")]
+script = ExtResource("5_control")
+objetivo = NodePath("..")
+radio = 3.0
+dura_flash = 0.3

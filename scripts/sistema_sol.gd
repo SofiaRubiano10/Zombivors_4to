@@ -84,7 +84,3 @@ func prediccion_piso() -> float:
 		return 0.0
 	var hacia_luz: Vector3 = sol.global_transform.basis.z
 	return sol.light_energy * sol.light_color.r * lambert(Vector3.UP, hacia_luz)
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
