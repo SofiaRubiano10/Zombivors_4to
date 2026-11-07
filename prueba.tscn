@@ -130,6 +130,7 @@ shape = SubResource("BoxShape3D_caja")
 mesh = SubResource("BoxMesh_caja")
 
 [node name="Personaje" type="CharacterBody3D" parent="." unique_id=1907225201 node_paths=PackedStringArray("camara") groups=["jugador"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 script = ExtResource("6_i7ldd")
 camara = NodePath("../Camera3D")
 speed_correr = 4.2
