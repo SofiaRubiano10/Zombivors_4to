@@ -2,7 +2,6 @@ extends CharacterBody3D
 
 # Taller 9 - Tarea B (María Sofía): el golpe del humano.
 # Nivel 1: el ciclo del ataque ACERCARSE -> AVISO -> GOLPE -> RECARGA.
-# Nivel 2: el golpe mira dónde está el jugador y le quita vida a su Salud.
 
 enum Estado { ACERCARSE, AVISO, GOLPE, RECARGA }
 
@@ -10,10 +9,6 @@ enum Estado { ACERCARSE, AVISO, GOLPE, RECARGA }
 @export var rango_ataque = 1.5
 @export var tiempo_aviso = 0.5
 @export var tiempo_recarga = 1.0
-@export var alcance_golpe = 1.8
-@export var danio = 1
-# Retroceso del documento (enchufe empuje del Personaje). 0 = sin retroceso.
-@export var fuerza_empuje = 0.0
 
 var estado = Estado.ACERCARSE
 var reloj = 0.0
@@ -68,18 +63,8 @@ func cambiar_a(nuevo):
 	elif estado == Estado.RECARGA:
 		reloj = tiempo_recarga
 
-# El aviso le da tiempo al jugador: el golpe mira DÓNDE ESTÁ AHORA.
 func golpear():
-	if distancia() > alcance_golpe:
-		print(name, " falla a ", snappedf(distancia(), 0.01), " m")
-		return
-	var salud = jugador.get_node_or_null("Salud")
-	if salud != null:
-		salud.recibir_golpe(danio)
-	if fuerza_empuje > 0.0 and "empuje" in jugador:
-		var lejos = jugador.global_position - global_position
-		lejos.y = 0.0
-		jugador.empuje = lejos.normalized() * fuerza_empuje
+	print(name, " golpea")
 
 func ir_a(destino):
 	var hacia = destino - global_position
