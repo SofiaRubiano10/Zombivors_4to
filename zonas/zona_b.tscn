@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://d1m8b2a3c4e5f"]
+
+[ext_resource type="Script" path="res://scripts/luz_parpadeante.gd" id="1_luzparpadeante"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.169, 0.176, 0.192, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.169, 0.176, 0.192, 1)
+ambient_light_energy = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_suelo"]
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_suelo"]
+albedo_color = Color(0.169, 0.176, 0.192, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_suelo"]
+material = SubResource("StandardMaterial3D_suelo")
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_humano"]
+radius = 0.35
+height = 1.75
+
+[node name="ZonaB" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="Suelo" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo"]
+shape = SubResource("BoxShape3D_suelo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo"]
+mesh = SubResource("BoxMesh_suelo")
+
+[node name="HumanoCentinela" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+mesh = SubResource("CapsuleMesh_humano")
+
+[node name="LinternaRoja" type="OmniLight3D" parent="HumanoCentinela"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+light_color = Color(0.698, 0.133, 0.133, 1)
+omni_range = 6.0
+omni_attenuation = 1.5
+script = ExtResource("1_luzparpadeante")
+energia_base = 1.2
+amplitud = 0.4
+velocidad = 8.0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 4, 5)

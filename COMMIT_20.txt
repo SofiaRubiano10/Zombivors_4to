@@ -1,0 +1,17 @@
+COMMIT N.º 20 (orden global del mapa)
+Lo hace: Sofía (SofiaRubiano10)
+
+Mensaje exacto del commit:
+  T5 Tarea B nivel 3
+
+Archivos que cambian en este commit (A = nuevo, M = modificado, D = borrado):
+  M	control_efectos.gd
+  M	efecto_objeto.gdshader
+  M	zona_b.tscn
+
+Cómo aplicarlo:
+  1. Fetch origin y Pull en GitHub Desktop (debe estar el commit anterior del mapa).
+  2. Copiar TODO el contenido de esta carpeta (menos este archivo) dentro del repositorio
+     Zombivors_4to y elegir 'Reemplazar los archivos en el destino'.
+  3. Si arriba hay archivos con D, borrarlos del repositorio.
+  4. Abrir Godot una vez (para que reimporte), revisar, Commit con el mensaje exacto y Push origin.

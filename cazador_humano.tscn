@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://cazador_humano.gd" id="1_cazador"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cazador"]
+radius = 0.35
+height = 1.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cazador"]
+albedo_color = Color(0.698, 0.133, 0.133, 1)
+roughness = 0.6
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_cazador"]
+material = SubResource("StandardMaterial3D_cazador")
+radius = 0.35
+height = 1.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_arma"]
+albedo_color = Color(0.169, 0.176, 0.192, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_arma"]
+material = SubResource("StandardMaterial3D_arma")
+size = Vector3(0.12, 0.12, 0.7)
+
+[node name="Cazador" type="CharacterBody3D"]
+script = ExtResource("1_cazador")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CapsuleShape3D_cazador")
+
+[node name="Modelo" type="Node3D" parent="."]
+
+[node name="Cuerpo" type="MeshInstance3D" parent="Modelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+mesh = SubResource("CapsuleMesh_cazador")
+
+[node name="Arma" type="MeshInstance3D" parent="Modelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.0, -0.45)
+mesh = SubResource("BoxMesh_arma")
