@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
 [ext_resource type="Script" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
 [ext_resource type="Script" path="res://hud.gd" id="12_hud"]
+[ext_resource type="PackedScene" path="res://humano.tscn" id="13_humano"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -195,3 +196,9 @@ script = ExtResource("12_hud")
 personaje = NodePath("../Personaje")
 guardia = NodePath("../Guardia")
 sistema_sol = NodePath("../SistemaSol")
+
+[node name="Humano" parent="." instance=ExtResource("13_humano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 7)
+rapidez = 2.0
+espera = 1.0
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(8, 0, 0)])
