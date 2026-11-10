@@ -5,12 +5,15 @@ extends CharacterBody3D
 # Nivel 2: ve con un rayo (RayCast3D "Vision") y persigue.
 # Nivel 3: ataca de cerca, lo pierde con histéresis y lo busca donde lo vio.
 # Avance T10: el ataque quita vida por la Salud (la invulnerabilidad limita la frecuencia).
+# Clase 2: ve en un cono de 6 m y 90 grados hacia delante; los muros tapan la vista.
 
 enum Estado { PATRULLAR, ESPERAR, PERSEGUIR, ATACAR, BUSCAR }
 
 @export var rapidez = 2.0
 @export var espera = 1.0
-@export var rango_vision = 7.0
+@export var rango_vision = 6.0
+# Apertura total del cono, en grados. La mitad a cada lado del frente.
+@export var angulo_vision = 90.0
 @export var rango_ataque = 1.2
 @export var rango_perder = 10.0
 @export var tiempo_busqueda = 3.0
@@ -92,7 +95,11 @@ func golpear():
 	if salud != null:
 		salud.recibir_golpe(danio)
 
+# Alerta, ya no necesita el cono: le basta con no tener un muro en medio.
 func lo_ve():
+	var alerta = estado == Estado.PERSEGUIR or estado == Estado.ATACAR
+	if not alerta and not en_cono():
+		return false
 	# Se apunta al pecho: el origen del jugador está en los pies.
 	var pecho = jugador.global_position + Vector3(0, 0.9, 0)
 	vision.target_position = vision.to_local(pecho)
@@ -133,3 +140,13 @@ func reproducir(animacion):
 func distancia_a(p):
 	var o = global_position
 	return Vector2(p.x - o.x, p.z - o.z).length()
+
+# El frente del humano es -Z (Basis.looking_at mira hacia -Z).
+func en_cono():
+	var hacia = jugador.global_position - global_position
+	hacia.y = 0.0
+	if hacia.length() < 0.01:
+		return true
+	var frente = -global_transform.basis.z
+	frente.y = 0.0
+	return rad_to_deg(frente.angle_to(hacia)) <= angulo_vision / 2.0
