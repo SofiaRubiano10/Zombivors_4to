@@ -5,15 +5,19 @@ extends Node
 # Nivel 1: la partida termina una sola vez (guarda).
 # Nivel 2: cuenta metas y, al terminar, el mundo se detiene (pausa).
 # Nivel 3: reinicia sola y recuerda intentos y mejor tiempo (static).
+# Clase 1: valores del plan y señales del contrato (terminada, meta).
+
+signal terminada(estado, motivo)
+signal meta(hechas, total)
 
 enum Estado { JUGANDO, GANO, PERDIO }
 
-@export var tiempo_limite = 30.0
+@export var tiempo_limite = 120.0
 # false: al acabarse el tiempo se pierde. true: sobrevivir gana.
 @export var gana_con_tiempo = false
 # Cuántas metas hay que cumplir para ganar. 0 = no se cuentan.
 @export var metas = 3
-@export var espera_reinicio = 2.0
+@export var espera_reinicio = 1.0
 # static: es del script, no del nodo. Sobrevive a recargar la escena.
 static var intentos = 1
 static var mejor = 0.0
@@ -49,6 +53,7 @@ func avisar_meta():
 		return
 	hechas += 1
 	print("meta ", hechas, " de ", metas)
+	meta.emit(hechas, metas)
 	if metas > 0 and hechas >= metas:
 		ganar()
 
@@ -70,6 +75,7 @@ func terminar(nuevo, motivo):
 	var usado = tiempo_limite - tiempo
 	if estado == Estado.GANO and (mejor == 0.0 or usado < mejor):
 		mejor = usado
+	terminada.emit(estado, motivo)
 
 func reiniciar():
 	intentos += 1

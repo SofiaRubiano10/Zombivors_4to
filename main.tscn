@@ -1,18 +1,14 @@
 [gd_scene format=3 uid="uid://c6y7p8q4r1e2n"]
 
 [ext_resource type="Script" path="res://personaje.gd" id="1_personaje"]
-[ext_resource type="Script" path="res://consumir.gd" id="2_consumir"]
-[ext_resource type="PackedScene" path="res://guardia.tscn" id="3_guardia"]
 [ext_resource type="Script" path="res://camara_sigue.gd" id="4_camara"]
 [ext_resource type="Script" path="res://interactuar.gd" id="5_interactuar"]
 [ext_resource type="Script" path="res://alimento.gd" id="6_alimento"]
 [ext_resource type="Script" path="res://scripts/sistema_sol.gd" id="7_sistemasol"]
 [ext_resource type="Script" path="res://scripts/ciclo_dia.gd" id="8_ciclodia"]
-[ext_resource type="Script" path="res://scripts/fotometro.gd" id="9_fotometro"]
 [ext_resource type="Script" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
 [ext_resource type="Script" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
 [ext_resource type="PackedScene" path="res://humano.tscn" id="13_humano"]
-[ext_resource type="PackedScene" path="res://cazador_humano.tscn" id="14_cazador"]
 [ext_resource type="Script" path="res://salud.gd" id="15_salud"]
 [ext_resource type="Script" path="res://partida.gd" id="16_partida"]
 [ext_resource type="PackedScene" path="res://hud.tscn" id="17_hud"]
@@ -83,10 +79,6 @@ script = ExtResource("8_ciclodia")
 hora = 8.0
 duracion_dia = 48.0
 pausado = false
-
-[node name="Fotometro" type="Node" parent="." node_paths=PackedStringArray("sol")]
-script = ExtResource("9_fotometro")
-sol = NodePath("../SistemaSol")
 
 [node name="LuzEvento" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
@@ -167,12 +159,6 @@ script = ExtResource("10_luzjugador")
 rango = 5.0
 altura = 1.2
 
-[node name="Consumir" type="Node" parent="Personaje"]
-script = ExtResource("2_consumir")
-duracion = 1.5
-recarga = 0.5
-curacion = 20.0
-
 [node name="Interactuar" type="Node" parent="Personaje"]
 script = ExtResource("5_interactuar")
 alcance = 1.5
@@ -194,13 +180,6 @@ suavizado = 2.5
 limite_min = Vector2(-14, -14)
 limite_max = Vector2(14, 14)
 
-[node name="Guardia" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("3_guardia")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
-objetivo = NodePath("../Personaje")
-rapidez = 2.0
-radio_ver = 6.0
-radio_perder = 9.0
-
 [node name="Humano" parent="." instance=ExtResource("13_humano")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 7)
 rapidez = 2.0
@@ -210,18 +189,7 @@ rango_vision = 7.0
 rango_ataque = 1.5
 rango_perder = 10.0
 tiempo_busqueda = 2.0
-
-[node name="Cazador" parent="." instance=ExtResource("14_cazador")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 3)
-rapidez = 1.8
-rango_ataque = 1.3
-tiempo_aviso = 0.5
-tiempo_recarga = 1.5
-alcance_golpe = 1.6
-vida = 40.0
-vida_huida = 10.0
-danio_prueba = 15.0
-danio = 20
+danio = 15
 
 [node name="Partida" type="Node" parent="."]
 script = ExtResource("16_partida")

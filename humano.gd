@@ -4,6 +4,7 @@ extends CharacterBody3D
 # Nivel 1: patrulla por un array de puntos recorrido con un índice.
 # Nivel 2: ve con un rayo (RayCast3D "Vision") y persigue.
 # Nivel 3: ataca de cerca, lo pierde con histéresis y lo busca donde lo vio.
+# Avance T10: el ataque quita vida por la Salud (la invulnerabilidad limita la frecuencia).
 
 enum Estado { PATRULLAR, ESPERAR, PERSEGUIR, ATACAR, BUSCAR }
 
@@ -13,6 +14,7 @@ enum Estado { PATRULLAR, ESPERAR, PERSEGUIR, ATACAR, BUSCAR }
 @export var rango_ataque = 1.2
 @export var rango_perder = 10.0
 @export var tiempo_busqueda = 3.0
+@export var danio = 15
 # Desplazamientos desde donde se colocó el NPC, no posiciones absolutas.
 @export var ruta: Array[Vector3] = [Vector3.ZERO, Vector3(0, 0, -6)]
 
@@ -58,6 +60,7 @@ func _physics_process(delta):
 		Estado.ATACAR:
 			frenar()
 			reproducir("attack-melee-right")
+			golpear()
 		Estado.BUSCAR:
 			if distancia_a(ultimo_visto) > 0.1:
 				ir_a(ultimo_visto)
@@ -82,6 +85,12 @@ func decidir(d, ve):
 	if reloj > 0.001:
 		return Estado.ESPERAR
 	return Estado.PATRULLAR
+
+# Mientras siga pegado, golpea: la invulnerabilidad de la Salud decide cada cuánto cuenta.
+func golpear():
+	var salud = jugador.get_node_or_null("Salud")
+	if salud != null:
+		salud.recibir_golpe(danio)
 
 func lo_ve():
 	# Se apunta al pecho: el origen del jugador está en los pies.
