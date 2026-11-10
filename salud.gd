@@ -59,6 +59,13 @@ func quitar_vida(cantidad):
 	if vida == 0:
 		sin_vida.emit()
 
+# La llaman los alimentos. No cura a un muerto ni pasa de la vida inicial.
+func curar(cantidad):
+	if vida == 0:
+		return
+	vida = mini(vida + int(cantidad), vida_inicial)
+	cambio.emit(vida)
+
 # Se busca aquí y no en _ready(): la Partida quizá todavía no existía.
 func _al_quedar_sin_vida():
 	if reapariciones > 0:
