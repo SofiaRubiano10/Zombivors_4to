@@ -6,6 +6,10 @@ extends Node
 # Nivel 2: cuenta metas y, al terminar, el mundo se detiene (pausa).
 # Nivel 3: reinicia sola y recuerda intentos y mejor tiempo (static).
 
+# Clase 1: valores del plan y señales del contrato (terminada, meta).
+
+signal terminada(estado, motivo)
+signal meta(hechas, total)
 enum Estado { JUGANDO, GANO, PERDIO }
 
 @export var tiempo_limite = 120.0
@@ -49,6 +53,7 @@ func avisar_meta():
 		return
 	hechas += 1
 	print("meta ", hechas, " de ", metas)
+	meta.emit(hechas, metas)
 	if metas > 0 and hechas >= metas:
 		ganar()
 
@@ -70,6 +75,8 @@ func terminar(nuevo, motivo):
 	var usado = tiempo_limite - tiempo
 	if estado == Estado.GANO and (mejor == 0.0 or usado < mejor):
 		mejor = usado
+	terminada.emit(estado, motivo)
+
 
 func reiniciar():
 	intentos += 1

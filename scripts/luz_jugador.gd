@@ -12,10 +12,6 @@ func _ready() -> void:
 	spot_angle = 35.0 # Apertura del cono hacia adelante (-Z)
 	light_color = Color("#D4A373") # Tono cálido de nuestra paleta
 	light_energy = 2.5 # Calculado: 0.1 * 5^2 = 2.5 para llegar con 0.1 a 5 m
-	
-	# Prueba rápida de la función pura en consola:
-	print("--- Tarea C Nivel 1 (Juan Diego): LuzJugador y Atenuación 1/d^2 ---")
-	print("Atenuación a 1m: ", atenuacion(1.0), " | a 2m: ", atenuacion(2.0), " | a 4m: ", atenuacion(4.0))
 
 static func atenuacion(d: float, exponente: float = 2.0) -> float:
 	return 1.0 / pow(maxf(d, 0.0001), exponente)

@@ -1,0 +1,464 @@
+================================================================================
+ZOMBIVORS - PLAN JUGABLE EN 5 CLASES (versión 2)
+Grupo 10 · Rama dev · 5 clases de 2 horas · 10 h por persona
+Juan Diego Rojano Ortiz      ·  María Sofía Reyes Rubiano
+================================================================================
+
+QUÉ CAMBIA RESPECTO A LA VERSIÓN 1
+  La indicación es que lo visual va al final. Por eso las clases 1 a 4 son
+  de mecánicas y las hacen LOS DOS. Lo visual queda en la clase 5 y solo
+  entra lo que exigen los criterios de terminado del documento.
+
+  Reparto por SISTEMAS, no por "jugable / visual":
+	Juan Diego -> la partida, el mapa, el zombi (sus acciones) y la run
+				  completa (zonas y mejoras).
+	María      -> la salud, los humanos (IA y tipos), los peligros, la
+				  puntuación y, al final, lo visual.
+
+  Así cada uno es dueño de archivos distintos y los dos tienen peso en la
+  nota del Taller 10 (Juan: partida.gd, Tarea A; María: salud.gd y
+  hud.tscn, Tarea B).
+
+
+================================================================================
+PARTE 1 - DE DÓNDE PARTIMOS
+================================================================================
+
+YA FUNCIONA
+  [x] Movimiento a 2.5 m/s con arranque y frenado de 0.5 s, diagonal
+	  corregida, cámara diagonal suave con límites.
+  [x] Estados del zombi con ruido (0 / 1 / 3 m).
+  [x] Descomposición del 2 % cada 10 s (salud 100).
+  [x] Comer: mantener E 1.5 s junto a un alimento, +20 HP. Hay 3 alimentos.
+  [x] Un humano que patrulla, ve a 6 m, persigue y hace 15 de daño con
+	  retroceso.
+  [x] HUD con los datos básicos.
+
+LO QUE HOY IMPIDE QUE SEA UN JUEGO
+  [!] No se gana ni se pierde: con salud 0 se sigue caminando.
+  [!] La E cura en cualquier sitio (Consumir e Interactuar comparten tecla),
+	  así que la descomposición no importa.
+  [!] El mapa es un plano vacío de 30 x 30 m: no hay dónde esconderse.
+  [!] El humano solo golpea al entrar en contacto e ignora el ruido.
+  [!] No hay decisiones: siempre conviene hacer lo mismo.
+  [!] No hay motivo para jugar otra vez: no hay puntuación, récord ni
+	  variación entre intentos.
+
+
+================================================================================
+PARTE 2 - QUÉ HACE QUE ZOMBIVORS ENGANCHE
+================================================================================
+
+LOS 4 PILARES (cada mecánica tiene que servir al menos a uno)
+  1. EL RELOJ ES TU CUERPO. La descomposición presiona siempre: comer no es
+	 opcional, es combustible.
+  2. CAZADOR Y PRESA A LA VEZ. Los humanos te matan, pero también son la
+	 mejor comida si los pillas por la espalda. Es el rol invertido del
+	 concepto: "se alimenta de forma sigilosa".
+  3. CADA DECISIÓN CUESTA. Correr, embestir y arriesgarse dan ventaja, pero
+	 se pagan con salud o con ruido.
+  4. UNA PARTIDA MÁS. Partidas cortas (de 6 a 8 min), mejoras distintas en
+	 cada intento, puntuación y récord que se guardan.
+
+--------------------------------------------------------------------------------
+LISTA DE MECÁNICAS, POR PRIORIDAD
+--------------------------------------------------------------------------------
+Prioridad: [A] imprescindible · [B] da calidad · [C] extra si sobra tiempo.
+Los números son propuestas para la tabla de números; se ajustan jugando.
+
+--- EL CICLO -------------------------------------------------------------------
+[A] 1. Partida con guarda: ganar, perder, pausa y reinicio.  (Pilar 1)
+	   Perder: salud 0 o tiempo agotado. Reinicio total en 1 s.
+
+[A] 2. Zona con extracción.  (Pilar 1)
+	   Comer 3 alimentos abre la SALIDA de la zona. Para ganar hay que
+	   llegar a ella antes de que acabe el tiempo (120 s). El final de cada
+	   zona se vuelve una huida: el momento más tenso.
+
+[A] 3. Run de 3 zonas con dificultad creciente.  (Pilar 4)
+	   Zona 1: 1 humano, sin trampas (aprendizaje).
+	   Zona 2: 3 humanos y 2 trampas.
+	   Zona 3: 4 humanos, 3 trampas y 90 s.
+	   Es la misma escena con otra configuración (un Resource o un
+	   diccionario por zona). La salud pasa de una zona a la siguiente.
+
+[B] 4. Variación en cada intento.  (Pilar 4)
+	   Los alimentos y la salida salen en puntos al azar dentro de una lista
+	   de puntos válidos, y las rutas de patrulla se eligen al azar. Así
+	   ningún intento se juega igual.
+
+--- EL ZOMBI -------------------------------------------------------------------
+[A] 5. Mordisco sigiloso: comer humanos.  (Pilar 2)
+	   Si estás detrás de un humano (fuera de su cono de visión) y a menos
+	   de 1.2 m, mantén E 1.2 s: lo devoras, curas +35 HP y sumas
+	   puntuación. Si te ve antes de terminar, el mordisco se cancela y te
+	   persigue.
+
+[A] 6. Correr cuesta.  (Pilar 3)
+	   Resuelve el choque entre los 4.2 m/s actuales y el máximo de 2.5 m/s
+	   del documento. Shift pasa a ser "arrastre rápido": 3.5 m/s, cuesta
+	   1 HP por segundo y hace 3 m de ruido. Caminar sigue siendo gratis.
+
+[B] 7. Embestida.  (Pilar 3)
+	   Espacio: impulso de 0.25 s a 7 m/s. Enfriamiento de 3 s, cuesta 3 HP.
+	   Si choca con un humano, lo aturde 1.5 s (y entonces se le puede
+	   morder de frente). Es la herramienta para salir de un apuro.
+
+[B] 8. Tipos de alimento: una decisión en cada caja.  (Pilar 3)
+	   Carne (común): +20 HP, se come en 1.5 s.
+	   Carroña (común): +8 HP, se come en 0.5 s (para cuando hay prisa).
+	   Cerebro (1 por zona, lejos): +40 HP y la descomposición se detiene
+	   durante 20 s.
+
+--- LOS HUMANOS Y EL PELIGRO ---------------------------------------------------
+[A] 9. Humano con sentidos de verdad.  (Pilar 2)
+	   Ve en un cono de 6 m hacia delante y los muros le cortan la vista.
+	   Oye: si el ruido del zombi lo alcanza, va a mirar ese punto.
+	   Estados: PATRULLA -> SOSPECHA (va al ruido) -> PERSIGUE -> VUELVE.
+	   Si se queda pegado al zombi, golpea cada 0.5 s (la invulnerabilidad
+	   de la Salud limita la frecuencia).
+
+[A] 10. Trampas.  (Pilar 1)
+	   Zonas fijas en pasillos: 15 de daño y retroceso. Obligan a elegir
+	   ruta.
+
+[B] 11. Dos tipos de humano.  (Pilar 2)
+	   Vigía: lento (1.8 m/s), con linterna, golpea de cerca (15).
+	   Tirador: se queda quieto y dispara un proyectil lento (10 de daño,
+	   cada 2 s) cuando te ve. Se le esquiva o se le flanquea.
+
+[B] 12. Presión final: el cazador.  (Pilar 1)
+	   Cuando quedan 30 s de zona, aparece un cazador que va al último
+	   ruido que hiciste. Empuja al jugador a salir y castiga la espera.
+
+--- RAZONES PARA VOLVER ---------------------------------------------------------
+[A] 13. Puntuación y récord guardado.  (Pilar 4)
+	   +100 por alimento, +250 por humano devorado, +10 por cada segundo que
+	   sobre, x1.5 si la zona se pasa sin recibir daño. El récord se guarda
+	   en disco (ConfigFile en user://), así que sobrevive a cerrar el juego.
+	   Al terminar: resumen de la run y "NUEVO RÉCORD".
+
+[A] 14. Mutaciones entre zonas (estilo roguelite).  (Pilar 4)
+	   Al salir de una zona se elige 1 de 3 mutaciones al azar:
+		 - Estómago de hierro: la descomposición es 25 % más lenta.
+		 - Tendones nuevos: +0.3 m/s caminando.
+		 - Mandíbula: el mordisco tarda 0.7 s.
+		 - Pies de trapo: el ruido se reduce a la mitad.
+		 - Hambre voraz: la comida cura un 50 % más.
+		 - Carne dura: la invulnerabilidad tras un golpe dura +0.5 s.
+		 - Embestida doble: dos cargas de embestida.
+		 - Olfato: el HUD señala la dirección del alimento más cercano.
+	   Cada run se siente distinta según lo que elijas.
+
+[C] 15. Progresión permanente.
+	   Los "huesos" que se ganan en cada run desbloquean mutaciones nuevas
+	   para las siguientes. Solo si todo lo anterior está terminado.
+
+--- SENSACIÓN DE JUEGO (sin arte) -----------------------------------------------
+[B] 16. Respuesta inmediata con sonido y cámara.
+	   Sonidos cortos (golpe, mordisco, comer, alerta del humano, salida
+	   abierta) de un paquete CC0, y una sacudida de cámara de 0.15 s al
+	   recibir daño. Es lo que más "se siente" por menos trabajo y no es
+	   arte. Hasta que llegue la clase 5, el HUD indica los estados con
+	   texto: "TE VIO", "SALIDA ABIERTA".
+
+QUÉ NO VAMOS A HACER (para proteger el alcance)
+  Armas o disparos del zombi, inventario, crafting, diálogos, multijugador,
+  mapas procedurales completos, animaciones avanzadas.
+
+
+================================================================================
+PARTE 3 - CÓMO TRABAJAMOS
+================================================================================
+
+REGLAS
+  - main.tscn lo toca una persona a la vez: Pull, cambio, Commit, Push, avisar.
+  - Cada uno prueba en su copia: prueba_juan.tscn y prueba_maria.tscn (F6).
+  - Nadie edita el archivo del otro. Si algo necesita un cambio, se pide.
+  - Un commit por tarea terminada, con el usuario propio.
+  - Los últimos 15 minutos de cada clase son de PRUEBA JUNTOS: se juega en
+	main.tscn, se comprueba la meta del día y se anotan los números en la
+	tabla. Si la meta no se cumple, lo pendiente abre la clase siguiente.
+
+DUEÑOS DE ARCHIVOS
+  Juan:  partida.gd, zona (configuración y escena), mapa, salida.gd,
+		 personaje.gd, mordisco.gd, embestida.gd, interactuar.gd,
+		 alimento.gd, mutaciones.gd, pantalla de mutaciones.
+  María: salud.gd, hud.gd / hud.tscn, humano.gd (antes guardia.gd),
+		 tirador.gd, cazador.gd, trampa.gd, puntuacion.gd, sonidos, y en la
+		 clase 5 todo lo visual.
+
+CONTRATOS (se acuerdan al principio de la clase 1)
+  Salud (hijo del Personaje)                                       -> María
+	signal cambio(vida), signal sin_vida, signal golpeado
+	recibir_golpe(danio), curar(cantidad); var factor_descomposicion
+  Partida (grupo "partida")                                        -> Juan
+	signal terminada(estado, motivo), signal meta(hechas, total),
+	signal salida_abierta, signal zona_cambiada(numero)
+	avisar_meta(), perder(motivo), ganar(); var tiempo, zona
+  Personaje                                                        -> Juan
+	var ruido (en metros), signal hizo_ruido(posicion, radio)
+  Humano (grupo "humanos")                                         -> María
+	puede_verme(pos) -> bool, aturdir(segundos), devorado()
+	signal me_vio, signal devorado_signal
+  Puntuacion (grupo "puntuacion")                                  -> María
+	sumar(puntos, motivo); var total, record
+  Mutaciones (static, sobrevive al cambio de zona)                 -> Juan
+	elegidas: Array; tiene(nombre) -> bool
+
+
+================================================================================
+PARTE 4 - LAS 5 CLASES
+================================================================================
+
+RESUMEN
+  Clase 1 -> SE PUEDE PERDER Y GANAR.   El ciclo existe.
+  Clase 2 -> SE PUEDE ESCONDER.         Mapa con sigilo de verdad.
+  Clase 3 -> SE PUEDE CAZAR.            El zombi también es depredador.
+  Clase 4 -> SE QUIERE REPETIR.         Run de 3 zonas, mutaciones y récord.
+  Clase 5 -> SE VE Y SE ENTREGA.        Lo visual del documento y el build.
+
+--------------------------------------------------------------------------------
+CLASE 1 - SE PUEDE PERDER Y GANAR  (Taller 10)
+--------------------------------------------------------------------------------
+OBJETIVO GENERAL DEL DÍA
+  Convertir las piezas sueltas en un juego que empieza, se gana, se pierde
+  y vuelve a empezar solo. Se arregla lo que rompe la regla principal (la E
+  que cura gratis) y se deja una única fuente de verdad para la salud.
+  Todavía da igual que el mapa esté vacío: hoy importa el ciclo.
+
+META (se comprueba jugando, sin tocar el editor)
+  - Comer los 3 alimentos -> GANAS. Salud 0 o 120 s -> PIERDES.
+  - Al terminar, el mundo se congela, 1 s después reinicia y el Output
+	muestra "intento 2" y el mejor tiempo.
+  - Pulsar E lejos de un alimento no hace nada.
+  - Si el humano se queda pegado, sigue quitando vida cada 0.5 s.
+  - El HUD muestra vida y tiempo restante.
+
+JUAN DIEGO
+  10 min  Quitar el nodo Consumir del Personaje: solo cura Interactuar junto
+		  a un alimento.
+   5 min  Renderizador Compatibility en project.godot (es técnico y cambia
+		  las luces; mejor hacerlo antes de construir encima).
+  60 min  partida.gd, niveles 1 a 3 del Taller 10: tiempo_limite = 120,
+		  metas = 3, pausa en Always, espera_reinicio = 1, static intentos y
+		  mejor. Un commit por nivel.
+  20 min  Señales del contrato (terminada, meta) y alimento.usar() llamando a
+		  avisar_meta().
+  10 min  Correr: aplicar el "arrastre rápido" (3.5 m/s, 1 HP/s) en cuanto
+		  exista Salud.
+  Commits: T10 N1/N2/N3 - Tarea A · T10 Avance - ciclo
+
+MARÍA SOFÍA
+  50 min  salud.gd, niveles 1 a 3 del Taller 10: vida 100, invulnerable
+		  0.5 s, reapariciones 0, descomposición 2 % cada 10 s como
+		  acumulador, curar() y la señal golpeado.
+  25 min  hud.tscn con el Label "Texto", conectado por señal: vida y tiempo.
+  20 min  Avance del Taller 10: el alimento cura por Salud.curar(), el
+		  humano golpea por Salud.recibir_golpe(), y se quita la salud vieja
+		  de personaje.gd (pedírselo a Juan, que es su dueño).
+  10 min  Daño continuo del humano mientras siga en contacto.
+  Commits: T10 N1/N2/N3 - Tarea B · T10 Avance - salud conectada
+
+ORDEN DENTRO DE LA CLASE
+  María sube salud.gd nivel 1 a los 30 minutos: Juan lo necesita para el
+  "arrastre rápido" y la conexión del alimento.
+
+--------------------------------------------------------------------------------
+CLASE 2 - SE PUEDE ESCONDER  (mapa y sigilo)
+--------------------------------------------------------------------------------
+OBJETIVO GENERAL DEL DÍA
+  Darle al jugador un lugar donde esconderse y un enemigo que lo busque con
+  sentidos. Juan construye la zona (pasillos, estancias, coberturas, salida)
+  y María le da al humano vista con cono, oído y estados. Al final del día
+  la pregunta del jugador tiene que ser "¿por dónde voy para que no me
+  vea?", no "¿hacia dónde camino?".
+
+META (se comprueba jugando)
+  - La zona tiene muros, 3 o 4 estancias, pasillos y coberturas; no se puede
+	salir del mapa.
+  - Comer 3 alimentos abre la salida; ganas al llegar a ella.
+  - Detrás de un muro el humano no te ve. Si corres cerca, va a mirar dónde
+	sonó. Si te pierde, vuelve a patrullar.
+  - Hay 2 trampas en pasillos que obligan a elegir ruta.
+
+JUAN DIEGO (mapa y salida)
+  60 min  Blockout gris de la zona: muros perimetrales, estancias, pasillos
+		  y coberturas con StaticBody. Ajustar los límites de la cámara.
+  20 min  Capas de colisión: 1 mundo, 2 jugador, 3 enemigos, 4 recogibles.
+		  Los alimentos pasan a Area3D.
+  25 min  salida.gd: Area3D cerrada que se abre con salida_abierta y llama a
+		  ganar() al entrar. La Partida ya no gana con las metas: abre la
+		  salida.
+  15 min  Señal hizo_ruido(posicion, radio) en el Personaje cuando corre.
+  Commits: Avance - mapa zona · Avance - salida
+
+MARÍA SOFÍA (sentidos del humano y trampas)
+  50 min  humano.gd (evolución de guardia.gd): cono de visión de 6 m y 90°,
+		  y un rayo contra la capa del mundo para que los muros tapen.
+  30 min  Oído: escucha hizo_ruido y, si el radio lo alcanza, pasa a
+		  SOSPECHA y va a ese punto. Estados PATRULLA / SOSPECHA / PERSIGUE /
+		  VUELVE.
+  25 min  trampa.tscn: Area3D fija, 15 de daño y retroceso, grupo "peligros".
+		  Colocar 2 en el mapa.
+  10 min  HUD: aviso de texto "TE VIO" / "SOSPECHA" y "SALIDA ABIERTA".
+  Commits: Avance - vision y oido del humano · Avance - trampas
+
+--------------------------------------------------------------------------------
+CLASE 3 - SE PUEDE CAZAR  (la mecánica estrella)
+--------------------------------------------------------------------------------
+OBJETIVO GENERAL DEL DÍA
+  Invertir los roles: el zombi deja de ser solo presa. Juan da al zombi
+  sus herramientas (mordisco por la espalda, embestida, tipos de comida) y
+  María da a los humanos variedad y una amenaza que empuja a no quedarse
+  quieto. Al final del día cada encuentro con un humano es una decisión:
+  esconderse, rodearlo, embestirlo o devorarlo.
+
+META (se comprueba jugando)
+  - Acercarse por la espalda de un humano y mantener E 1.2 s lo devora:
+	+35 HP. Si te ve antes, se cancela.
+  - Espacio embiste; si golpea a un humano, lo aturde 1.5 s.
+  - Hay carne, carroña y un cerebro por zona, con efectos distintos.
+  - Hay un tirador que dispara proyectiles esquivables.
+  - En los últimos 30 s aparece el cazador y va hacia tu último ruido.
+
+JUAN DIEGO (acciones del zombi)
+  45 min  mordisco.gd (hijo del Personaje): busca humanos a menos de 1.2 m
+		  para los que puede_verme() es falso, mantiene E 1.2 s, llama a
+		  devorado() y a Salud.curar(35). Se cancela si me_vio.
+  35 min  embestida.gd: acción "embestir" (Espacio), impulso con empuje,
+		  enfriamiento de 3 s, 3 HP de coste, y aturdir() al chocar.
+  25 min  Tipos de alimento con @export: curación, tiempo para comer y
+		  pausa de la descomposición (el cerebro usa factor_descomposicion).
+		  Colocar las cajas.
+  15 min  Probar los números del mordisco y la embestida y anotarlos.
+  Commits: Avance - mordisco sigiloso · Avance - embestida ·
+		   Avance - tipos de alimento
+
+MARÍA SOFÍA (variedad de humanos)
+  20 min  En humano.gd: puede_verme(), aturdir(), devorado() y las señales.
+  45 min  tirador.gd: quieto o con patrulla corta; al verte dispara un
+		  proyectil lento (Area3D) cada 2 s, que hace 10 de daño.
+  35 min  cazador.gd: aparece con 30 s restantes, va al último hizo_ruido y
+		  persigue más rápido (2.8 m/s).
+  20 min  Primeros sonidos CC0: golpe, mordisco, alerta, salida abierta.
+  Commits: Avance - tirador · Avance - cazador · Avance - sonidos
+
+--------------------------------------------------------------------------------
+CLASE 4 - SE QUIERE REPETIR  (run, mutaciones y récord)
+--------------------------------------------------------------------------------
+OBJETIVO GENERAL DEL DÍA
+  Pasar de "una zona" a "una run": tres zonas seguidas que se ponen más
+  difíciles, una elección de mutación entre zonas y una puntuación con
+  récord guardado. Es lo que convierte una partida en "una más". Al final
+  del día se juega la run completa de principio a fin y se ajusta el
+  balance con números medidos.
+
+META (se comprueba jugando)
+  - Al salir de la Zona 1 se eligen 1 de 3 mutaciones y empieza la Zona 2;
+	la Zona 3 es más difícil; salir de la Zona 3 es la victoria final.
+  - Alimentos, salida y patrullas cambian de lugar en cada intento.
+  - La puntuación se ve durante la run. Al terminar hay un resumen y, si
+	corresponde, "NUEVO RÉCORD". El récord sigue ahí después de cerrar el
+	juego.
+  - Una run completa dura entre 6 y 8 minutos.
+
+JUAN DIEGO (run y mutaciones)
+  40 min  Configuración por zona (humanos, trampas, tiempo) y cambio de zona
+		  sin perder salud ni mutaciones (static en la Partida). Victoria
+		  final en la Zona 3.
+  25 min  Variación: puntos al azar para alimentos, salida y rutas.
+  40 min  mutaciones.gd y una pantalla simple con 3 botones al azar entre
+		  zonas (sin arte: texto y botones). Aplicar sus efectos.
+  15 min  Balance: tiempos por zona y curaciones según lo medido.
+  Commits: Avance - tres zonas · Avance - variacion · Avance - mutaciones
+
+MARÍA SOFÍA (puntuación y balance)
+  40 min  puntuacion.gd: +100 alimento, +250 humano devorado, +10 por
+		  segundo sobrante, x1.5 sin daño; récord con ConfigFile en user://.
+  30 min  Pantalla de fin de run: zonas pasadas, humanos devorados, puntos,
+		  récord.
+  20 min  Pausa con Escape (Continuar / Reiniciar).
+  30 min  Playtest con alguien de otro equipo sin explicarle nada. Anotar
+		  dónde se perdió o se aburrió y ajustar daños y velocidades.
+  Commits: Avance - puntuacion y record · Avance - fin de run ·
+		   Avance - pausa
+
+--------------------------------------------------------------------------------
+CLASE 5 - SE VE Y SE ENTREGA  (visual del documento y build)
+--------------------------------------------------------------------------------
+OBJETIVO GENERAL DEL DÍA
+  Con el juego ya divertido, María cumple lo visual que exige el documento
+  (sus 3 criterios de terminado y la noche) y Juan cierra lo técnico:
+  sensación de juego, limpieza, build y última ronda de balance. No se
+  agregan mecánicas nuevas: si algo no está, se corta.
+
+META (se comprueba jugando)
+  - Noche fija con luz azul fría y niebla; fuera del cono casi no se ve
+	(criterio 2).
+  - Humanos y trampas tienen borde rojo visible a 5 m (criterio 1).
+  - El zombi destella y se desatura al perder salud (criterio 3).
+  - Hay un build de Windows que se juega entero fuera del editor.
+
+MARÍA SOFÍA (visual, en orden de prioridad)
+  25 min  Noche fija, luna azul, ambiente azul oscuro y niebla. Alimentos
+		  con emisión tenue.
+  35 min  Hit flash y desaturación del zombi con ControlEfectos y
+		  CurvasVisuales (decaer: t = 0.5, k = 2.0 -> 0.6321).
+  35 min  Borde brillante rojo (fresnel u outline en next_pass) en humanos y
+		  trampas.
+  15 min  Onda amarilla al comer.
+  10 min  Capturas de los 3 criterios para el documento.
+  Commits: Avance - noche · Avance - hit flash · Avance - borde ·
+		   Avance - onda
+  Si sobra tiempo: estilo del HUD con la paleta y modelos CC0 con
+  animación.
+
+JUAN DIEGO (cierre técnico)
+  25 min  Sensación de juego: sacudida de cámara de 0.15 s al recibir daño
+		  y pequeña pausa de 0.05 s al devorar.
+  20 min  Limpieza: quitar prints de prueba (cámara, guardia, Fotómetro),
+		  Prueba = Ninguna, quitar nodos de laboratorio de main.tscn.
+  30 min  Exportar el build de Windows y jugarlo entero fuera del editor.
+  30 min  Última ronda de balance con la tabla de números y el documento:
+		  qué se midió y qué se cambió.
+  15 min  Apoyar a María conectando señales que falten para los efectos.
+  Commits: Avance - sensacion de juego · Avance - limpieza · Avance - build
+
+
+================================================================================
+PARTE 5 - DÓNDE SE RESUELVE CADA COSA
+================================================================================
+
+  Mecánica o tarea                                     Prior.  Clase  Quién
+  ---------------------------------------------------  ------  -----  -----
+  E que cura gratis (ERROR)                              A       1    Juan
+  Partida: ganar, perder, pausa, reinicio                A       1    Juan
+  Salud con señales, invulnerabilidad, daño continuo     A       1    María
+  Correr cuesta salud                                    A       1    Juan
+  Mapa con coberturas · capas de colisión                A       2    Juan
+  Zona con extracción (salida)                           A       2    Juan
+  Humano con vista, muros y oído                         A       2    María
+  Trampas                                                A       2    María
+  Mordisco sigiloso                                      A       3    Juan
+  Embestida                                              B       3    Juan
+  Tipos de alimento                                      B       3    Juan
+  Tirador · cazador final                                B       3    María
+  Sonidos                                                B       3    María
+  Run de 3 zonas · variación por intento                 A/B     4    Juan
+  Mutaciones entre zonas                                 A       4    Juan
+  Puntuación y récord guardado · fin de run              A       4    María
+  Pausa con Escape · playtest                            A       4    María
+  Visual del documento (noche, 3 efectos)                A       5    María
+  Sensación de juego · limpieza · build                  B       5    Juan
+  Progresión permanente con huesos                       C       --   si sobra
+
+SI VAMOS ATRASADOS, SE CORTA EN ESTE ORDEN
+  1. Progresión permanente (C).
+  2. Variación por intento: se dejan posiciones fijas.
+  3. Cazador final.
+  4. Tirador: se queda un solo tipo de humano.
+  5. Embestida.
+  Lo [A] no se corta: es lo que hace que el juego exista y que se juegue más
+  de una vez.
+================================================================================

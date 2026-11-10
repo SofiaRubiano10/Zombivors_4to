@@ -7,10 +7,10 @@
 [ext_resource type="Script" path="res://alimento.gd" id="6_alimento"]
 [ext_resource type="Script" path="res://scripts/sistema_sol.gd" id="7_sistemasol"]
 [ext_resource type="Script" path="res://scripts/ciclo_dia.gd" id="8_ciclodia"]
-[ext_resource type="Script" path="res://scripts/fotometro.gd" id="9_fotometro"]
 [ext_resource type="Script" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
 [ext_resource type="Script" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
 [ext_resource type="PackedScene" path="res://humano.tscn" id="13_humano"]
+
 [ext_resource type="PackedScene" path="res://cazador_humano.tscn" id="14_cazador"]
 [ext_resource type="Script" path="res://salud.gd" id="15_salud"]
 [ext_resource type="Script" path="res://partida.gd" id="16_partida"]
@@ -82,10 +82,6 @@ script = ExtResource("8_ciclodia")
 hora = 8.0
 duracion_dia = 48.0
 pausado = false
-
-[node name="Fotometro" type="Node" parent="." node_paths=PackedStringArray("sol")]
-script = ExtResource("9_fotometro")
-sol = NodePath("../SistemaSol")
 
 [node name="LuzEvento" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
@@ -187,9 +183,8 @@ suavizado = 2.5
 limite_min = Vector2(-14, -14)
 limite_max = Vector2(14, 14)
 
-[node name="Guardia" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("3_guardia")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
-objetivo = NodePath("../Personaje")
+[node name="Humano" parent="." instance=ExtResource("13_humano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 7)
 rapidez = 2.0
 radio_ver = 6.0
 radio_perder = 9.0
@@ -204,6 +199,9 @@ rango_ataque = 1.5
 rango_perder = 10.0
 tiempo_busqueda = 2.0
 
+danio = 15
+
+
 [node name="Cazador" parent="." instance=ExtResource("14_cazador")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 3)
 rapidez = 1.8
@@ -215,6 +213,7 @@ vida = 40.0
 vida_huida = 10.0
 danio_prueba = 15.0
 danio = 20
+
 
 [node name="Partida" type="Node" parent="."]
 script = ExtResource("16_partida")

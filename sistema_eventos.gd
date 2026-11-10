@@ -24,15 +24,12 @@ func _process(delta: float) -> void:
 	if luz_evento:
 		luz_evento.light_energy = decaer(luz_evento.light_energy, 0.0, k_destello, delta)
 	
-	# Sincronizar con la salud del zombi o permitir teclas de prueba ARRIBA/ABAJO (Nivel 3)
+	# La vida vive en el nodo Salud del jugador: a menos vida, más peligro.
 	var jugador: Node = get_tree().get_first_node_in_group("jugador")
-	if Input.is_key_pressed(KEY_UP):
-		variable = minf(1.0, variable + delta * 0.5)
-	elif Input.is_key_pressed(KEY_DOWN):
-		variable = maxf(0.0, variable - delta * 0.5)
-	elif jugador and "salud" in jugador and "salud_maxima" in jugador:
-		variable = clampf(1.0 - (jugador.salud / maxf(1.0, jugador.salud_maxima)), 0.0, 1.0)
-		
+	var salud: Node = jugador.get_node_or_null("Salud") if jugador else null
+	if salud != null:
+		variable = clampf(1.0 - float(salud.vida) / maxf(1.0, salud.vida_inicial), 0.0, 1.0)
+
 	# Actualizar la luz variable (Nivel 3)
 	if luz_variable != null:
 		luz_variable.light_color = color_bajo.lerp(color_alto, variable)

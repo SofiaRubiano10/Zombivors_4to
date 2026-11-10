@@ -78,6 +78,7 @@ pausado = false
 script = ExtResource("3_k31ow")
 sol = NodePath("../SistemaSol")
 
+
 [node name="LuzEvento" type="OmniLight3D" parent="." unique_id=568870422]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 light_color = Color(0.698, 0.133, 0.133, 1)
@@ -164,6 +165,7 @@ reapariciones = 0
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
 script = ExtResource("10_36xdq")
 objetivo = NodePath("../Personaje")
+
 
 [node name="Guardia" parent="." unique_id=113443677 node_paths=PackedStringArray("objetivo") instance=ExtResource("11_04saj")]
 process_mode = 4
