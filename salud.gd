@@ -5,13 +5,15 @@ extends Node
 # Taller 10 - Tarea B, Nivel 1: avisa con la señal cambio; no sabe quién escucha.
 # Nivel 2: sin vida, le avisa a la Partida y se acaba la partida.
 # Nivel 3: reaparecer en el punto inicial antes de perder.
+# Clase 1: valores del plan y señal golpeado para quien deba reaccionar al daño.
 
 signal cambio(vida)
 signal sin_vida
+signal golpeado(danio)
 
-@export var vida = 3
-@export var invulnerable = 1.0
-@export var reapariciones = 1
+@export var vida = 100
+@export var invulnerable = 0.5
+@export var reapariciones = 0
 @export var espera_reaparecer = 2.0
 var reloj = 0.0
 var vida_inicial = 0
@@ -31,6 +33,7 @@ func recibir_golpe(danio):
 		return
 	vida = maxi(vida - danio, 0)
 	reloj = invulnerable
+	golpeado.emit(danio)
 	cambio.emit(vida)
 	if vida == 0:
 		sin_vida.emit()
