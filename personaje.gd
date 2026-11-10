@@ -73,7 +73,7 @@ func _physics_process(delta: float) -> void:
 	_prueba()
 
 func elegir_estado() -> Estado:
-	if accion == "pick-up" or Input.is_action_pressed("consumir"):
+	if accion == "pick-up":
 		return Estado.COMIENDO
 	if not is_on_floor():
 		return Estado.QUIETO
