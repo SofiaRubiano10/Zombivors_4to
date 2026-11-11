@@ -30,6 +30,8 @@ var ruido: float = 0.0
 # Lo que se debe por correr y aún no llega a 1 punto de vida.
 var gasto: float = 0.0
 var reloj_ruido: float = 0.0
+# Segundos que le quedan inmóvil (lo usan las trampas con congelar()).
+var congelado: float = 0.0
 
 # La salud y la descomposición viven en el nodo hijo Salud (salud.gd).
 @onready var salud = get_node_or_null("Salud")
@@ -38,7 +40,12 @@ var reloj_ruido: float = 0.0
 
 func _physics_process(delta: float) -> void:
 	velocity += get_gravity() * delta
-	
+
+	# Congelado: no lee la entrada ni hace ruido; solo cae y espera.
+	if congelado > 0.0:
+		quieto_congelado(delta)
+		return
+
 	# Obtención de entrada direccional
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var entrada: Vector3 = Vector3(input_dir.x, 0.0, input_dir.y)
@@ -74,6 +81,24 @@ func _physics_process(delta: float) -> void:
 	avisar_ruido(delta)
 	animar()
 	_prueba()
+
+# Deja al zombi inmóvil unos segundos. Si ya estaba congelado, no se suma: gana el mayor.
+func congelar(segundos: float) -> void:
+	congelado = maxf(congelado, segundos)
+	avance = Vector3.ZERO
+	empuje = Vector3.ZERO
+	print("congelado ", segundos, " s")
+
+func quieto_congelado(delta: float) -> void:
+	congelado = maxf(congelado - delta, 0.0)
+	velocity.x = 0.0
+	velocity.z = 0.0
+	move_and_slide()
+	estado = Estado.QUIETO
+	ruido = 0.0
+	animar()
+	if congelado <= 0.0:
+		print("descongelado: puede seguir")
 
 # Se acumula y se cobra de a 1 punto: parar y volver a correr no lo hace gratis.
 func pagar_carrera(delta: float) -> void:

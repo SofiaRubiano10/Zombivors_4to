@@ -6,8 +6,10 @@ extends CharacterBody3D
 # Nivel 3: ataca de cerca, lo pierde con histéresis y lo busca donde lo vio.
 # Avance T10: el ataque quita vida por la Salud (la invulnerabilidad limita la frecuencia).
 # Clase 2: ve en un cono de 6 m y 90 grados hacia delante; los muros tapan la vista.
+# Clase 2: si lo pierde (muro o distancia) no lo olvida: va a donde lo vio por
+# última vez, mira alrededor y vuelve a su ruta.
 
-enum Estado { PATRULLAR, ESPERAR, PERSEGUIR, ATACAR, BUSCAR }
+enum Estado { PATRULLAR, ESPERAR, PERSEGUIR, ATACAR, BUSCAR, MIRAR, VOLVER }
 
 @export var rapidez = 2.0
 @export var espera = 1.0
@@ -16,7 +18,12 @@ enum Estado { PATRULLAR, ESPERAR, PERSEGUIR, ATACAR, BUSCAR }
 @export var angulo_vision = 90.0
 @export var rango_ataque = 1.2
 @export var rango_perder = 10.0
+# Lo que se queda mirando alrededor en el último lugar donde lo vio.
 @export var tiempo_busqueda = 3.0
+# Si no logra llegar al último lugar (un muro en medio), se rinde a este tiempo.
+@export var tiempo_max_buscar = 8.0
+# Grados por segundo que gira mientras mira alrededor.
+@export var giro_mirar = 90.0
 @export var danio = 15
 # Desplazamientos desde donde se colocó el NPC, no posiciones absolutas.
 @export var ruta: Array[Vector3] = [Vector3.ZERO, Vector3(0, 0, -6)]
@@ -27,7 +34,6 @@ var indice = 0
 var reloj = 0.0
 var jugador = null
 var ultimo_visto = Vector3.ZERO
-var busca = 0.0
 # El proyecto no tiene el modelo .glb del taller: si no hay AnimationPlayer, no se anima.
 @onready var anim = get_node_or_null("Modelo/AnimationPlayer")
 @onready var vision = $Vision
@@ -40,18 +46,18 @@ func _ready():
 func _physics_process(delta):
 	velocity += get_gravity() * delta
 	reloj = maxf(reloj - delta, 0.0)
-	busca = maxf(busca - delta, 0.0)
-	# 1. MEDIR
+	# 1. MEDIR: solo cuenta como visto si está en rango y sin muro en medio.
 	var d = distancia_a(jugador.global_position)
-	var ve = lo_ve()
+	var alerta = estado == Estado.PERSEGUIR or estado == Estado.ATACAR
+	# Ya alerta, necesita más distancia para soltarlo: histéresis.
+	var limite = rango_perder if alerta else rango_vision
+	var ve = d <= limite and lo_ve()
 	if ve:
 		ultimo_visto = jugador.global_position
 	# 2. DECIDIR
-	var nuevo = decidir(d, ve)
+	var nuevo = decidir(d, ve, alerta)
 	if nuevo != estado:
-		estado = nuevo
-		print(name, " -> ", Estado.keys()[estado], " cuadro ",
-			Engine.get_physics_frames(), " a ", snappedf(d, 0.01), " m")
+		cambiar_a(nuevo, d)
 	# 3. ACTUAR
 	match estado:
 		Estado.PATRULLAR:
@@ -65,29 +71,50 @@ func _physics_process(delta):
 			reproducir("attack-melee-right")
 			golpear()
 		Estado.BUSCAR:
-			if distancia_a(ultimo_visto) > 0.1:
-				ir_a(ultimo_visto)
-			else:
-				frenar()
+			ir_a(ultimo_visto)
+		Estado.MIRAR:
+			frenar()
+			rotate_y(deg_to_rad(giro_mirar) * delta)
+		Estado.VOLVER:
+			ir_a(puntos[indice])
 	move_and_slide()
 
 # El orden ES la regla: el primer if que se cumple gana.
-func decidir(d, ve):
-	var alerta = estado == Estado.PERSEGUIR or estado == Estado.ATACAR
-	# Ya alerta, necesita más distancia para soltarlo: histéresis.
-	var limite = rango_perder if alerta else rango_vision
+func decidir(d, ve, alerta):
 	if ve and d <= rango_ataque:
 		return Estado.ATACAR
-	if ve and d <= limite:
+	if ve:
 		return Estado.PERSEGUIR
+	# Lo acaba de perder: va a donde lo vio por última vez.
 	if alerta:
-		busca = tiempo_busqueda
 		return Estado.BUSCAR
-	if busca > 0.001:
-		return Estado.BUSCAR
-	if reloj > 0.001:
-		return Estado.ESPERAR
-	return Estado.PATRULLAR
+	match estado:
+		Estado.BUSCAR:
+			if distancia_a(ultimo_visto) <= 0.3 or reloj <= 0.001:
+				return Estado.MIRAR
+		Estado.MIRAR:
+			if reloj <= 0.001:
+				return Estado.VOLVER
+		Estado.VOLVER:
+			if distancia_a(puntos[indice]) <= 0.3:
+				return Estado.PATRULLAR
+		Estado.PATRULLAR:
+			if reloj > 0.001:
+				return Estado.ESPERAR
+		Estado.ESPERAR:
+			if reloj <= 0.001:
+				return Estado.PATRULLAR
+	return estado
+
+# Los relojes se ponen al ENTRAR al estado, no mientras dura.
+func cambiar_a(nuevo, d):
+	estado = nuevo
+	if estado == Estado.BUSCAR:
+		reloj = tiempo_max_buscar
+	elif estado == Estado.MIRAR:
+		reloj = tiempo_busqueda
+	print(name, " -> ", Estado.keys()[estado], " cuadro ",
+		Engine.get_physics_frames(), " a ", snappedf(d, 0.01), " m")
 
 # Mientras siga pegado, golpea: la invulnerabilidad de la Salud decide cada cuánto cuenta.
 func golpear():
@@ -121,6 +148,10 @@ func patrullar():
 func ir_a(destino):
 	var hacia = destino - global_position
 	hacia.y = 0.0
+	# Ya está encima: Basis.looking_at no acepta un vector cero.
+	if hacia.length() < 0.05:
+		frenar()
+		return
 	var dir = hacia.normalized()
 	velocity.x = dir.x * rapidez
 	velocity.z = dir.z * rapidez

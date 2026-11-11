@@ -5,7 +5,7 @@ extends Node
 const NARANJA := Color(0.1686, 0.1765, 0.1922)
 
 @export var hora: float = 8.0 # 8 h según recuadro (elevación 30°)
-@export var duracion_dia: float = 48.0 # Segundos reales que dura un ciclo completo de 24 h
+@export var duracion_dia: float = 240.0 # Segundos reales que dura un ciclo completo de 24 h
 @export var pausado: bool = true # Comportamiento fijo en Zona 1 (noche congelada)
 
 func avanzar(dt: float) -> void:

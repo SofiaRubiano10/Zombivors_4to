@@ -1,11 +1,11 @@
 extends Area3D
 
 # Clase 2 - Tarea B (María Sofía): trampa fija en un pasillo.
-# Al pisarla quita vida por la Salud (la invulnerabilidad evita golpes seguidos)
-# y empuja al zombi hacia fuera con el enchufe empuje del Personaje.
+# Al pisarla quita vida por la Salud y deja al zombi congelado unos segundos;
+# después puede seguir caminando (sale de la trampa sin que lo vuelva a atrapar).
 
 @export var danio = 15
-@export var fuerza_empuje = 6.0
+@export var tiempo_congelado = 3.0
 
 func _ready():
 	add_to_group("peligros")
@@ -17,10 +17,6 @@ func _al_entrar(cuerpo):
 	var salud = cuerpo.get_node_or_null("Salud")
 	if salud != null:
 		salud.recibir_golpe(danio)
-	if "empuje" in cuerpo:
-		var fuera = cuerpo.global_position - global_position
-		fuera.y = 0.0
-		if fuera.length() < 0.01:
-			fuera = Vector3.BACK
-		cuerpo.empuje = fuera.normalized() * fuerza_empuje
+	if cuerpo.has_method("congelar"):
+		cuerpo.congelar(tiempo_congelado)
 	print(name, ": trampa pisada")
