@@ -23,6 +23,8 @@ material = SubResource("StandardMaterial3D_frente")
 size = Vector3(0.2, 0.15, 0.3)
 
 [node name="Humano" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
 script = ExtResource("1_humano")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

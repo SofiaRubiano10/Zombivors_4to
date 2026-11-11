@@ -1,6 +1,7 @@
-extends StaticBody3D
+extends Area3D
 
 # Alimento: al comerlo (mantener E junto a él) cura por la Salud y le avisa a la Partida.
+# Es un Area3D en la capa 4 (recogibles): no estorba al caminar.
 
 @export var curacion: int = 20
 
