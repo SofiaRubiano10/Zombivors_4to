@@ -1,6 +1,9 @@
 class_name Personaje
 extends CharacterBody3D
 
+# Contrato: avisa dónde y hasta dónde se oyó al zombi (radio en metros).
+signal hizo_ruido(posicion: Vector3, radio: float)
+
 enum Estado { QUIETO, CAMINAR, CORRER, COMIENDO }
 const RUIDO = [0.0, 1.0, 3.0, 0.0] # metros de propagación sonora por estado
 
@@ -9,6 +12,8 @@ const RUIDO = [0.0, 1.0, 3.0, 0.0] # metros de propagación sonora por estado
 @export var speed_correr: float = 3.5
 # Arrastre rápido: correr cuesta vida (por segundo) y se le cobra a la Salud.
 @export var costo_correr: float = 1.0
+# Cada cuánto se repite el aviso de ruido mientras se corre.
+@export var intervalo_ruido: float = 0.25
 @export var tiempo_arranque: float = 0.5
 @export_enum("Ninguna", "Avanzar 60 cuadros", "Avanzar 60 y soltar", "Avanzar y la acción desde el cuadro 30", "Mantener la acción 2 s", "Avanzar con la acción 60 cuadros", "Diagonal W+D 60 cuadros") var Prueba: String = "Ninguna"
 @export var AccionPrueba: String = ""
@@ -24,6 +29,7 @@ var estado: Estado = Estado.QUIETO
 var ruido: float = 0.0
 # Lo que se debe por correr y aún no llega a 1 punto de vida.
 var gasto: float = 0.0
+var reloj_ruido: float = 0.0
 
 # La salud y la descomposición viven en el nodo hijo Salud (salud.gd).
 @onready var salud = get_node_or_null("Salud")
@@ -65,6 +71,7 @@ func _physics_process(delta: float) -> void:
 		print("estado ", Estado.keys()[estado], " · ruido ", ruido, " m")
 	
 	pagar_carrera(delta)
+	avisar_ruido(delta)
 	animar()
 	_prueba()
 
@@ -77,6 +84,16 @@ func pagar_carrera(delta: float) -> void:
 		var entero: int = int(gasto)
 		gasto -= entero
 		salud.quitar_vida(entero)
+
+# Al empezar a correr avisa enseguida, y luego cada intervalo_ruido.
+func avisar_ruido(delta: float) -> void:
+	if estado != Estado.CORRER:
+		reloj_ruido = 0.0
+		return
+	reloj_ruido -= delta
+	if reloj_ruido <= 0.0:
+		reloj_ruido = intervalo_ruido
+		hizo_ruido.emit(global_position, ruido)
 
 func elegir_estado() -> Estado:
 	if accion == "pick-up":
