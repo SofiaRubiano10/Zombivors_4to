@@ -7,9 +7,11 @@ extends Node
 # Nivel 3: reinicia sola y recuerda intentos y mejor tiempo (static).
 
 # Clase 1: valores del plan y señales del contrato (terminada, meta).
+# Clase 2: cumplir las metas abre la salida; se gana al entrar en ella.
 
 signal terminada(estado, motivo)
 signal meta(hechas, total)
+signal salida_abierta
 enum Estado { JUGANDO, GANO, PERDIO }
 
 @export var tiempo_limite = 120.0
@@ -55,7 +57,15 @@ func avisar_meta():
 	print("meta ", hechas, " de ", metas)
 	meta.emit(hechas, metas)
 	if metas > 0 and hechas >= metas:
+		abrir_salida()
+
+# Sin salida en la escena (las de prueba) se gana directo, como antes.
+func abrir_salida():
+	if get_tree().get_first_node_in_group("salida") == null:
 		ganar()
+		return
+	print("salida abierta")
+	salida_abierta.emit()
 
 func ganar():
 	terminar(Estado.GANO, "ganó")

@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://salud.gd" id="15_salud"]
 [ext_resource type="Script" path="res://partida.gd" id="16_partida"]
 [ext_resource type="PackedScene" path="res://hud.tscn" id="17_hud"]
+[ext_resource type="PackedScene" path="res://salida.tscn" id="18_salida"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -55,6 +56,178 @@ roughness = 0.7
 material = SubResource("StandardMaterial3D_zombi")
 radius = 0.35
 height = 1.75
+
+[sub_resource type="StandardMaterial3D" id="Material_muro"]
+albedo_color = Color(0.42, 0.43, 0.45, 1)
+roughness = 0.9
+
+[sub_resource type="BoxShape3D" id="Forma_Norte"]
+size = Vector3(30.5, 1.8, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_Norte"]
+material = SubResource("Material_muro")
+size = Vector3(30.5, 1.8, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_Sur"]
+size = Vector3(30.5, 1.8, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_Sur"]
+material = SubResource("Material_muro")
+size = Vector3(30.5, 1.8, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_Oeste"]
+size = Vector3(0.5, 1.8, 30.5)
+
+[sub_resource type="BoxMesh" id="Malla_Oeste"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 1.8, 30.5)
+
+[sub_resource type="BoxShape3D" id="Forma_Este"]
+size = Vector3(0.5, 1.8, 30.5)
+
+[sub_resource type="BoxMesh" id="Malla_Este"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 1.8, 30.5)
+
+[sub_resource type="BoxShape3D" id="Forma_NorteA"]
+size = Vector3(1, 1.8, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_NorteA"]
+material = SubResource("Material_muro")
+size = Vector3(1, 1.8, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_NorteB"]
+size = Vector3(10, 1.8, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_NorteB"]
+material = SubResource("Material_muro")
+size = Vector3(10, 1.8, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_NorteC"]
+size = Vector3(7, 1.8, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_NorteC"]
+material = SubResource("Material_muro")
+size = Vector3(7, 1.8, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_NorteD"]
+size = Vector3(3, 1.8, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_NorteD"]
+material = SubResource("Material_muro")
+size = Vector3(3, 1.8, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_DivisorNorte"]
+size = Vector3(0.5, 1.8, 5)
+
+[sub_resource type="BoxMesh" id="Malla_DivisorNorte"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 1.8, 5)
+
+[sub_resource type="BoxShape3D" id="Forma_SurA"]
+size = Vector3(11, 1.8, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_SurA"]
+material = SubResource("Material_muro")
+size = Vector3(11, 1.8, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_SurB"]
+size = Vector3(3, 1.8, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_SurB"]
+material = SubResource("Material_muro")
+size = Vector3(3, 1.8, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_SurC"]
+size = Vector3(9, 1.8, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_SurC"]
+material = SubResource("Material_muro")
+size = Vector3(9, 1.8, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_OesteA"]
+size = Vector3(0.5, 1.8, 7)
+
+[sub_resource type="BoxMesh" id="Malla_OesteA"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 1.8, 7)
+
+[sub_resource type="BoxShape3D" id="Forma_OesteB"]
+size = Vector3(0.5, 1.8, 7)
+
+[sub_resource type="BoxMesh" id="Malla_OesteB"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 1.8, 7)
+
+[sub_resource type="BoxShape3D" id="Forma_EsteA"]
+size = Vector3(0.5, 1.8, 5)
+
+[sub_resource type="BoxMesh" id="Malla_EsteA"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 1.8, 5)
+
+[sub_resource type="BoxShape3D" id="Forma_EsteB"]
+size = Vector3(0.5, 1.8, 9)
+
+[sub_resource type="BoxMesh" id="Malla_EsteB"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 1.8, 9)
+
+[sub_resource type="BoxShape3D" id="Forma_Cobertura1"]
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="BoxMesh" id="Malla_Cobertura1"]
+material = SubResource("Material_muro")
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="BoxShape3D" id="Forma_Cobertura2"]
+size = Vector3(2.5, 1, 0.8)
+
+[sub_resource type="BoxMesh" id="Malla_Cobertura2"]
+material = SubResource("Material_muro")
+size = Vector3(2.5, 1, 0.8)
+
+[sub_resource type="BoxShape3D" id="Forma_Cobertura3"]
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="BoxMesh" id="Malla_Cobertura3"]
+material = SubResource("Material_muro")
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="BoxShape3D" id="Forma_Cobertura4"]
+size = Vector3(2.5, 1, 0.8)
+
+[sub_resource type="BoxMesh" id="Malla_Cobertura4"]
+material = SubResource("Material_muro")
+size = Vector3(2.5, 1, 0.8)
+
+[sub_resource type="BoxShape3D" id="Forma_Cobertura5"]
+size = Vector3(0.8, 1, 2.5)
+
+[sub_resource type="BoxMesh" id="Malla_Cobertura5"]
+material = SubResource("Material_muro")
+size = Vector3(0.8, 1, 2.5)
+
+[sub_resource type="BoxShape3D" id="Forma_Cobertura6"]
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="BoxMesh" id="Malla_Cobertura6"]
+material = SubResource("Material_muro")
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="BoxShape3D" id="Forma_Cobertura7"]
+size = Vector3(2.5, 1, 0.8)
+
+[sub_resource type="BoxMesh" id="Malla_Cobertura7"]
+material = SubResource("Material_muro")
+size = Vector3(2.5, 1, 0.8)
+
+[sub_resource type="BoxShape3D" id="Forma_Cobertura8"]
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="BoxMesh" id="Malla_Cobertura8"]
+material = SubResource("Material_muro")
+size = Vector3(1.5, 1, 1.5)
 
 [node name="Main" type="Node3D"]
 
@@ -104,12 +277,234 @@ shape = SubResource("BoxShape3D_suelo")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo"]
 mesh = SubResource("BoxMesh_suelo")
 
+[node name="Mapa" type="Node3D" parent="."]
+
+[node name="Muros" type="Node3D" parent="Mapa"]
+
+[node name="Coberturas" type="Node3D" parent="Mapa"]
+
+[node name="Norte" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -15)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Norte"]
+shape = SubResource("Forma_Norte")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/Norte"]
+mesh = SubResource("Malla_Norte")
+
+[node name="Sur" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 15)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Sur"]
+shape = SubResource("Forma_Sur")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/Sur"]
+mesh = SubResource("Malla_Sur")
+
+[node name="Oeste" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0.9, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Oeste"]
+shape = SubResource("Forma_Oeste")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/Oeste"]
+mesh = SubResource("Malla_Oeste")
+
+[node name="Este" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.9, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Este"]
+shape = SubResource("Forma_Este")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/Este"]
+mesh = SubResource("Malla_Este")
+
+[node name="NorteA" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0.9, -7)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/NorteA"]
+shape = SubResource("Forma_NorteA")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/NorteA"]
+mesh = SubResource("Malla_NorteA")
+
+[node name="NorteB" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.9, -7)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/NorteB"]
+shape = SubResource("Forma_NorteB")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/NorteB"]
+mesh = SubResource("Malla_NorteB")
+
+[node name="NorteC" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0.9, -7)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/NorteC"]
+shape = SubResource("Forma_NorteC")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/NorteC"]
+mesh = SubResource("Malla_NorteC")
+
+[node name="NorteD" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 0.9, -7)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/NorteD"]
+shape = SubResource("Forma_NorteD")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/NorteD"]
+mesh = SubResource("Malla_NorteD")
+
+[node name="DivisorNorte" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -12.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorNorte"]
+shape = SubResource("Forma_DivisorNorte")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/DivisorNorte"]
+mesh = SubResource("Malla_DivisorNorte")
+
+[node name="SurA" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0.9, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/SurA"]
+shape = SubResource("Forma_SurA")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/SurA"]
+mesh = SubResource("Malla_SurA")
+
+[node name="SurB" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.9, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/SurB"]
+shape = SubResource("Forma_SurB")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/SurB"]
+mesh = SubResource("Malla_SurB")
+
+[node name="SurC" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.9, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/SurC"]
+shape = SubResource("Forma_SurC")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/SurC"]
+mesh = SubResource("Malla_SurC")
+
+[node name="OesteA" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.9, -3.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/OesteA"]
+shape = SubResource("Forma_OesteA")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/OesteA"]
+mesh = SubResource("Malla_OesteA")
+
+[node name="OesteB" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.9, 6.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/OesteB"]
+shape = SubResource("Forma_OesteB")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/OesteB"]
+mesh = SubResource("Malla_OesteB")
+
+[node name="EsteA" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.9, -4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/EsteA"]
+shape = SubResource("Forma_EsteA")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/EsteA"]
+mesh = SubResource("Malla_EsteA")
+
+[node name="EsteB" type="StaticBody3D" parent="Mapa/Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.9, 5.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/EsteB"]
+shape = SubResource("Forma_EsteB")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/EsteB"]
+mesh = SubResource("Malla_EsteB")
+
+[node name="Cobertura1" type="StaticBody3D" parent="Mapa/Coberturas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, 5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Coberturas/Cobertura1"]
+shape = SubResource("Forma_Cobertura1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Coberturas/Cobertura1"]
+mesh = SubResource("Malla_Cobertura1")
+
+[node name="Cobertura2" type="StaticBody3D" parent="Mapa/Coberturas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Coberturas/Cobertura2"]
+shape = SubResource("Forma_Cobertura2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Coberturas/Cobertura2"]
+mesh = SubResource("Malla_Cobertura2")
+
+[node name="Cobertura3" type="StaticBody3D" parent="Mapa/Coberturas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.5, -11)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Coberturas/Cobertura3"]
+shape = SubResource("Forma_Cobertura3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Coberturas/Cobertura3"]
+mesh = SubResource("Malla_Cobertura3")
+
+[node name="Cobertura4" type="StaticBody3D" parent="Mapa/Coberturas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.5, -12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Coberturas/Cobertura4"]
+shape = SubResource("Forma_Cobertura4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Coberturas/Cobertura4"]
+mesh = SubResource("Malla_Cobertura4")
+
+[node name="Cobertura5" type="StaticBody3D" parent="Mapa/Coberturas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.5, 3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Coberturas/Cobertura5"]
+shape = SubResource("Forma_Cobertura5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Coberturas/Cobertura5"]
+mesh = SubResource("Malla_Cobertura5")
+
+[node name="Cobertura6" type="StaticBody3D" parent="Mapa/Coberturas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0.5, 5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Coberturas/Cobertura6"]
+shape = SubResource("Forma_Cobertura6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Coberturas/Cobertura6"]
+mesh = SubResource("Malla_Cobertura6")
+
+[node name="Cobertura7" type="StaticBody3D" parent="Mapa/Coberturas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.5, 12.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Coberturas/Cobertura7"]
+shape = SubResource("Forma_Cobertura7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Coberturas/Cobertura7"]
+mesh = SubResource("Malla_Cobertura7")
+
+[node name="Cobertura8" type="StaticBody3D" parent="Mapa/Coberturas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.5, 12.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Coberturas/Cobertura8"]
+shape = SubResource("Forma_Cobertura8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Coberturas/Cobertura8"]
+mesh = SubResource("Malla_Cobertura8")
+
 [node name="Cajas" type="Node3D" parent="."]
 
 [node name="Caja1" type="Area3D" parent="Cajas" groups=["interactivos"]]
 collision_layer = 8
 collision_mask = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.5, -11)
 script = ExtResource("6_alimento")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja1"]
@@ -121,7 +516,7 @@ mesh = SubResource("BoxMesh_caja")
 [node name="Caja2" type="Area3D" parent="Cajas" groups=["interactivos"]]
 collision_layer = 8
 collision_mask = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.5, -2)
 script = ExtResource("6_alimento")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja2"]
@@ -186,8 +581,8 @@ script = ExtResource("4_camara")
 objetivo = NodePath("../Personaje")
 distancia = Vector3(6, 8, 6)
 suavizado = 2.5
-limite_min = Vector2(-14, -14)
-limite_max = Vector2(14, 14)
+limite_min = Vector2(-12, -12)
+limite_max = Vector2(12, 12)
 
 [node name="Humano" parent="." instance=ExtResource("13_humano")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 7)
@@ -211,6 +606,9 @@ vida = 40.0
 vida_huida = 10.0
 danio_prueba = 15.0
 danio = 20
+
+[node name="Salida" parent="." instance=ExtResource("18_salida")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 12.5)
 
 [node name="Partida" type="Node" parent="."]
 script = ExtResource("16_partida")

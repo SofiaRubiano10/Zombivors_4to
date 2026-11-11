@@ -1,18 +1,18 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://ye5psvmgg5dw"]
 
-[ext_resource type="Script" path="res://personaje.gd" id="1_personaje"]
-[ext_resource type="Script" path="res://camara_sigue.gd" id="4_camara"]
-[ext_resource type="Script" path="res://interactuar.gd" id="5_interactuar"]
-[ext_resource type="Script" path="res://alimento.gd" id="6_alimento"]
+[ext_resource type="Script" uid="uid://ccm6ajcm7q55" path="res://personaje.gd" id="1_personaje"]
+[ext_resource type="Script" uid="uid://cqe74xl2ef4c1" path="res://camara_sigue.gd" id="4_camara"]
+[ext_resource type="Script" uid="uid://b0dgo74cfp3ap" path="res://interactuar.gd" id="5_interactuar"]
+[ext_resource type="Script" uid="uid://bpl0vxfb5b82j" path="res://alimento.gd" id="6_alimento"]
 [ext_resource type="Script" path="res://scripts/sistema_sol.gd" id="7_sistemasol"]
-[ext_resource type="Script" path="res://scripts/ciclo_dia.gd" id="8_ciclodia"]
-[ext_resource type="Script" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
-[ext_resource type="Script" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
+[ext_resource type="Script" uid="uid://5mc5yqiklkgf" path="res://scripts/ciclo_dia.gd" id="8_ciclodia"]
+[ext_resource type="Script" uid="uid://nwsm1v1c4hu1" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
+[ext_resource type="Script" uid="uid://q1ei4flyuc5r" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
 [ext_resource type="PackedScene" path="res://humano.tscn" id="13_humano"]
 [ext_resource type="PackedScene" path="res://cazador_humano.tscn" id="14_cazador"]
-[ext_resource type="Script" path="res://salud.gd" id="15_salud"]
+[ext_resource type="Script" uid="uid://b31sc8fwss4up" path="res://salud.gd" id="15_salud"]
+[ext_resource type="Script" uid="uid://byawbqat6uuj5" path="res://partida.gd" id="16_partida"]
 [ext_resource type="PackedScene" path="res://hud.tscn" id="17_hud"]
-[ext_resource type="Script" path="res://partida.gd" id="16_partida"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -33,7 +33,6 @@ material = SubResource("StandardMaterial3D_suelo")
 size = Vector3(30, 0.2, 30)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_caja"]
-size = Vector3(1, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carne"]
 albedo_color = Color(0.831, 0.639, 0.451, 1)
@@ -41,7 +40,6 @@ roughness = 0.4
 
 [sub_resource type="BoxMesh" id="BoxMesh_caja"]
 material = SubResource("StandardMaterial3D_carne")
-size = Vector3(1, 1, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_zombi"]
 radius = 0.35
@@ -56,154 +54,124 @@ material = SubResource("StandardMaterial3D_zombi")
 radius = 0.35
 height = 1.75
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=1189036442]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=591270593]
 environment = SubResource("Environment_1")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=758704655]
 transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 10, 0)
 light_energy = 0.35
 shadow_enabled = true
 
-[node name="SistemaSol" type="Node" parent="." node_paths=PackedStringArray("sol", "entorno")]
+[node name="SistemaSol" type="Node" parent="." unique_id=473813052 node_paths=PackedStringArray("sol", "entorno")]
 script = ExtResource("7_sistemasol")
 sol = NodePath("../DirectionalLight3D")
 entorno = NodePath("../WorldEnvironment")
-energia_sol = 0.35
-azimut = -30.0
-ambiente_dia = 0.3
-ambiente_noche = 0.05
 
-[node name="CicloDia" type="Node" parent="SistemaSol"]
+[node name="CicloDia" type="Node" parent="SistemaSol" unique_id=1899597293]
 script = ExtResource("8_ciclodia")
-hora = 8.0
-duracion_dia = 48.0
 pausado = false
 
-[node name="LuzEvento" type="OmniLight3D" parent="."]
+[node name="LuzEvento" type="OmniLight3D" parent="." unique_id=1382249401]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 light_color = Color(0.698, 0.133, 0.133, 1)
 light_energy = 0.0
-omni_range = 5.0
 omni_attenuation = 1.5
 
-[node name="SistemaEventos" type="Node" parent="." node_paths=PackedStringArray("luz_evento", "luz_variable")]
+[node name="SistemaEventos" type="Node" parent="." unique_id=1160636899 node_paths=PackedStringArray("luz_evento", "luz_variable")]
 script = ExtResource("11_sistemaeventos")
 luz_evento = NodePath("../LuzEvento")
-pico_destello = 4.0
-k_destello = 10.0
 luz_variable = NodePath("../Personaje/LuzJugador")
 
-[node name="Suelo" type="StaticBody3D" parent="."]
+[node name="Suelo" type="StaticBody3D" parent="." unique_id=976608130]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo" unique_id=1071038826]
 shape = SubResource("BoxShape3D_suelo")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo" unique_id=583749892]
 mesh = SubResource("BoxMesh_suelo")
 
-[node name="Cajas" type="Node3D" parent="."]
+[node name="Cajas" type="Node3D" parent="." unique_id=1258204160]
 
-[node name="Caja1" type="StaticBody3D" parent="Cajas" groups=["interactivos"]]
+[node name="Caja1" type="StaticBody3D" parent="Cajas" unique_id=1284708421 groups=["interactivos"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -4)
 script = ExtResource("6_alimento")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja1"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja1" unique_id=2012715460]
 shape = SubResource("BoxShape3D_caja")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja1"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja1" unique_id=55134946]
 mesh = SubResource("BoxMesh_caja")
 
-[node name="Caja2" type="StaticBody3D" parent="Cajas" groups=["interactivos"]]
+[node name="Caja2" type="StaticBody3D" parent="Cajas" unique_id=1480952943 groups=["interactivos"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -2)
 script = ExtResource("6_alimento")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja2" unique_id=349592803]
 shape = SubResource("BoxShape3D_caja")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja2" unique_id=326784489]
 mesh = SubResource("BoxMesh_caja")
 
-[node name="Caja3" type="StaticBody3D" parent="Cajas" groups=["interactivos"]]
+[node name="Caja3" type="StaticBody3D" parent="Cajas" unique_id=1366752949 groups=["interactivos"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, 3)
 script = ExtResource("6_alimento")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja3" unique_id=121967504]
 shape = SubResource("BoxShape3D_caja")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja3"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja3" unique_id=1717923951]
 mesh = SubResource("BoxMesh_caja")
 
-[node name="Personaje" type="CharacterBody3D" parent="." groups=["jugador"] node_paths=PackedStringArray("camara")]
+[node name="Personaje" type="CharacterBody3D" parent="." unique_id=1625172253 node_paths=PackedStringArray("camara") groups=["jugador"]]
 script = ExtResource("1_personaje")
 camara = NodePath("../Camera3D")
-speed_caminar = 2.5
 speed_correr = 4.2
-tiempo_arranque = 0.5
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Personaje"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Personaje" unique_id=1684003351]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
 shape = SubResource("CapsuleShape3D_zombi")
 
-[node name="Modelo" type="Node3D" parent="Personaje"]
+[node name="Modelo" type="Node3D" parent="Personaje" unique_id=954339264]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Personaje/Modelo"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Personaje/Modelo" unique_id=319312673]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
 mesh = SubResource("CapsuleMesh_zombi")
 
-[node name="LuzJugador" type="SpotLight3D" parent="Personaje"]
+[node name="LuzJugador" type="SpotLight3D" parent="Personaje" unique_id=579347197]
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.2, 0)
 shadow_enabled = true
 script = ExtResource("10_luzjugador")
-rango = 5.0
-altura = 1.2
 
-[node name="Interactuar" type="Node" parent="Personaje"]
+[node name="Interactuar" type="Node" parent="Personaje" unique_id=1964025357]
 script = ExtResource("5_interactuar")
-alcance = 1.5
-tiempo_necesario = 1.5
 
-[node name="Salud" type="Node" parent="Personaje"]
+[node name="Salud" type="Node" parent="Personaje" unique_id=778015394]
 script = ExtResource("15_salud")
 vida = 3
 invulnerable = 1.0
 reapariciones = 1
-espera_reaparecer = 2.0
 
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=969281439 node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
 script = ExtResource("4_camara")
 objetivo = NodePath("../Personaje")
-distancia = Vector3(6, 8, 6)
-suavizado = 2.5
-limite_min = Vector2(-14, -14)
-limite_max = Vector2(14, 14)
 
-[node name="Humano" parent="." instance=ExtResource("13_humano")]
+[node name="Humano" parent="." unique_id=1915040537 instance=ExtResource("13_humano")]
 process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 7)
-rapidez = 2.0
-espera = 1.0
-ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(8, 0, 0)])
-rango_vision = 7.0
 rango_ataque = 1.5
-rango_perder = 10.0
 tiempo_busqueda = 2.0
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(8, 0, 0)])
 
-[node name="Cazador" parent="." instance=ExtResource("14_cazador")]
+[node name="Cazador" parent="." unique_id=1693896004 instance=ExtResource("14_cazador")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
-rapidez = 2.0
-rango_ataque = 1.5
-tiempo_aviso = 0.5
-tiempo_recarga = 1.0
-alcance_golpe = 1.8
-danio = 1
 
-[node name="HUD" parent="." instance=ExtResource("17_hud")]
+[node name="HUD" parent="." unique_id=1893538736 instance=ExtResource("17_hud")]
 
-[node name="Partida" type="Node" parent="."]
+[node name="Partida" type="Node" parent="." unique_id=1036137396]
 script = ExtResource("16_partida")
 tiempo_limite = 60.0
 metas = 0
