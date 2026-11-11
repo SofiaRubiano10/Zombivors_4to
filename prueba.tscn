@@ -128,7 +128,7 @@ mesh = SubResource("BoxMesh_caja")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 script = ExtResource("6_i7ldd")
 camara = NodePath("../Camera3D")
-speed_correr = 4.2
+speed_correr = 3.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Personaje" unique_id=786706723]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)

@@ -6,7 +6,9 @@ const RUIDO = [0.0, 1.0, 3.0, 0.0] # metros de propagación sonora por estado
 
 @export var camara: Camera3D
 @export var speed_caminar: float = 2.5
-@export var speed_correr: float = 2.5
+@export var speed_correr: float = 3.5
+# Arrastre rápido: correr cuesta vida (por segundo) y se le cobra a la Salud.
+@export var costo_correr: float = 1.0
 @export var tiempo_arranque: float = 0.5
 @export_enum("Ninguna", "Avanzar 60 cuadros", "Avanzar 60 y soltar", "Avanzar y la acción desde el cuadro 30", "Mantener la acción 2 s", "Avanzar con la acción 60 cuadros", "Diagonal W+D 60 cuadros") var Prueba: String = "Ninguna"
 @export var AccionPrueba: String = ""
@@ -20,8 +22,11 @@ var accion: String = ""
 var avance: Vector3 = Vector3.ZERO
 var estado: Estado = Estado.QUIETO
 var ruido: float = 0.0
+# Lo que se debe por correr y aún no llega a 1 punto de vida.
+var gasto: float = 0.0
 
 # La salud y la descomposición viven en el nodo hijo Salud (salud.gd).
+@onready var salud = get_node_or_null("Salud")
 
 @onready var anim: AnimationPlayer = $Modelo/AnimationPlayer if has_node("Modelo/AnimationPlayer") else null
 
@@ -59,8 +64,19 @@ func _physics_process(delta: float) -> void:
 	if estado != antes:
 		print("estado ", Estado.keys()[estado], " · ruido ", ruido, " m")
 	
+	pagar_carrera(delta)
 	animar()
 	_prueba()
+
+# Se acumula y se cobra de a 1 punto: parar y volver a correr no lo hace gratis.
+func pagar_carrera(delta: float) -> void:
+	if estado != Estado.CORRER or salud == null or salud.vida == 0:
+		return
+	gasto += costo_correr * delta
+	if gasto >= 1.0:
+		var entero: int = int(gasto)
+		gasto -= entero
+		salud.quitar_vida(entero)
 
 func elegir_estado() -> Estado:
 	if accion == "pick-up":
@@ -70,7 +86,8 @@ func elegir_estado() -> Estado:
 	var rapidez: float = Vector2(velocity.x, velocity.z).length()
 	if rapidez < 0.1:
 		return Estado.QUIETO
-	if rapidez > speed_caminar + 0.1:
+	# Corre si SU avance supera la caminata; un empujón no cuenta como correr.
+	if Vector2(avance.x, avance.z).length() > speed_caminar + 0.1:
 		return Estado.CORRER
 	return Estado.CAMINAR
 
