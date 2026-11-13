@@ -1,6 +1,0 @@
-[gd_scene format=3]
-
-[ext_resource type="PackedScene" uid="uid://d08ht8ykw0qrg" path="res://personaje/character-zombie.glb" id="1_zombi"]
-
-[node name="Modelo" instance=ExtResource("1_zombi")]
-transform = Transform3D(-2.6, 0, -2.2730303e-07, 0, 2.6, 0, 2.2730303e-07, 0, -2.6, 0, 0, 0)

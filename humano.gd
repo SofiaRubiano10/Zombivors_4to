@@ -34,7 +34,7 @@ var indice = 0
 var reloj = 0.0
 var jugador = null
 var ultimo_visto = Vector3.ZERO
-# El proyecto no tiene el modelo .glb del taller: si no hay AnimationPlayer, no se anima.
+# El modelo (personaje/modelo_guardia.tscn) trae el AnimationPlayer; sin modelo, no se anima.
 @onready var anim = get_node_or_null("Modelo/AnimationPlayer")
 @onready var vision = $Vision
 
