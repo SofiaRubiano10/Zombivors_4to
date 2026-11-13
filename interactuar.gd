@@ -2,6 +2,7 @@ extends Node
 
 @export var tecla: String = "interactuar"
 @export var alcance: float = 1.5
+# Lo que se usa si el objeto no dice cuánto tarda (tiempo_comer).
 @export var tiempo_necesario: float = 1.5
 
 @onready var pj = get_parent()
@@ -28,8 +29,10 @@ func _physics_process(delta: float) -> void:
 		pj.multiplicador = 0.0
 		pj.accion = "pick-up"
 	
+	# Cada alimento dice cuánto tarda en comerse: la carroña es rápida, la carne no.
+	var tiempo: float = obj.tiempo_comer if "tiempo_comer" in obj else tiempo_necesario
 	var antes = progreso
-	progreso += delta / maxf(0.01, tiempo_necesario)
+	progreso += delta / maxf(0.01, tiempo)
 	
 	# Imprime retroalimentación visual en cada cuarto de progreso (25%, 50%, 75%)
 	if int(progreso * 4) > int(antes * 4) and progreso < 0.999:
