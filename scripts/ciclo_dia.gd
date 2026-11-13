@@ -8,6 +8,9 @@ const NARANJA := Color(0.1686, 0.1765, 0.1922)
 @export var duracion_dia: float = 240.0 # Segundos reales que dura un ciclo completo de 24 h
 @export var pausado: bool = true # Comportamiento fijo en Zona 1 (noche congelada)
 
+func _ready() -> void:
+	add_to_group("ciclo_dia")
+
 func avanzar(dt: float) -> void:
 	if not pausado:
 		hora = fposmod(hora + (24.0 * dt / duracion_dia), 24.0)
@@ -19,6 +22,11 @@ static func elevacion(h: float) -> float:
 static func factor_sol(h: float) -> float:
 	# Convertimos grados a radianes antes de calcular el seno
 	return maxf(0.0, sin(deg_to_rad(elevacion(h))))
+
+# Cuánta noche hay: 0 con el sol alto, 1 de noche. Sube poco a poco al atardecer
+# (cuando el sol baja de unos 20 grados) y baja igual al amanecer.
+static func oscuridad(h: float) -> float:
+	return 1.0 - smoothstep(0.0, 0.35, factor_sol(h))
 
 static func color_sol(h: float) -> Color:
 	return NARANJA.lerp(Color.WHITE, factor_sol(h))

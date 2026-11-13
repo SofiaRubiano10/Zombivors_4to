@@ -33,8 +33,12 @@ func _process(delta: float) -> void:
 	# Actualizar la luz variable (Nivel 3)
 	if luz_variable != null:
 		luz_variable.light_color = color_bajo.lerp(color_alto, variable)
-		var energia_deseada: float = 2.5 + 1.5 * variable
-		luz_variable.light_energy = decaer(luz_variable.light_energy, energia_deseada, k_variable, delta)
+		if "peligro" in luz_variable:
+			# La LuzJugador pone su propia energía (depende de la hora): solo recibe el peligro.
+			luz_variable.peligro = variable
+		else:
+			var energia_deseada: float = 2.5 + 1.5 * variable
+			luz_variable.light_energy = decaer(luz_variable.light_energy, energia_deseada, k_variable, delta)
 
 func _on_evento(posicion: Vector3) -> void:
 	if luz_evento:
