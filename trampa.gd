@@ -1,6 +1,7 @@
 extends Area3D
 
 # Clase 2 - Tarea B (María Sofía): trampa fija en un pasillo.
+# Clase 4: es una trampa de oso de tamaño real (70 cm): hay que verla para esquivarla.
 # Al pisarla quita vida por la Salud y deja al zombi congelado unos segundos;
 # después puede seguir caminando (sale de la trampa sin que lo vuelva a atrapar).
 

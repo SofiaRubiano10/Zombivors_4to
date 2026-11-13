@@ -2,15 +2,39 @@
 
 [ext_resource type="Script" path="res://trampa.gd" id="1_trampa"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_trampa"]
-size = Vector3(2, 1, 2)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_trampa"]
+height = 1.0
+radius = 0.35
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trampa"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hierro"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+metallic = 0.6
+roughness = 0.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_base"]
+material = SubResource("StandardMaterial3D_hierro")
+top_radius = 0.33
+bottom_radius = 0.35
+height = 0.03
+radial_segments = 24
+
+[sub_resource type="TorusMesh" id="TorusMesh_mandibula"]
+material = SubResource("StandardMaterial3D_hierro")
+inner_radius = 0.27
+outer_radius = 0.35
+rings = 24
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_placa"]
 albedo_color = Color(0.45, 0.1, 0.1, 1)
+roughness = 0.7
 
-[sub_resource type="BoxMesh" id="BoxMesh_trampa"]
-material = SubResource("StandardMaterial3D_trampa")
-size = Vector3(2, 0.05, 2)
+[sub_resource type="CylinderMesh" id="CylinderMesh_placa"]
+material = SubResource("StandardMaterial3D_placa")
+top_radius = 0.12
+bottom_radius = 0.12
+height = 0.05
+radial_segments = 16
 
 [node name="Trampa" type="Area3D"]
 collision_layer = 0
@@ -19,8 +43,16 @@ script = ExtResource("1_trampa")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("BoxShape3D_trampa")
+shape = SubResource("CylinderShape3D_trampa")
+
+[node name="Base" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0)
+mesh = SubResource("CylinderMesh_base")
+
+[node name="Mandibula" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
+mesh = SubResource("TorusMesh_mandibula")
 
 [node name="Placa" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
-mesh = SubResource("BoxMesh_trampa")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.045, 0)
+mesh = SubResource("CylinderMesh_placa")

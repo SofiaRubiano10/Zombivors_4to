@@ -748,11 +748,11 @@ danio_prueba = 15.0
 [node name="Trampas" type="Node3D" parent="." unique_id=556978506]
 
 [node name="Trampa1" parent="Trampas" unique_id=83416670 instance=ExtResource("19_trampa")]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -12, 0, -12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -3.2)
 tiempo_congelado = 2.5
 
 [node name="Trampa2" parent="Trampas" unique_id=855710491 instance=ExtResource("19_trampa")]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 12, 0, 14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.6, 0, 13.8)
 tiempo_congelado = 2.5
 
 [node name="Salida" parent="." unique_id=1414450315 instance=ExtResource("18_salida")]
