@@ -13,6 +13,8 @@ extends Area3D
 
 func _ready() -> void:
 	add_to_group("interactivos")
+	# La Partida cuenta este grupo para saber cuánta comida hay en el mapa.
+	add_to_group("alimentos")
 
 func usar() -> void:
 	var pj = get_tree().get_first_node_in_group("jugador")

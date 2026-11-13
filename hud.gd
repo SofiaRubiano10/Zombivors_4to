@@ -28,5 +28,12 @@ func actualizar_texto():
 		partida = get_tree().get_first_node_in_group("partida")
 	var linea = "Vida: " + str(vida_actual)
 	if partida != null:
-		linea += "   Tiempo: " + str(ceili(partida.tiempo)) + " s"
+		# Cronómetro (sube) y comida que falta para abrir la salida.
+		linea += "   Tiempo: " + partida.reloj_texto(partida.tiempo)
+		if partida.metas > 0:
+			linea += "   Comida: " + str(mini(partida.hechas, partida.metas)) + "/" + str(partida.metas)
+		if partida.tarde:
+			linea += "   SALIDA CERRADA"
+		elif partida.abierta:
+			linea += "   SALIDA ABIERTA"
 	texto.text = linea

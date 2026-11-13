@@ -169,5 +169,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
 
 [node name="Partida" type="Node" parent="." unique_id=1036137396]
 script = ExtResource("16_partida")
-tiempo_limite = 60.0
-metas = 0
+porcentaje_meta = 0.0

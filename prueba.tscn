@@ -156,8 +156,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
 
 [node name="Partida" type="Node" parent="." unique_id=1311186250]
 script = ExtResource("16_partida")
-tiempo_limite = 5.0
-metas = 1
+tiempo_tarde = 20.0
+tiempo_reinicio = 30.0
 espera_reinicio = 2.0
 
 [node name="HUD" parent="." unique_id=243611193 instance=ExtResource("17_hud")]
