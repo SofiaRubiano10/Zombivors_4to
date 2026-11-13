@@ -31,6 +31,7 @@
 [ext_resource type="PackedScene" path="res://salida.tscn" id="18_salida"]
 
 [ext_resource type="PackedScene" path="res://trampa.tscn" id="19_trampa"]
+[ext_resource type="Script" path="res://niebla_sala.gd" id="20_niebla"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -245,6 +246,30 @@ roughness = 0.8
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_zombi"]
 radius = 0.35
 height = 1.75
+
+[sub_resource type="BoxMesh" id="Caja_niebla_OficinaA"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_OficinaB"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_Juntas"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_Gerencia"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_Pasillo"]
+size = Vector3(47.48, 2.62, 3.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_Recepcion"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_AreaAbierta"]
+size = Vector3(23.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_Archivo"]
+size = Vector3(11.48, 2.62, 15.48)
 
 [node name="Main" type="Node3D" unique_id=754564777]
 
@@ -507,6 +532,48 @@ shape = SubResource("Forma_Mampara")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/Mampara"]
 mesh = SubResource("Malla_Mampara")
+
+[node name="Niebla" type="Node3D" parent="Mapa"]
+
+[node name="OficinaA" type="MeshInstance3D" parent="Mapa/Niebla"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.31, -10)
+mesh = SubResource("Caja_niebla_OficinaA")
+script = ExtResource("20_niebla")
+
+[node name="OficinaB" type="MeshInstance3D" parent="Mapa/Niebla"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.31, -10)
+mesh = SubResource("Caja_niebla_OficinaB")
+script = ExtResource("20_niebla")
+
+[node name="Juntas" type="MeshInstance3D" parent="Mapa/Niebla"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1.31, -10)
+mesh = SubResource("Caja_niebla_Juntas")
+script = ExtResource("20_niebla")
+
+[node name="Gerencia" type="MeshInstance3D" parent="Mapa/Niebla"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.31, -10)
+mesh = SubResource("Caja_niebla_Gerencia")
+script = ExtResource("20_niebla")
+
+[node name="Pasillo" type="MeshInstance3D" parent="Mapa/Niebla"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31, 0)
+mesh = SubResource("Caja_niebla_Pasillo")
+script = ExtResource("20_niebla")
+
+[node name="Recepcion" type="MeshInstance3D" parent="Mapa/Niebla"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.31, 10)
+mesh = SubResource("Caja_niebla_Recepcion")
+script = ExtResource("20_niebla")
+
+[node name="AreaAbierta" type="MeshInstance3D" parent="Mapa/Niebla"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31, 10)
+mesh = SubResource("Caja_niebla_AreaAbierta")
+script = ExtResource("20_niebla")
+
+[node name="Archivo" type="MeshInstance3D" parent="Mapa/Niebla"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.31, 10)
+mesh = SubResource("Caja_niebla_Archivo")
+script = ExtResource("20_niebla")
 
 [node name="Cajas" type="Node3D" parent="." unique_id=571500221]
 
