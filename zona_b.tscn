@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://dxvu3h8ua10fr"]
+
+[ext_resource type="Script" path="res://luz_parpadeante.gd" id="1_pjwgy"]
+[ext_resource type="Script" uid="uid://d2ytsfyo3a1nu" path="res://disparador.gd" id="2_7ursy"]
+[ext_resource type="Script" uid="uid://q1ei4flyuc5r" path="res://sistema_eventos.gd" id="3_dbxaw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_jthjw"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jthjw"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_jthjw"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lnblh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lnblh"]
+
+[node name="Mundo" type="Node3D" unique_id=1441581541]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=291324464]
+mesh = SubResource("BoxMesh_jthjw")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=2109863178]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=1168168930]
+shape = SubResource("BoxShape3D_jthjw")
+
+[node name="Jugador" type="CharacterBody3D" parent="." unique_id=655242795]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4575227, 0)
+collision_layer = 8
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Jugador" unique_id=831795301]
+mesh = SubResource("CapsuleMesh_jthjw")
+
+[node name="Camera3D" type="Camera3D" parent="Jugador" unique_id=1982006417]
+transform = Transform3D(1, 0, 0, 0, 0.017452383, 0.9998477, 0, -0.9998477, 0.017452383, 0, 12, 0.01)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Jugador" unique_id=760453977]
+shape = SubResource("CapsuleShape3D_lnblh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1505300743]
+light_energy = 0.2
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1209335134]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 4, 0)
+light_color = Color(0.69803923, 0.13333334, 0.13333334, 1)
+shadow_enabled = true
+script = ExtResource("1_pjwgy")
+
+[node name="Disparador" type="Area3D" parent="." unique_id=889476534]
+collision_mask = 8
+script = ExtResource("2_7ursy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Disparador" unique_id=636027551]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.117151, 0, 0)
+shape = SubResource("BoxShape3D_lnblh")
+
+[node name="LuzEvento" type="OmniLight3D" parent="." unique_id=1940820580]
+light_color = Color(0.69803923, 0.13333334, 0.13333334, 1)
+light_energy = 0.0
+omni_range = 4.0
+omni_attenuation = 2.0
+
+[node name="SistemaEventos" type="Node" parent="." unique_id=1037207324 node_paths=PackedStringArray("luz_evento", "luz_variable")]
+script = ExtResource("3_dbxaw")
+luz_evento = NodePath("../LuzEvento")
+luz_variable = NodePath("../SpotLight3D")

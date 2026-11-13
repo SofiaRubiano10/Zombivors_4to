@@ -6,6 +6,8 @@
 
 [ext_resource type="Script" uid="uid://b0dgo74cfp3ap" path="res://interactuar.gd" id="5_interactuar"]
 
+[ext_resource type="PackedScene" path="res://personaje/modelo_zombi.tscn" id="6_2cqfq"]
+
 [ext_resource type="Script" uid="uid://bpl0vxfb5b82j" path="res://alimento.gd" id="6_alimento"]
 
 [ext_resource type="Script" path="res://scripts/sistema_sol.gd" id="7_sistemasol"]
@@ -60,7 +62,6 @@ material = SubResource("StandardMaterial3D_carne")
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_zombi"]
 radius = 0.35
 height = 1.75
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_zombi"]
 albedo_color = Color(0.341, 0.451, 0.212, 1)
 roughness = 0.7
@@ -517,7 +518,7 @@ size = Vector3(2, 1.8, 1.5)
 [sub_resource type="BoxMesh" id="Malla_Carga4"]
 material = SubResource("Mat_carga")
 size = Vector3(2, 1.8, 1.5)
-
+a219d78273f49106f7472e8efc67bfe7ff5ccc91
 [node name="Main" type="Node3D" unique_id=754564777]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=550586862]
@@ -1215,15 +1216,11 @@ collision_mask = 5
 script = ExtResource("1_personaje")
 camara = NodePath("../Camera3D")
 
+[node name="Modelo" parent="Personaje" unique_id=908274342 instance=ExtResource("6_2cqfq")]
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Personaje" unique_id=266874855]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
 shape = SubResource("CapsuleShape3D_zombi")
-
-[node name="Modelo" type="Node3D" parent="Personaje" unique_id=906169379]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Personaje/Modelo" unique_id=1287663547]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
-mesh = SubResource("CapsuleMesh_zombi")
 
 [node name="LuzJugador" type="SpotLight3D" parent="Personaje" unique_id=1326829774]
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.2, 0)
