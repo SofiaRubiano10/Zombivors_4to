@@ -4,14 +4,15 @@
 [ext_resource type="Script" uid="uid://5mc5yqiklkgf" path="res://scripts/ciclo_dia.gd" id="2_yp0q4"]
 [ext_resource type="Script" uid="uid://q1ei4flyuc5r" path="res://sistema_eventos.gd" id="4_ec7i0"]
 [ext_resource type="Script" uid="uid://bpl0vxfb5b82j" path="res://alimento.gd" id="5_2pljw"]
+[ext_resource type="PackedScene" path="res://personaje/modelo_zombi.tscn" id="6_a8cc0"]
 [ext_resource type="Script" uid="uid://ccm6ajcm7q55" path="res://personaje.gd" id="6_i7ldd"]
 [ext_resource type="Script" uid="uid://nwsm1v1c4hu1" path="res://scripts/luz_jugador.gd" id="7_gkbsn"]
 [ext_resource type="Script" uid="uid://b0dgo74cfp3ap" path="res://interactuar.gd" id="9_o67f3"]
 [ext_resource type="Script" uid="uid://cqe74xl2ef4c1" path="res://camara_sigue.gd" id="10_36xdq"]
 [ext_resource type="PackedScene" path="res://humano.tscn" id="13_n7351"]
-[ext_resource type="Script" path="res://partida.gd" id="16_partida"]
+[ext_resource type="Script" uid="uid://b31sc8fwss4up" path="res://salud.gd" id="15_salud"]
+[ext_resource type="Script" uid="uid://byawbqat6uuj5" path="res://partida.gd" id="16_partida"]
 [ext_resource type="PackedScene" path="res://hud.tscn" id="17_hud"]
-[ext_resource type="Script" path="res://salud.gd" id="15_salud"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -41,15 +42,6 @@ roughness = 0.4
 material = SubResource("StandardMaterial3D_carne")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_zombi"]
-radius = 0.35
-height = 1.75
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_zombi"]
-albedo_color = Color(0.341, 0.451, 0.212, 1)
-roughness = 0.7
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_zombi"]
-material = SubResource("StandardMaterial3D_zombi")
 radius = 0.35
 height = 1.75
 
@@ -95,9 +87,9 @@ mesh = SubResource("BoxMesh_suelo")
 [node name="Cajas" type="Node3D" parent="." unique_id=1021024]
 
 [node name="Caja1" type="Area3D" parent="Cajas" unique_id=903616671 groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -4)
 collision_layer = 8
 collision_mask = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -4)
 script = ExtResource("5_2pljw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja1" unique_id=1296759281]
@@ -107,9 +99,9 @@ shape = SubResource("BoxShape3D_caja")
 mesh = SubResource("BoxMesh_caja")
 
 [node name="Caja2" type="Area3D" parent="Cajas" unique_id=1907165039 groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -2)
 collision_layer = 8
 collision_mask = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -2)
 script = ExtResource("5_2pljw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja2" unique_id=1069822168]
@@ -119,9 +111,9 @@ shape = SubResource("BoxShape3D_caja")
 mesh = SubResource("BoxMesh_caja")
 
 [node name="Caja3" type="Area3D" parent="Cajas" unique_id=459115245 groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, 3)
 collision_layer = 8
 collision_mask = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, 3)
 script = ExtResource("5_2pljw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja3" unique_id=1184875450]
@@ -131,22 +123,17 @@ shape = SubResource("BoxShape3D_caja")
 mesh = SubResource("BoxMesh_caja")
 
 [node name="Personaje" type="CharacterBody3D" parent="." unique_id=1907225201 node_paths=PackedStringArray("camara") groups=["jugador"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 collision_layer = 2
 collision_mask = 5
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 script = ExtResource("6_i7ldd")
 camara = NodePath("../Camera3D")
-speed_correr = 3.5
+
+[node name="Modelo" parent="Personaje" unique_id=1398866618 instance=ExtResource("6_a8cc0")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Personaje" unique_id=786706723]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
 shape = SubResource("CapsuleShape3D_zombi")
-
-[node name="Modelo" type="Node3D" parent="Personaje" unique_id=1200236161]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Personaje/Modelo" unique_id=1958463735]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
-mesh = SubResource("CapsuleMesh_zombi")
 
 [node name="LuzJugador" type="SpotLight3D" parent="Personaje" unique_id=1614963125]
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.2, 0)
@@ -156,11 +143,8 @@ script = ExtResource("7_gkbsn")
 [node name="Interactuar" type="Node" parent="Personaje" unique_id=1485974667]
 script = ExtResource("9_o67f3")
 
-[node name="Salud" type="Node" parent="Personaje"]
+[node name="Salud" type="Node" parent="Personaje" unique_id=832252338]
 script = ExtResource("15_salud")
-vida = 100
-invulnerable = 0.5
-reapariciones = 0
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1625999005 node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
@@ -170,11 +154,10 @@ objetivo = NodePath("../Personaje")
 [node name="Humano" parent="." unique_id=1720618032 instance=ExtResource("13_n7351")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
 
-[node name="Partida" type="Node" parent="."]
+[node name="Partida" type="Node" parent="." unique_id=1311186250]
 script = ExtResource("16_partida")
-gana_con_tiempo = false
 tiempo_limite = 5.0
 metas = 1
 espera_reinicio = 2.0
 
-[node name="HUD" parent="." instance=ExtResource("17_hud")]
+[node name="HUD" parent="." unique_id=243611193 instance=ExtResource("17_hud")]
