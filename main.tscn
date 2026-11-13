@@ -34,7 +34,7 @@
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
-background_color = Color(0.169, 0.176, 0.192, 1)
+background_color = Color(0, 0, 0, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.169, 0.176, 0.192, 1)
 ambient_light_energy = 0.05
@@ -53,174 +53,177 @@ size = Vector3(48, 0.2, 36)
 [sub_resource type="StandardMaterial3D" id="Material_muro"]
 albedo_color = Color(0.42, 0.43, 0.45, 1)
 roughness = 0.9
+distance_fade_mode = 2
+distance_fade_min_distance = 9.5
+distance_fade_max_distance = 11.0
 
 [sub_resource type="BoxShape3D" id="Forma_Norte"]
-size = Vector3(48.5, 1.8, 0.5)
+size = Vector3(48.5, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_Norte"]
 material = SubResource("Material_muro")
-size = Vector3(48.5, 1.8, 0.5)
+size = Vector3(48.5, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_Sur"]
-size = Vector3(48.5, 1.8, 0.5)
+size = Vector3(48.5, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_Sur"]
 material = SubResource("Material_muro")
-size = Vector3(48.5, 1.8, 0.5)
+size = Vector3(48.5, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_Oeste"]
-size = Vector3(0.5, 1.8, 36.5)
+size = Vector3(0.5, 2.6, 36.5)
 
 [sub_resource type="BoxMesh" id="Malla_Oeste"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 36.5)
+size = Vector3(0.5, 2.6, 36.5)
 
 [sub_resource type="BoxShape3D" id="Forma_Este"]
-size = Vector3(0.5, 1.8, 36.5)
+size = Vector3(0.5, 2.6, 36.5)
 
 [sub_resource type="BoxMesh" id="Malla_Este"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 36.5)
+size = Vector3(0.5, 2.6, 36.5)
 
 [sub_resource type="BoxShape3D" id="Forma_PasilloNorte1"]
-size = Vector3(5, 1.8, 0.5)
+size = Vector3(5, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_PasilloNorte1"]
 material = SubResource("Material_muro")
-size = Vector3(5, 1.8, 0.5)
+size = Vector3(5, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_PasilloNorte2"]
-size = Vector3(10, 1.8, 0.5)
+size = Vector3(10, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_PasilloNorte2"]
 material = SubResource("Material_muro")
-size = Vector3(10, 1.8, 0.5)
+size = Vector3(10, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_PasilloNorte3"]
-size = Vector3(10, 1.8, 0.5)
+size = Vector3(10, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_PasilloNorte3"]
 material = SubResource("Material_muro")
-size = Vector3(10, 1.8, 0.5)
+size = Vector3(10, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_PasilloNorte4"]
-size = Vector3(10, 1.8, 0.5)
+size = Vector3(10, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_PasilloNorte4"]
 material = SubResource("Material_muro")
-size = Vector3(10, 1.8, 0.5)
+size = Vector3(10, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_PasilloNorte5"]
-size = Vector3(5, 1.8, 0.5)
+size = Vector3(5, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_PasilloNorte5"]
 material = SubResource("Material_muro")
-size = Vector3(5, 1.8, 0.5)
+size = Vector3(5, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_PasilloSur1"]
-size = Vector3(5, 1.8, 0.5)
+size = Vector3(5, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_PasilloSur1"]
 material = SubResource("Material_muro")
-size = Vector3(5, 1.8, 0.5)
+size = Vector3(5, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_PasilloSur2"]
-size = Vector3(12, 1.8, 0.5)
+size = Vector3(12, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_PasilloSur2"]
 material = SubResource("Material_muro")
-size = Vector3(12, 1.8, 0.5)
+size = Vector3(12, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_PasilloSur3"]
-size = Vector3(6, 1.8, 0.5)
+size = Vector3(6, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_PasilloSur3"]
 material = SubResource("Material_muro")
-size = Vector3(6, 1.8, 0.5)
+size = Vector3(6, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_PasilloSur4"]
-size = Vector3(12, 1.8, 0.5)
+size = Vector3(12, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_PasilloSur4"]
 material = SubResource("Material_muro")
-size = Vector3(12, 1.8, 0.5)
+size = Vector3(12, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_PasilloSur5"]
-size = Vector3(5, 1.8, 0.5)
+size = Vector3(5, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_PasilloSur5"]
 material = SubResource("Material_muro")
-size = Vector3(5, 1.8, 0.5)
+size = Vector3(5, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="Forma_DivisorAB1"]
-size = Vector3(0.5, 1.8, 5)
+size = Vector3(0.5, 2.6, 5)
 
 [sub_resource type="BoxMesh" id="Malla_DivisorAB1"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 5)
+size = Vector3(0.5, 2.6, 5)
 
 [sub_resource type="BoxShape3D" id="Forma_DivisorAB2"]
-size = Vector3(0.5, 1.8, 9)
+size = Vector3(0.5, 2.6, 9)
 
 [sub_resource type="BoxMesh" id="Malla_DivisorAB2"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 9)
+size = Vector3(0.5, 2.6, 9)
 
 [sub_resource type="BoxShape3D" id="Forma_DivisorBJuntas"]
-size = Vector3(0.5, 1.8, 16)
+size = Vector3(0.5, 2.6, 16)
 
 [sub_resource type="BoxMesh" id="Malla_DivisorBJuntas"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 16)
+size = Vector3(0.5, 2.6, 16)
 
 [sub_resource type="BoxShape3D" id="Forma_DivisorJuntasGer1"]
-size = Vector3(0.5, 1.8, 9)
+size = Vector3(0.5, 2.6, 9)
 
 [sub_resource type="BoxMesh" id="Malla_DivisorJuntasGer1"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 9)
+size = Vector3(0.5, 2.6, 9)
 
 [sub_resource type="BoxShape3D" id="Forma_DivisorJuntasGer2"]
-size = Vector3(0.5, 1.8, 5)
+size = Vector3(0.5, 2.6, 5)
 
 [sub_resource type="BoxMesh" id="Malla_DivisorJuntasGer2"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 5)
+size = Vector3(0.5, 2.6, 5)
 
 [sub_resource type="BoxShape3D" id="Forma_DivisorRecepcion1"]
-size = Vector3(0.5, 1.8, 9)
+size = Vector3(0.5, 2.6, 9)
 
 [sub_resource type="BoxMesh" id="Malla_DivisorRecepcion1"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 9)
+size = Vector3(0.5, 2.6, 9)
 
 [sub_resource type="BoxShape3D" id="Forma_DivisorRecepcion2"]
-size = Vector3(0.5, 1.8, 5)
+size = Vector3(0.5, 2.6, 5)
 
 [sub_resource type="BoxMesh" id="Malla_DivisorRecepcion2"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 5)
+size = Vector3(0.5, 2.6, 5)
 
 [sub_resource type="BoxShape3D" id="Forma_DivisorArchivo1"]
-size = Vector3(0.5, 1.8, 11)
+size = Vector3(0.5, 2.6, 11)
 
 [sub_resource type="BoxMesh" id="Malla_DivisorArchivo1"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 11)
+size = Vector3(0.5, 2.6, 11)
 
 [sub_resource type="BoxShape3D" id="Forma_DivisorArchivo2"]
-size = Vector3(0.5, 1.8, 3)
+size = Vector3(0.5, 2.6, 3)
 
 [sub_resource type="BoxMesh" id="Malla_DivisorArchivo2"]
 material = SubResource("Material_muro")
-size = Vector3(0.5, 1.8, 3)
+size = Vector3(0.5, 2.6, 3)
 
 [sub_resource type="BoxShape3D" id="Forma_Mampara"]
-size = Vector3(12, 1.8, 0.5)
+size = Vector3(12, 2.6, 0.5)
 
 [sub_resource type="BoxMesh" id="Malla_Mampara"]
 material = SubResource("Material_muro")
-size = Vector3(12, 1.8, 0.5)
+size = Vector3(12, 2.6, 0.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_caja"]
 
@@ -290,7 +293,7 @@ mesh = SubResource("BoxMesh_suelo")
 [node name="Muros" type="Node3D" parent="Mapa" unique_id=1764881187]
 
 [node name="Norte" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -18)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -18)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Norte"]
 shape = SubResource("Forma_Norte")
@@ -299,7 +302,7 @@ shape = SubResource("Forma_Norte")
 mesh = SubResource("Malla_Norte")
 
 [node name="Sur" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 18)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 18)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Sur"]
 shape = SubResource("Forma_Sur")
@@ -308,7 +311,7 @@ shape = SubResource("Forma_Sur")
 mesh = SubResource("Malla_Sur")
 
 [node name="Oeste" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 1.3, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Oeste"]
 shape = SubResource("Forma_Oeste")
@@ -317,7 +320,7 @@ shape = SubResource("Forma_Oeste")
 mesh = SubResource("Malla_Oeste")
 
 [node name="Este" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1.3, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Este"]
 shape = SubResource("Forma_Este")
@@ -326,7 +329,7 @@ shape = SubResource("Forma_Este")
 mesh = SubResource("Malla_Este")
 
 [node name="PasilloNorte1" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 0.9, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 1.3, -2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloNorte1"]
 shape = SubResource("Forma_PasilloNorte1")
@@ -335,7 +338,7 @@ shape = SubResource("Forma_PasilloNorte1")
 mesh = SubResource("Malla_PasilloNorte1")
 
 [node name="PasilloNorte2" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.9, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.3, -2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloNorte2"]
 shape = SubResource("Forma_PasilloNorte2")
@@ -344,7 +347,7 @@ shape = SubResource("Forma_PasilloNorte2")
 mesh = SubResource("Malla_PasilloNorte2")
 
 [node name="PasilloNorte3" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloNorte3"]
 shape = SubResource("Forma_PasilloNorte3")
@@ -353,7 +356,7 @@ shape = SubResource("Forma_PasilloNorte3")
 mesh = SubResource("Malla_PasilloNorte3")
 
 [node name="PasilloNorte4" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.9, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.3, -2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloNorte4"]
 shape = SubResource("Forma_PasilloNorte4")
@@ -362,7 +365,7 @@ shape = SubResource("Forma_PasilloNorte4")
 mesh = SubResource("Malla_PasilloNorte4")
 
 [node name="PasilloNorte5" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5, 0.9, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5, 1.3, -2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloNorte5"]
 shape = SubResource("Forma_PasilloNorte5")
@@ -371,7 +374,7 @@ shape = SubResource("Forma_PasilloNorte5")
 mesh = SubResource("Malla_PasilloNorte5")
 
 [node name="PasilloSur1" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 0.9, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 1.3, 2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloSur1"]
 shape = SubResource("Forma_PasilloSur1")
@@ -380,7 +383,7 @@ shape = SubResource("Forma_PasilloSur1")
 mesh = SubResource("Malla_PasilloSur1")
 
 [node name="PasilloSur2" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0.9, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1.3, 2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloSur2"]
 shape = SubResource("Forma_PasilloSur2")
@@ -389,7 +392,7 @@ shape = SubResource("Forma_PasilloSur2")
 mesh = SubResource("Malla_PasilloSur2")
 
 [node name="PasilloSur3" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloSur3"]
 shape = SubResource("Forma_PasilloSur3")
@@ -398,7 +401,7 @@ shape = SubResource("Forma_PasilloSur3")
 mesh = SubResource("Malla_PasilloSur3")
 
 [node name="PasilloSur4" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.9, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1.3, 2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloSur4"]
 shape = SubResource("Forma_PasilloSur4")
@@ -407,7 +410,7 @@ shape = SubResource("Forma_PasilloSur4")
 mesh = SubResource("Malla_PasilloSur4")
 
 [node name="PasilloSur5" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5, 0.9, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5, 1.3, 2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloSur5"]
 shape = SubResource("Forma_PasilloSur5")
@@ -416,7 +419,7 @@ shape = SubResource("Forma_PasilloSur5")
 mesh = SubResource("Malla_PasilloSur5")
 
 [node name="DivisorAB1" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.9, -15.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.3, -15.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorAB1"]
 shape = SubResource("Forma_DivisorAB1")
@@ -425,7 +428,7 @@ shape = SubResource("Forma_DivisorAB1")
 mesh = SubResource("Malla_DivisorAB1")
 
 [node name="DivisorAB2" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.9, -6.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.3, -6.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorAB2"]
 shape = SubResource("Forma_DivisorAB2")
@@ -434,7 +437,7 @@ shape = SubResource("Forma_DivisorAB2")
 mesh = SubResource("Malla_DivisorAB2")
 
 [node name="DivisorBJuntas" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -10)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorBJuntas"]
 shape = SubResource("Forma_DivisorBJuntas")
@@ -443,7 +446,7 @@ shape = SubResource("Forma_DivisorBJuntas")
 mesh = SubResource("Malla_DivisorBJuntas")
 
 [node name="DivisorJuntasGer1" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.9, -13.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.3, -13.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorJuntasGer1"]
 shape = SubResource("Forma_DivisorJuntasGer1")
@@ -452,7 +455,7 @@ shape = SubResource("Forma_DivisorJuntasGer1")
 mesh = SubResource("Malla_DivisorJuntasGer1")
 
 [node name="DivisorJuntasGer2" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.9, -4.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.3, -4.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorJuntasGer2"]
 shape = SubResource("Forma_DivisorJuntasGer2")
@@ -461,7 +464,7 @@ shape = SubResource("Forma_DivisorJuntasGer2")
 mesh = SubResource("Malla_DivisorJuntasGer2")
 
 [node name="DivisorRecepcion1" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.9, 6.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.3, 6.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorRecepcion1"]
 shape = SubResource("Forma_DivisorRecepcion1")
@@ -470,7 +473,7 @@ shape = SubResource("Forma_DivisorRecepcion1")
 mesh = SubResource("Malla_DivisorRecepcion1")
 
 [node name="DivisorRecepcion2" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.9, 15.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.3, 15.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorRecepcion2"]
 shape = SubResource("Forma_DivisorRecepcion2")
@@ -479,7 +482,7 @@ shape = SubResource("Forma_DivisorRecepcion2")
 mesh = SubResource("Malla_DivisorRecepcion2")
 
 [node name="DivisorArchivo1" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.9, 7.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.3, 7.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorArchivo1"]
 shape = SubResource("Forma_DivisorArchivo1")
@@ -488,7 +491,7 @@ shape = SubResource("Forma_DivisorArchivo1")
 mesh = SubResource("Malla_DivisorArchivo1")
 
 [node name="DivisorArchivo2" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.9, 16.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.3, 16.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorArchivo2"]
 shape = SubResource("Forma_DivisorArchivo2")
@@ -497,7 +500,7 @@ shape = SubResource("Forma_DivisorArchivo2")
 mesh = SubResource("Malla_DivisorArchivo2")
 
 [node name="Mampara" type="StaticBody3D" parent="Mapa/Muros"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 10)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Mampara"]
 shape = SubResource("Forma_Mampara")
