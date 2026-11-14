@@ -137,7 +137,8 @@ func terminar(nuevo, motivo, espera):
 # 133.4 s -> "02:13"
 static func reloj_texto(segundos):
 	var s = int(segundos)
-	return "%02d:%02d" % [s / 60, s % 60]
+	# floori dice a propósito "quédate con los minutos enteros"; s / 60 daba aviso.
+	return "%02d:%02d" % [floori(s / 60.0), s % 60]
 
 func reiniciar():
 	intentos += 1
