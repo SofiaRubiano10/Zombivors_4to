@@ -30,6 +30,32 @@
 [ext_resource type="Script" path="res://niebla_sala.gd" id="20_niebla"]
 [ext_resource type="PackedScene" path="res://lampara.tscn" id="21_lampara"]
 
+[ext_resource type="Script" path="res://mueble.gd" id="30_mueble"]
+
+[ext_resource type="PackedScene" path="res://muebles/bookcaseClosed.glb" id="m_bookcaseClosed"]
+
+[ext_resource type="PackedScene" path="res://muebles/bookcaseClosedWide.glb" id="m_bookcaseClosedWide"]
+
+[ext_resource type="PackedScene" path="res://muebles/bookcaseOpen.glb" id="m_bookcaseOpen"]
+
+[ext_resource type="PackedScene" path="res://muebles/cardboardBoxClosed.glb" id="m_cardboardBoxClosed"]
+
+[ext_resource type="PackedScene" path="res://muebles/cardboardBoxOpen.glb" id="m_cardboardBoxOpen"]
+
+[ext_resource type="PackedScene" path="res://muebles/chairDesk.glb" id="m_chairDesk"]
+
+[ext_resource type="PackedScene" path="res://muebles/computerKeyboard.glb" id="m_computerKeyboard"]
+
+[ext_resource type="PackedScene" path="res://muebles/computerScreen.glb" id="m_computerScreen"]
+
+[ext_resource type="PackedScene" path="res://muebles/desk.glb" id="m_desk"]
+
+[ext_resource type="PackedScene" path="res://muebles/plantSmall1.glb" id="m_plantSmall1"]
+
+[ext_resource type="PackedScene" path="res://muebles/pottedPlant.glb" id="m_pottedPlant"]
+
+[ext_resource type="PackedScene" path="res://muebles/trashcan.glb" id="m_trashcan"]
+
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
 background_color = Color(0, 0, 0, 1)
@@ -566,6 +592,233 @@ oscuridad = 0.6
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.31, 10)
 mesh = SubResource("Caja_niebla_Archivo")
 script = ExtResource("20_niebla")
+
+[node name="Muebles" type="Node3D" parent="Mapa"]
+
+[node name="OficinaA" type="Node3D" parent="Mapa/Muebles"]
+
+[node name="Desk" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -21.5, 0, -15)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -21.5, 0.76, -15.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -21.5, 0.76, -14.75)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -21.5, 0, -14.05)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk2" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -14.5, 0, -16)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen2" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -14.5, 0.76, -16.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard2" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -14.5, 0.76, -15.75)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk2" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -14.5, 0, -15.05)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk3" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -21.5, 0, -7)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen3" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -21.5, 0.76, -7.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard3" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -21.5, 0.76, -6.75)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk3" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -21.5, 0, -6.05)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk4" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -14.5, 0, -7)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen4" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -14.5, 0.76, -7.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard4" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -14.5, 0.76, -6.75)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk4" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -14.5, 0, -6.05)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="BookcaseClosedWide" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -18, 0, -17.45)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosed" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -23.45, 0, -11)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosed")
+
+[node name="BookcaseClosedWide2" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -21, 0, -11)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="PottedPlant" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -23.3, 0, -2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_pottedPlant")
+
+[node name="Trashcan" type="Node3D" parent="Mapa/Muebles/OficinaA"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -12.8, 0, -2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_trashcan")
+escala = 0.8
+
+[node name="OficinaB" type="Node3D" parent="Mapa/Muebles"]
+
+[node name="Desk" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -9.5, 0, -15.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -9.5, 0.76, -15.7)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -9.5, 0.76, -15.25)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -9.5, 0, -14.55)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk2" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -3, 0, -15.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen2" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -3, 0.76, -15.7)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard2" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -3, 0.76, -15.25)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk2" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -3, 0, -14.55)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk3" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -9.5, 0, -6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen3" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -9.5, 0.76, -6.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard3" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -9.5, 0.76, -5.75)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk3" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -9.5, 0, -5.05)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="BookcaseOpen" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.6, 0, -14)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseOpen")
+
+[node name="BookcaseClosed" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.6, 0, -6.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosed")
+
+[node name="CardboardBoxClosed" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -1, 0, -3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxClosed")
+solido = false
+
+[node name="CardboardBoxOpen" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -1.7, 0, -3.4)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxOpen")
+solido = false
+
+[node name="Trashcan" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -11.4, 0, -17.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_trashcan")
+escala = 0.8
+
+[node name="PlantSmall1" type="Node3D" parent="Mapa/Muebles/OficinaB"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -6, 0.76, -6.6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_plantSmall1")
+solido = false
 
 [node name="Lamparas" type="Node3D" parent="."]
 
