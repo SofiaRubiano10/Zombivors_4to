@@ -4,8 +4,6 @@
 [ext_resource type="Script" uid="uid://cqe74xl2ef4c1" path="res://camara_sigue.gd" id="4_camara"]
 [ext_resource type="Script" uid="uid://b0dgo74cfp3ap" path="res://interactuar.gd" id="5_interactuar"]
 [ext_resource type="Script" uid="uid://bpl0vxfb5b82j" path="res://alimento.gd" id="6_alimento"]
-[ext_resource type="Script" path="res://scripts/sistema_sol.gd" id="7_sistemasol"]
-[ext_resource type="Script" uid="uid://5mc5yqiklkgf" path="res://scripts/ciclo_dia.gd" id="8_ciclodia"]
 [ext_resource type="Script" uid="uid://nwsm1v1c4hu1" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
 [ext_resource type="Script" uid="uid://q1ei4flyuc5r" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
 [ext_resource type="PackedScene" path="res://humano.tscn" id="13_humano"]
@@ -55,15 +53,6 @@ environment = SubResource("Environment_1")
 transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 10, 0)
 light_energy = 0.35
 shadow_enabled = true
-
-[node name="SistemaSol" type="Node" parent="." unique_id=473813052 node_paths=PackedStringArray("sol", "entorno")]
-script = ExtResource("7_sistemasol")
-sol = NodePath("../DirectionalLight3D")
-entorno = NodePath("../WorldEnvironment")
-
-[node name="CicloDia" type="Node" parent="SistemaSol" unique_id=1899597293]
-script = ExtResource("8_ciclodia")
-pausado = false
 
 [node name="LuzEvento" type="OmniLight3D" parent="." unique_id=1382249401]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)

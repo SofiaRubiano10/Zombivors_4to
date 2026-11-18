@@ -10,10 +10,6 @@
 
 [ext_resource type="Script" uid="uid://bpl0vxfb5b82j" path="res://alimento.gd" id="6_alimento"]
 
-[ext_resource type="Script" path="res://scripts/sistema_sol.gd" id="7_sistemasol"]
-
-[ext_resource type="Script" uid="uid://5mc5yqiklkgf" path="res://scripts/ciclo_dia.gd" id="8_ciclodia"]
-
 [ext_resource type="Script" uid="uid://nwsm1v1c4hu1" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
 
 [ext_resource type="Script" uid="uid://q1ei4flyuc5r" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
@@ -38,8 +34,8 @@
 background_mode = 1
 background_color = Color(0, 0, 0, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.169, 0.176, 0.192, 1)
-ambient_light_energy = 0.05
+ambient_light_color = Color(0.36, 0.45, 0.7, 1)
+ambient_light_energy = 0.3
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_suelo"]
 size = Vector3(48, 0.2, 36)
@@ -279,20 +275,9 @@ environment = SubResource("Environment_1")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1474883715]
 transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 10, 0)
-light_energy = 0.35
+light_color = Color(0.55, 0.65, 0.9, 1)
+light_energy = 0.4
 shadow_enabled = true
-
-[node name="SistemaSol" type="Node" parent="." unique_id=1735251172 node_paths=PackedStringArray("sol", "entorno")]
-script = ExtResource("7_sistemasol")
-sol = NodePath("../DirectionalLight3D")
-entorno = NodePath("../WorldEnvironment")
-energia_sol = 4.0
-ambiente_dia = 1.0
-
-[node name="CicloDia" type="Node" parent="SistemaSol" unique_id=1342500308]
-script = ExtResource("8_ciclodia")
-hora = 15.0
-pausado = false
 
 [node name="LuzEvento" type="OmniLight3D" parent="." unique_id=1113448916]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)

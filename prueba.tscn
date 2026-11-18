@@ -1,7 +1,5 @@
 [gd_scene format=3 uid="uid://dia473krgv4rs"]
 
-[ext_resource type="Script" path="res://scripts/sistema_sol.gd" id="1_a8cc0"]
-[ext_resource type="Script" uid="uid://5mc5yqiklkgf" path="res://scripts/ciclo_dia.gd" id="2_yp0q4"]
 [ext_resource type="Script" uid="uid://q1ei4flyuc5r" path="res://sistema_eventos.gd" id="4_ec7i0"]
 [ext_resource type="Script" uid="uid://bpl0vxfb5b82j" path="res://alimento.gd" id="5_2pljw"]
 [ext_resource type="PackedScene" path="res://personaje/modelo_zombi.tscn" id="6_a8cc0"]
@@ -54,15 +52,6 @@ environment = SubResource("Environment_1")
 transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 10, 0)
 light_energy = 0.35
 shadow_enabled = true
-
-[node name="SistemaSol" type="Node" parent="." unique_id=245778685 node_paths=PackedStringArray("sol", "entorno")]
-script = ExtResource("1_a8cc0")
-sol = NodePath("../DirectionalLight3D")
-entorno = NodePath("../WorldEnvironment")
-
-[node name="CicloDia" type="Node" parent="SistemaSol" unique_id=940499609]
-script = ExtResource("2_yp0q4")
-pausado = false
 
 [node name="LuzEvento" type="OmniLight3D" parent="." unique_id=568870422]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)

@@ -3,8 +3,8 @@ extends SpotLight3D
 
 # La visión del zombi: un cono amplio hacia delante y un halo tenue alrededor.
 # No es una linterna: es lo que el zombi alcanza a ver.
-# Feedback del profesor: de noche no se veía nada. La luz es proporcional a la hora:
-# apagada de día, sube al atardecer y queda al máximo de noche.
+# Ya no hay día ni noche: la oficina está cerrada y a oscuras, así que la luz
+# queda siempre encendida (la del fondo es fija y fría).
 
 @export var rango: float = 10.0 # Metros de alcance de la luz (ve unos 8 m por delante)
 @export var apertura: float = 40.0 # Grados de medio cono (35 y horizontal era una linterna)
@@ -19,9 +19,8 @@ extends SpotLight3D
 
 # 0 sano, 1 crítico. Lo escribe SistemaEventos: con poca vida la luz sube un poco.
 var peligro: float = 0.0
-# 0 de día, 1 de noche. Sale de la hora del CicloDia.
-var oscuridad: float = 0.0
-var ciclo: CicloDia = null
+# 0 con luz alrededor, 1 a oscuras. Por ahora la oficina entera cuenta como oscura.
+var oscuridad: float = 1.0
 
 func _ready() -> void:
 	position = Vector3(0.0, altura, 0.0)
@@ -38,11 +37,6 @@ func _ready() -> void:
 		halo.light_energy = 0.0
 
 func _process(delta: float) -> void:
-	# Se busca aquí: el CicloDia entra a su grupo en su propio _ready().
-	if ciclo == null:
-		ciclo = get_tree().get_first_node_in_group("ciclo_dia")
-	# Sin ciclo en la escena no hay día: la luz queda encendida, como antes.
-	oscuridad = CicloDia.oscuridad(ciclo.hora) if ciclo != null else 1.0
 	var mezcla: float = 1.0 - exp(-suavizado * delta)
 	light_energy = lerpf(light_energy, energia_para(oscuridad, peligro, energia_noche), mezcla)
 	visible = light_energy > 0.01
@@ -50,7 +44,7 @@ func _process(delta: float) -> void:
 		halo.light_energy = lerpf(halo.light_energy, energia_halo * oscuridad, mezcla)
 		halo.visible = halo.light_energy > 0.01
 
-# La cuenta, aparte para poder probarla: de día 0; de noche la energía base,
+# La cuenta, aparte para poder probarla: sin oscuridad 0; a oscuras la energía base,
 # y hasta un 60 % más cuando al zombi le queda poca vida.
 static func energia_para(noche: float, riesgo: float, base: float) -> float:
 	return base * (1.0 + 0.6 * riesgo) * noche
