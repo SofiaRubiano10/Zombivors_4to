@@ -2,6 +2,25 @@
 
 [ext_resource type="Script" path="res://hud.gd" id="1_hud"]
 
+[sub_resource type="StyleBoxFlat" id="Fondo_barra"]
+bg_color = Color(0.169, 0.176, 0.192, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.949, 0.929, 0.894, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="Relleno_barra"]
+bg_color = Color(0.831, 0.639, 0.451, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
 
@@ -13,3 +32,13 @@ offset_bottom = 48.0
 theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 1)
 theme_override_font_sizes/font_size = 22
 text = "Vida: "
+
+[node name="BarraComer" type="ProgressBar" parent="."]
+visible = false
+offset_right = 70.0
+offset_bottom = 10.0
+max_value = 1.0
+step = 0.001
+show_percentage = false
+theme_override_styles/background = SubResource("Fondo_barra")
+theme_override_styles/fill = SubResource("Relleno_barra")
