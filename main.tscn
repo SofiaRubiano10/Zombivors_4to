@@ -56,6 +56,18 @@
 
 [ext_resource type="PackedScene" path="res://muebles/trashcan.glb" id="m_trashcan"]
 
+[ext_resource type="PackedScene" path="res://muebles/chair.glb" id="m_chair"]
+
+[ext_resource type="PackedScene" path="res://muebles/coatRackStanding.glb" id="m_coatRackStanding"]
+
+[ext_resource type="PackedScene" path="res://muebles/deskCorner.glb" id="m_deskCorner"]
+
+[ext_resource type="PackedScene" path="res://muebles/loungeSofa.glb" id="m_loungeSofa"]
+
+[ext_resource type="PackedScene" path="res://muebles/table.glb" id="m_table"]
+
+[ext_resource type="PackedScene" path="res://muebles/tableCoffee.glb" id="m_tableCoffee"]
+
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
 background_color = Color(0, 0, 0, 1)
@@ -819,6 +831,137 @@ transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -6, 0.76, -6.6)
 script = ExtResource("30_mueble")
 modelo = ExtResource("m_plantSmall1")
 solido = false
+
+[node name="Juntas" type="Node3D" parent="Mapa/Muebles"]
+
+[node name="Table" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 6, 0, -14.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_table")
+
+[node name="Table2" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 6, 0, -13.1)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_table")
+
+[node name="Chair" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 4.9, 0, -15.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair2" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 4.9, 0, -13.9)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair3" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 4.9, 0, -12.6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair4" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 7.1, 0, -15.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair5" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 7.1, 0, -13.9)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair6" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 7.1, 0, -12.6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair7" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 6, 0, -16.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="BookcaseClosed" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.6, 0, -8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosed")
+
+[node name="BookcaseClosed2" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.6, 0, -12)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosed")
+
+[node name="CoatRackStanding" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 11.3, 0, -17.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_coatRackStanding")
+solido = false
+
+[node name="PlantSmall1" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0.8, 0, -2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_plantSmall1")
+solido = false
+
+[node name="Trashcan" type="Node3D" parent="Mapa/Muebles/Juntas"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 11.3, 0, -2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_trashcan")
+escala = 0.8
+
+[node name="Gerencia" type="Node3D" parent="Mapa/Muebles"]
+
+[node name="DeskCorner" type="Node3D" parent="Mapa/Muebles/Gerencia"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 15, 0, -15)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_deskCorner")
+
+[node name="ComputerScreen" type="Node3D" parent="Mapa/Muebles/Gerencia"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 14.7, 0.76, -15.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ChairDesk" type="Node3D" parent="Mapa/Muebles/Gerencia"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, 14.7, 0, -13.4)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="BookcaseClosedWide" type="Node3D" parent="Mapa/Muebles/Gerencia"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 14, 0, -17.45)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide2" type="Node3D" parent="Mapa/Muebles/Gerencia"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 23.45, 0, -10)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="LoungeSofa" type="Node3D" parent="Mapa/Muebles/Gerencia"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 23.2, 0, -5.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_loungeSofa")
+
+[node name="TableCoffee" type="Node3D" parent="Mapa/Muebles/Gerencia"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 21.6, 0, -5.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_tableCoffee")
+
+[node name="PottedPlant" type="Node3D" parent="Mapa/Muebles/Gerencia"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 12.8, 0, -2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_pottedPlant")
+
+[node name="PottedPlant2" type="Node3D" parent="Mapa/Muebles/Gerencia"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 23.3, 0, -17.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_pottedPlant")
 
 [node name="Lamparas" type="Node3D" parent="."]
 
