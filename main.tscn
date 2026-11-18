@@ -563,23 +563,37 @@ script = ExtResource("20_niebla")
 
 [node name="Lamparas" type="Node3D" parent="."]
 
-[node name="OficinaA" parent="Lamparas" instance=ExtResource("21_lampara")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2.5, -10)
+[node name="RecepcionNorte" parent="Lamparas" instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2.5, 6)
+
+[node name="RecepcionSur" parent="Lamparas" instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2.5, 14)
+
+[node name="OficinaANorte" parent="Lamparas" instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2.5, -14)
+
+[node name="OficinaASur" parent="Lamparas" instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2.5, -6)
+
+[node name="GerenciaNorte" parent="Lamparas" instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 2.5, -14)
+
+[node name="GerenciaSur" parent="Lamparas" instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 2.5, -6)
+
+[node name="AreaAbiertaOeste" parent="Lamparas" instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2.5, 6)
+
+[node name="AreaAbiertaEste" parent="Lamparas" instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.5, 6)
 
 [node name="OficinaB" parent="Lamparas" instance=ExtResource("21_lampara")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.5, -10)
 estado = 1
-
-[node name="Juntas" parent="Lamparas" instance=ExtResource("21_lampara")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.5, -10)
-estado = 2
-
-[node name="Gerencia" parent="Lamparas" instance=ExtResource("21_lampara")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 2.5, -10)
+energia = 4.0
 
 [node name="PasilloOeste" parent="Lamparas" instance=ExtResource("21_lampara")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 2.5, 0)
-estado = 1
 
 [node name="PasilloCentro" parent="Lamparas" instance=ExtResource("21_lampara")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
@@ -587,13 +601,12 @@ estado = 2
 
 [node name="PasilloEste" parent="Lamparas" instance=ExtResource("21_lampara")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 2.5, 0)
-
-[node name="Recepcion" parent="Lamparas" instance=ExtResource("21_lampara")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2.5, 10)
-
-[node name="AreaAbiertaNorte" parent="Lamparas" instance=ExtResource("21_lampara")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.5, 6)
 estado = 1
+energia = 4.0
+
+[node name="Juntas" parent="Lamparas" instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.5, -10)
+estado = 2
 
 [node name="AreaAbiertaSur" parent="Lamparas" instance=ExtResource("21_lampara")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.5, 14)
