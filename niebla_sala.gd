@@ -14,12 +14,16 @@ extends MeshInstance3D
 @export var opacidad_max = 0.97
 # Qué tan rápido se abre o se cierra (más alto = más rápido).
 @export var suavizado = 5.0
+# Qué tan oscura es la sala por dentro: 0 bien iluminada, 1 sin luz.
+# La lee la visión del zombi para saber cuánto alumbrar.
+@export_range(0.0, 1.0) var oscuridad = 1.0
 
 var jugador = null
 var material = StandardMaterial3D.new()
 var opacidad = 1.0
 
 func _ready():
+	add_to_group("salas")
 	# Sin sombreado: la niebla no recibe luz, siempre es negra.
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
