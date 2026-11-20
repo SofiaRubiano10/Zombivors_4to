@@ -3,8 +3,8 @@ extends Node
 # Clase 3 - Tarea B (María Sofía): sonidos del juego.
 # Es un autoload (Proyecto > Autoload, nombre "Sonidos"): existe siempre, en
 # cualquier escena, y cualquiera lo llama con Sonidos.tocar("nombre").
-# Los .wav están en sonidos/ y los genera sonidos/generar_sonidos.py (síntesis
-# propia, sin licencias de terceros).
+# Los .ogg de sonidos/ son de los paquetes Impact Sounds, Interface Sounds y
+# RPG Audio de Kenney (CC0): https://kenney.nl/assets
 
 const VOLUMENES = {
 	"golpe": -4.0, "mordisco": -2.0, "comer": -6.0, "alerta": -8.0,
@@ -21,7 +21,7 @@ func _ready():
 	# Siguen sonando con el juego en pausa (el golpe que te mató, la salida).
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	for nombre in VOLUMENES:
-		sonidos[nombre] = load("res://sonidos/" + nombre + ".wav")
+		sonidos[nombre] = load("res://sonidos/" + nombre + ".ogg")
 	for i in CANALES:
 		var c = AudioStreamPlayer.new()
 		add_child(c)
