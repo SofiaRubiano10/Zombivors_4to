@@ -1,3 +1,4 @@
+class_name Partida
 extends Node
 
 # Taller 10 - Tarea A (Juan Diego): la zona. La partida es un nodo sin cuerpo
@@ -14,11 +15,15 @@ extends Node
 #  - desde tiempo_tarde: la salida se cierra. Con la meta cumplida, tocarla es llegar
 #    tarde y se pierde. Sin la meta, no pasa nada (como siempre).
 #  - en tiempo_reinicio (8 min): se pierde por tiempo, el mundo queda quieto 4 s y reinicia.
+# Clase 5: la run tiene 3 zonas (zona.gd las configura). Ganar una zona recarga la
+# escena en la siguiente con la misma vida (static); ganar la última es la victoria
+# final. Perder en cualquier zona termina la run: se vuelve a la zona 1.
 
 signal terminada(estado, motivo)
 signal meta(hechas, total)
 signal salida_abierta
 signal salida_cerrada
+signal zona_cambiada(numero)
 enum Estado { JUGANDO, GANO, PERDIO }
 
 # Segundos de cronómetro a partir de los cuales ya no se puede ganar.
@@ -33,6 +38,11 @@ enum Estado { JUGANDO, GANO, PERDIO }
 # static: es del script, no del nodo. Sobrevive a recargar la escena.
 static var intentos = 1
 static var mejor = 0.0
+# En qué zona va la run (1, 2 o 3) y la vida con la que se llega a ella (-1 = llena).
+static var zona = 1
+static var vida_guardada = -1
+# Lo pone la Zona; sin Zona en la escena (las de prueba) hay una sola.
+var zonas_total = 1
 
 var estado = Estado.JUGANDO
 # Cronómetro: segundos jugados en este intento.
@@ -48,9 +58,27 @@ func _ready():
 	# Always: este nodo sigue vivo aunque el juego quede en pausa.
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_to_group("partida")
-	print("intento ", intentos, " · mejor tiempo ", snappedf(mejor, 0.01))
+	print("intento ", intentos, " · zona ", zona, " · mejor tiempo ", snappedf(mejor, 0.01))
+	traer_vida()
+	zona_cambiada.emit.call_deferred(zona)
 	# Diferido: los alimentos entran a su grupo en su propio _ready().
 	call_deferred("contar_metas")
+
+# La vida de la zona anterior. Se hace aquí, antes de que el HUD la lea.
+func traer_vida():
+	if vida_guardada < 0:
+		return
+	var salud = salud_del_jugador()
+	if salud != null:
+		salud.vida = vida_guardada
+		salud.cambio.emit(salud.vida)
+
+func salud_del_jugador():
+	var pj = get_tree().get_first_node_in_group("jugador")
+	return pj.get_node_or_null("Salud") if pj != null else null
+
+func ultima_zona():
+	return zona >= zonas_total
 
 func contar_metas():
 	var total = get_tree().get_nodes_in_group("alimentos").size()
@@ -135,6 +163,17 @@ func terminar(nuevo, motivo, espera):
 		mejor = tiempo
 	terminada.emit(estado, motivo)
 
+func siguiente_zona():
+	var salud = salud_del_jugador()
+	vida_guardada = salud.vida if salud != null else -1
+	zona += 1
+	print("pasa a la zona ", zona, " con ", vida_guardada, " de vida")
+
+# Todo lo que dura una run vuelve a empezar.
+static func nueva_run():
+	zona = 1
+	vida_guardada = -1
+
 # 133.4 s -> "02:13"
 static func reloj_texto(segundos):
 	var s = int(segundos)
@@ -142,7 +181,11 @@ static func reloj_texto(segundos):
 	return "%02d:%02d" % [floori(s / 60.0), s % 60]
 
 func reiniciar():
-	intentos += 1
+	if estado == Estado.GANO and not ultima_zona():
+		siguiente_zona()
+	else:
+		nueva_run()
+		intentos += 1
 	# Primero quitar la pausa: si no, la escena nueva nace congelada.
 	get_tree().paused = false
 	get_tree().reload_current_scene()

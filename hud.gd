@@ -50,6 +50,7 @@ func conectar_partida():
 	if p == null:
 		return
 	p.salida_abierta.connect(avisar.bind("SALIDA ABIERTA", COLOR_HUESO, 1))
+	p.zona_cambiada.connect(func(n): avisar("PISO " + str(n), COLOR_HUESO, 1))
 	p.salida_cerrada.connect(avisar.bind("SALIDA CERRADA", COLOR_PELIGRO, 2))
 
 # node_added llega antes de su _ready: el grupo todavía no está puesto.
@@ -115,6 +116,7 @@ func actualizar_texto():
 	var linea = "Vida: " + str(vida_actual)
 	if partida != null:
 		# Cronómetro (sube) y comida que falta para abrir la salida.
+		linea += "   Piso: " + str(Partida.zona) + "/" + str(partida.zonas_total)
 		linea += "   Tiempo: " + partida.reloj_texto(partida.tiempo)
 		if partida.metas > 0:
 			linea += "   Comida: " + str(mini(partida.hechas, partida.metas)) + "/" + str(partida.metas)

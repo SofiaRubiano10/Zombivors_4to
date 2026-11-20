@@ -20,6 +20,7 @@
 [ext_resource type="Script" path="res://mordisco.gd" id="23_mordisco"]
 [ext_resource type="Script" path="res://embestida.gd" id="24_embestida"]
 [ext_resource type="Script" path="res://navegacion.gd" id="25_navegacion"]
+[ext_resource type="Script" path="res://zona.gd" id="26_zona"]
 [ext_resource type="Script" uid="uid://bkla71jhomhhe" path="res://mueble.gd" id="30_mueble"]
 [ext_resource type="PackedScene" uid="uid://b5hlfccmpria" path="res://muebles/bookcaseClosed.glb" id="m_bookcaseClosed"]
 [ext_resource type="PackedScene" uid="uid://b4set1tppnf3n" path="res://muebles/bookcaseClosedWide.glb" id="m_bookcaseClosedWide"]
@@ -1449,6 +1450,12 @@ objetivo = NodePath("../Personaje")
 limite_min = Vector2(-21, -15)
 limite_max = Vector2(21, 15)
 
+[node name="Zona" type="Node" parent="."]
+script = ExtResource("26_zona")
+humanos = Array[NodePath]([NodePath("../Humano"), NodePath("../Humano2"), NodePath("../Humano3")])
+tiradores = Array[NodePath]([NodePath("../Tirador")])
+trampas = Array[NodePath]([NodePath("../Trampas/Trampa1"), NodePath("../Trampas/Trampa2"), NodePath("../Trampas/Trampa3")])
+
 [node name="Humano" parent="." unique_id=1389714821 instance=ExtResource("13_humano")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 0)
 rango_ataque = 1.5
@@ -1457,6 +1464,18 @@ ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(16, 0, 0)])
 
 [node name="Cazador" parent="." instance=ExtResource("14_cazador")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)
+
+[node name="Humano2" parent="." instance=ExtResource("13_humano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 0)
+rango_ataque = 1.5
+tiempo_busqueda = 2.0
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(0, 0, -13), Vector3(-4, 0, -13), Vector3(0, 0, -13)])
+
+[node name="Humano3" parent="." instance=ExtResource("13_humano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+rango_ataque = 1.5
+tiempo_busqueda = 2.0
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(0, 0, 7), Vector3(8, 0, 7), Vector3(8, 0, 0)])
 
 [node name="Tirador" parent="." instance=ExtResource("22_tirador")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -6)
@@ -1469,6 +1488,10 @@ tiempo_congelado = 2.5
 
 [node name="Trampa2" parent="Trampas" unique_id=855710491 instance=ExtResource("19_trampa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.6, 0, 13.8)
+tiempo_congelado = 2.5
+
+[node name="Trampa3" parent="Trampas" instance=ExtResource("19_trampa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
 tiempo_congelado = 2.5
 
 [node name="Salida" parent="." unique_id=1414450315 instance=ExtResource("18_salida")]
