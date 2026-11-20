@@ -7,6 +7,7 @@ extends Node
 #  - Mantener E 1.2 s lo devora: devorado() y +35 de vida.
 #  - Mientras tanto el humano queda sujetado y se va girando: si te ve, se cancela
 #    y el humano ataca. Por eso conviene entrar justo por detrás.
+# Medido (C4-04): termina si entras hasta 45° de la espalda exacta; a 50° te ve.
 
 @export var tecla = "interactuar"
 @export var alcance = 1.2

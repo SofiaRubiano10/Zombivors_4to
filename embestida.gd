@@ -6,6 +6,8 @@ extends Node
 #  - Cuesta 3 de vida, hace 3 m de ruido y tarda 3 s en recargarse.
 #  - Si choca con un humano lo aturde 1.5 s: entonces se le puede morder de frente.
 #  - cargas_max lo sube la mutación "Embestida doble".
+# Medido (C4-04): recorre 1.75 m; tras el choque hay 1.5 s para empezar a morder,
+# y mientras lo muerdes sigue aturdido.
 
 @export var tecla = "embestir"
 @export var duracion = 0.25

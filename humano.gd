@@ -39,8 +39,10 @@ enum Estado { PATRULLAR, ESPERAR, PERSEGUIR, ATACAR, BUSCAR, MIRAR, VOLVER, SOSP
 @export var giro_mirar = 90.0
 @export var danio = 15
 # Grados por segundo que se gira hacia el zombi mientras lo muerden.
-# De espaldas le faltan 135° para verlo: 1.5 s, más que el mordisco (1.2 s).
-@export var giro_forcejeo = 90.0
+# De espaldas le faltan 135° para verlo: a 75°/s tarda 1.8 s, más que el mordisco
+# (1.2 s). Balance medido: con 90°/s solo funcionaba hasta 25° de la espalda
+# exacta; con 75°/s funciona hasta unos 45° (la espalda "ancha").
+@export var giro_forcejeo = 75.0
 # Desplazamientos desde donde se colocó el NPC, no posiciones absolutas.
 @export var ruta: Array[Vector3] = [Vector3.ZERO, Vector3(0, 0, -6)]
 
@@ -209,7 +211,10 @@ func aturdir(segundos):
 # El mordisco lo llama cada cuadro con un margen corto: si el zombi suelta,
 # al rato el humano queda libre.
 func sujetar(segundos):
+	# Aturdido y mordido: no se recupera mientras lo muerden. Balance medido: sin
+	# esto, tras la embestida había menos de 0.3 s para empezar a morder.
 	if estado == Estado.ATURDIDO:
+		reloj = maxf(reloj, segundos)
 		return
 	sujetado = maxf(sujetado, segundos)
 	if estado != Estado.SUJETADO and not alerta_en(estado):
