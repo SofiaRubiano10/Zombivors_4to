@@ -57,6 +57,7 @@ func completar():
 	soltar()
 	print("mordisco: devoró a ", presa.name)
 	Sonidos.tocar("mordisco")
+	Onda.crear(presa.get_parent(), presa.global_position)
 	var salud = pj.get_node_or_null("Salud")
 	if salud != null:
 		salud.curar(curacion)

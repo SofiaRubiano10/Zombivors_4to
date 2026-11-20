@@ -25,6 +25,7 @@ func usar() -> void:
 		salud.curar(int(round(curacion * factor)))
 		pausar_descomposicion(salud)
 	Sonidos.tocar("comer")
+	Onda.crear(get_parent(), global_position)
 	print("alimento comido: ", name, " (+", curacion, " de vida)")
 	var partida = get_tree().get_first_node_in_group("partida")
 	if partida != null:
