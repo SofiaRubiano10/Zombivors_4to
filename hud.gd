@@ -3,11 +3,21 @@ extends CanvasLayer
 # Taller 10 - Tarea B (María Sofía): el HUD solo muestra; la vida vive en la Salud
 # y el tiempo en la Partida.
 # La vida llega por señal. El tiempo cambia cada cuadro, por eso se lee en _process.
+# Clase 3: avisos de estado en texto, grandes y arriba: "TE VIO" (rojo, peligro),
+# "SOSPECHA", "SALIDA ABIERTA" y "SALIDA CERRADA". Duran unos segundos y se apagan.
+
+const COLOR_PELIGRO = Color("#B22222")
+const COLOR_HUESO = Color(0.949, 0.929, 0.894)
+@export var duracion_aviso = 2.0
 
 @onready var texto = $Texto
 # Barra de progreso al comer: aparece sobre la cabeza del zombi mientras se
 # mantiene E junto a un alimento. Amarillo carne, el color de la comida.
 @onready var barra = $BarraComer
+@onready var aviso = $Aviso
+var reloj_aviso = 0.0
+# Un aviso importante (TE VIO) no lo tapa uno menor (SOSPECHA) mientras dura.
+var prioridad_aviso = 0
 var vida_actual = 0
 var partida = null
 var jugador = null
@@ -20,8 +30,44 @@ func _ready():
 	var salud = pj.get_node("Salud")
 	salud.cambio.connect(mostrar)
 	mostrar(salud.vida)
+	aviso.text = ""
+	# Los humanos pueden aparecer después (el cazador): se conectan al entrar.
+	for h in get_tree().get_nodes_in_group("humanos"):
+		conectar_humano(h)
+	get_tree().node_added.connect(_al_aparecer)
+	call_deferred("conectar_partida")
 
-func _process(_delta):
+func conectar_partida():
+	var p = get_tree().get_first_node_in_group("partida")
+	if p == null:
+		return
+	p.salida_abierta.connect(avisar.bind("SALIDA ABIERTA", COLOR_HUESO, 1))
+	p.salida_cerrada.connect(avisar.bind("SALIDA CERRADA", COLOR_PELIGRO, 2))
+
+# node_added llega antes de su _ready: el grupo todavía no está puesto.
+func _al_aparecer(nodo):
+	if nodo.has_signal("me_vio"):
+		conectar_humano.call_deferred(nodo)
+
+func conectar_humano(h):
+	if not is_instance_valid(h) or h.me_vio.is_connected(avisar):
+		return
+	h.me_vio.connect(avisar.bind("TE VIO", COLOR_PELIGRO, 2))
+	if h.has_signal("sospecha"):
+		h.sospecha.connect(avisar.bind("SOSPECHA", COLOR_HUESO, 1))
+
+func avisar(texto_aviso, color, prioridad):
+	if reloj_aviso > 0.0 and prioridad < prioridad_aviso:
+		return
+	aviso.text = texto_aviso
+	aviso.add_theme_color_override("font_color", color)
+	reloj_aviso = duracion_aviso
+	prioridad_aviso = prioridad
+
+func _process(delta):
+	reloj_aviso = maxf(reloj_aviso - delta, 0.0)
+	# El último medio segundo se desvanece.
+	aviso.modulate.a = clampf(reloj_aviso / 0.5, 0.0, 1.0)
 	actualizar_texto()
 	actualizar_barra()
 
