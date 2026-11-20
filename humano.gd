@@ -8,8 +8,13 @@ extends CharacterBody3D
 # Clase 2: ve en un cono de 6 m y 90 grados hacia delante; los muros tapan la vista.
 # Clase 2: si lo pierde (muro o distancia) no lo olvida: va a donde lo vio por
 # última vez, mira alrededor y vuelve a su ruta.
+# Clase 3: oye. Si el zombi hace ruido (hizo_ruido) y el radio del ruido lo alcanza,
+# pasa a SOSPECHA: va a ese punto, mira alrededor y vuelve a su ruta.
+# PATRULLA -> SOSPECHA -> PERSIGUE -> VUELVE.
 
-enum Estado { PATRULLAR, ESPERAR, PERSEGUIR, ATACAR, BUSCAR, MIRAR, VOLVER }
+signal sospecha
+
+enum Estado { PATRULLAR, ESPERAR, PERSEGUIR, ATACAR, BUSCAR, MIRAR, VOLVER, SOSPECHA }
 
 @export var rapidez = 2.0
 @export var espera = 1.0
@@ -34,6 +39,8 @@ var indice = 0
 var reloj = 0.0
 var jugador = null
 var ultimo_visto = Vector3.ZERO
+# Dónde sonó el último ruido que oyó.
+var punto_ruido = Vector3.ZERO
 # El modelo (personaje/modelo_guardia.tscn) trae el AnimationPlayer; sin modelo, no se anima.
 @onready var anim = get_node_or_null("Modelo/AnimationPlayer")
 @onready var vision = $Vision
@@ -42,6 +49,8 @@ func _ready():
 	jugador = get_tree().get_first_node_in_group("jugador")
 	for d in ruta:
 		puntos.append(global_position + d)
+	if jugador != null and jugador.has_signal("hizo_ruido"):
+		jugador.hizo_ruido.connect(_al_oir)
 
 func _physics_process(delta):
 	velocity += get_gravity() * delta
@@ -72,6 +81,8 @@ func _physics_process(delta):
 			golpear()
 		Estado.BUSCAR:
 			ir_a(ultimo_visto)
+		Estado.SOSPECHA:
+			ir_a(punto_ruido)
 		Estado.MIRAR:
 			frenar()
 			rotate_y(deg_to_rad(giro_mirar) * delta)
@@ -92,6 +103,9 @@ func decidir(d, ve, alerta):
 		Estado.BUSCAR:
 			if distancia_a(ultimo_visto) <= 0.3 or reloj <= 0.001:
 				return Estado.MIRAR
+		Estado.SOSPECHA:
+			if distancia_a(punto_ruido) <= 0.3 or reloj <= 0.001:
+				return Estado.MIRAR
 		Estado.MIRAR:
 			if reloj <= 0.001:
 				return Estado.VOLVER
@@ -109,12 +123,27 @@ func decidir(d, ve, alerta):
 # Los relojes se ponen al ENTRAR al estado, no mientras dura.
 func cambiar_a(nuevo, d):
 	estado = nuevo
-	if estado == Estado.BUSCAR:
+	if estado == Estado.BUSCAR or estado == Estado.SOSPECHA:
 		reloj = tiempo_max_buscar
 	elif estado == Estado.MIRAR:
 		reloj = tiempo_busqueda
 	print(name, " -> ", Estado.keys()[estado], " cuadro ",
 		Engine.get_physics_frames(), " a ", snappedf(d, 0.01), " m")
+
+# El ruido llega hasta "radio" metros desde donde sonó: si estoy dentro, lo oigo.
+# Persiguiendo no se distrae: ya sabe dónde está el zombi.
+func _al_oir(posicion, radio):
+	if estado == Estado.PERSEGUIR or estado == Estado.ATACAR:
+		return
+	if distancia_a(posicion) > radio:
+		return
+	punto_ruido = posicion
+	if estado != Estado.SOSPECHA:
+		cambiar_a(Estado.SOSPECHA, distancia_a(posicion))
+		sospecha.emit()
+	else:
+		# Otro ruido mientras ya sospechaba: cambia de destino y renueva la paciencia.
+		reloj = tiempo_max_buscar
 
 # Mientras siga pegado, golpea: la invulnerabilidad de la Salud decide cada cuánto cuenta.
 func golpear():
