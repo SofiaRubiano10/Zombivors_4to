@@ -248,7 +248,9 @@ func patrullar():
 	ir_a(destino)
 
 func ir_a(destino):
-	var hacia = destino - global_position
+	# Rodea muros y muebles con la malla de navegación (navegacion.gd).
+	var paso = Navegacion.siguiente_paso(get_world_3d(), global_position, destino)
+	var hacia = paso - global_position
 	hacia.y = 0.0
 	# Ya está encima: Basis.looking_at no acepta un vector cero.
 	if hacia.length() < 0.05:

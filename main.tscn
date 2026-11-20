@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" path="res://tirador.tscn" id="22_tirador"]
 [ext_resource type="Script" path="res://mordisco.gd" id="23_mordisco"]
 [ext_resource type="Script" path="res://embestida.gd" id="24_embestida"]
+[ext_resource type="Script" path="res://navegacion.gd" id="25_navegacion"]
 [ext_resource type="Script" uid="uid://bkla71jhomhhe" path="res://mueble.gd" id="30_mueble"]
 [ext_resource type="PackedScene" uid="uid://b5hlfccmpria" path="res://muebles/bookcaseClosed.glb" id="m_bookcaseClosed"]
 [ext_resource type="PackedScene" uid="uid://b4set1tppnf3n" path="res://muebles/bookcaseClosedWide.glb" id="m_bookcaseClosedWide"]
@@ -1272,6 +1273,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2, 0, 2.9)
 script = ExtResource("30_mueble")
 modelo = ExtResource("m_cardboardBoxClosed")
 solido = false
+
+[node name="Navegacion" type="NavigationRegion3D" parent="."]
+script = ExtResource("25_navegacion")
 
 [node name="Lamparas" type="Node3D" parent="." unique_id=2114950623]
 
