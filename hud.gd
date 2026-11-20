@@ -150,8 +150,11 @@ func actualizar_texto():
 		linea += "   Tiempo: " + partida.reloj_texto(partida.tiempo)
 		if partida.metas > 0:
 			linea += "   Comida: " + str(mini(partida.hechas, partida.metas)) + "/" + str(partida.metas)
+		var puntos = get_tree().get_first_node_in_group("puntuacion")
+		if puntos != null:
+			linea += "\nPuntos: " + str(puntos.en_curso()) + "   Récord: " + str(maxi(puntos.record, 0))
 		if not Mutaciones.elegidas.is_empty():
-			linea += "\nMutaciones: " + ", ".join(Mutaciones.elegidas)
+			linea += "   Mutaciones: " + ", ".join(Mutaciones.elegidas)
 		if embestida != null:
 			linea += "   Embestida: " + texto_embestida()
 		if partida.tarde:

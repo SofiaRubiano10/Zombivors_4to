@@ -22,6 +22,7 @@
 [ext_resource type="Script" path="res://navegacion.gd" id="25_navegacion"]
 [ext_resource type="Script" path="res://zona.gd" id="26_zona"]
 [ext_resource type="PackedScene" path="res://pantalla_mutaciones.tscn" id="27_mutaciones"]
+[ext_resource type="Script" path="res://puntuacion.gd" id="28_puntuacion"]
 [ext_resource type="Script" uid="uid://bkla71jhomhhe" path="res://mueble.gd" id="30_mueble"]
 [ext_resource type="PackedScene" uid="uid://b5hlfccmpria" path="res://muebles/bookcaseClosed.glb" id="m_bookcaseClosed"]
 [ext_resource type="PackedScene" uid="uid://b4set1tppnf3n" path="res://muebles/bookcaseClosedWide.glb" id="m_bookcaseClosedWide"]
@@ -1500,6 +1501,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -14)
 
 [node name="Partida" type="Node" parent="." unique_id=1105442492]
 script = ExtResource("16_partida")
+
+[node name="Puntuacion" type="Node" parent="."]
+script = ExtResource("28_puntuacion")
 
 [node name="HUD" parent="." unique_id=1635678149 instance=ExtResource("17_hud")]
 
