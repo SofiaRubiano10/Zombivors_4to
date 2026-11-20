@@ -10,6 +10,7 @@ extends Area3D
 
 func _ready():
 	add_to_group("peligros")
+	BordeRojo.poner(self)
 	body_entered.connect(_al_entrar)
 
 func _al_entrar(cuerpo):

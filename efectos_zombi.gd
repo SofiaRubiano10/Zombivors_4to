@@ -51,6 +51,8 @@ func _al_cambiar(vida):
 	objetivo_desaturar = clampf(1.0 - float(vida) / inicial, 0.0, 1.0) * desaturacion_max
 
 func _process(delta):
+	# Los bordes rojos de humanos y trampas se encienden según dónde está el zombi.
+	BordeRojo.seguir(pj.global_position)
 	flash = ControlEfectos.decaer(flash, 0.0, ControlEfectos.k_para(dura_flash), delta)
 	desaturar = ControlEfectos.decaer(desaturar, objetivo_desaturar, k_desaturar, delta)
 	for m in materiales.values():

@@ -62,6 +62,8 @@ var sujetado = 0.0
 
 func _ready():
 	add_to_group("humanos")
+	# Criterio visual 1: contorno rojo cuando el zombi está cerca.
+	BordeRojo.poner(self)
 	jugador = get_tree().get_first_node_in_group("jugador")
 	for d in ruta:
 		puntos.append(global_position + d)
