@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://pantalla_mutaciones.gd" id="1_pantalla"]
+
+[node name="PantallaMutaciones" type="CanvasLayer"]
+script = ExtResource("1_pantalla")

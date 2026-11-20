@@ -20,7 +20,9 @@ func usar() -> void:
 	var pj = get_tree().get_first_node_in_group("jugador")
 	var salud = pj.get_node_or_null("Salud") if pj else null
 	if salud != null:
-		salud.curar(curacion)
+		# Mutación "Hambre voraz": la comida cura un 50 % más.
+		var factor = 1.5 if Mutaciones.tiene("Hambre voraz") else 1.0
+		salud.curar(int(round(curacion * factor)))
 		pausar_descomposicion(salud)
 	Sonidos.tocar("comer")
 	print("alimento comido: ", name, " (+", curacion, " de vida)")

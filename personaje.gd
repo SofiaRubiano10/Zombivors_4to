@@ -27,6 +27,8 @@ var accion: String = ""
 var avance: Vector3 = Vector3.ZERO
 var estado: Estado = Estado.QUIETO
 var ruido: float = 0.0
+# Lo baja la mutación "Pies de trapo" (0.5 = la mitad de ruido).
+var factor_ruido: float = 1.0
 # Lo que se debe por correr y aún no llega a 1 punto de vida.
 var gasto: float = 0.0
 var reloj_ruido: float = 0.0
@@ -73,7 +75,7 @@ func _physics_process(delta: float) -> void:
 	# Máquina de estados con actualización de ruido
 	var antes: Estado = estado
 	estado = elegir_estado()
-	ruido = RUIDO[estado]
+	ruido = RUIDO[estado] * factor_ruido
 	if estado != antes:
 		print("estado ", Estado.keys()[estado], " · ruido ", ruido, " m")
 	

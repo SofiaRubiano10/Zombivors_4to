@@ -63,7 +63,7 @@ func empezar():
 	if salud != null:
 		salud.quitar_vida(costo)
 	Sonidos.tocar("embestida")
-	pj.hizo_ruido.emit(pj.global_position, ruido)
+	pj.hizo_ruido.emit(pj.global_position, ruido * pj.factor_ruido)
 	print("embestida (quedan ", cargas, " cargas)")
 
 func impulsar(delta):

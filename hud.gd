@@ -20,6 +20,9 @@ var embestida = null
 var reloj_aviso = 0.0
 # Un aviso importante (TE VIO) no lo tapa uno menor (SOSPECHA) mientras dura.
 var prioridad_aviso = 0
+# Mutación "Olfato": una flecha color comida alrededor del zombi que apunta al
+# alimento más cercano.
+var flecha = Polygon2D.new()
 var vida_actual = 0
 var partida = null
 var jugador = null
@@ -35,6 +38,10 @@ func _ready():
 	salud.cambio.connect(mostrar)
 	mostrar(salud.vida)
 	aviso.text = ""
+	flecha.polygon = PackedVector2Array([Vector2(14, 0), Vector2(-8, -9), Vector2(-8, 9)])
+	flecha.color = Color(0.831, 0.639, 0.451)
+	flecha.visible = false
+	add_child(flecha)
 	# Los humanos pueden aparecer después (el cazador): se conectan al entrar.
 	for h in get_tree().get_nodes_in_group("humanos"):
 		conectar_humano(h)
@@ -81,6 +88,7 @@ func _process(delta):
 	aviso.modulate.a = clampf(reloj_aviso / 0.5, 0.0, 1.0)
 	actualizar_texto()
 	actualizar_barra()
+	actualizar_flecha()
 
 # El progreso lo lleva Interactuar (de 0 a 1); el HUD solo lo dibuja.
 func actualizar_barra():
@@ -97,6 +105,28 @@ func actualizar_barra():
 	# Un poco por encima de la cabeza (el zombi mide unos 1.8 m).
 	var cabeza = jugador.global_position + Vector3(0, 2.3, 0)
 	barra.position = camara.unproject_position(cabeza) - barra.size * 0.5
+
+func actualizar_flecha():
+	var camara = get_viewport().get_camera_3d()
+	flecha.visible = false
+	if not Mutaciones.tiene("Olfato") or camara == null:
+		return
+	var mejor = null
+	var cerca = INF
+	for a in get_tree().get_nodes_in_group("alimentos"):
+		var d = a.global_position.distance_to(jugador.global_position)
+		if d < cerca:
+			cerca = d
+			mejor = a
+	if mejor == null:
+		return
+	var centro = camara.unproject_position(jugador.global_position + Vector3(0, 0.9, 0))
+	var hacia = camara.unproject_position(mejor.global_position) - centro
+	if hacia.length() < 1.0:
+		return
+	flecha.visible = true
+	flecha.position = centro + hacia.normalized() * 70.0
+	flecha.rotation = hacia.angle()
 
 func mostrar(vida):
 	vida_actual = vida
@@ -120,6 +150,8 @@ func actualizar_texto():
 		linea += "   Tiempo: " + partida.reloj_texto(partida.tiempo)
 		if partida.metas > 0:
 			linea += "   Comida: " + str(mini(partida.hechas, partida.metas)) + "/" + str(partida.metas)
+		if not Mutaciones.elegidas.is_empty():
+			linea += "\nMutaciones: " + ", ".join(Mutaciones.elegidas)
 		if embestida != null:
 			linea += "   Embestida: " + texto_embestida()
 		if partida.tarde:

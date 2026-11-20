@@ -18,6 +18,7 @@ extends Node
 # Clase 5: la run tiene 3 zonas (zona.gd las configura). Ganar una zona recarga la
 # escena en la siguiente con la misma vida (static); ganar la última es la victoria
 # final. Perder en cualquier zona termina la run: se vuelve a la zona 1.
+# Clase 5: entre zonas se elige una mutación (pantalla_mutaciones.tscn).
 
 signal terminada(estado, motivo)
 signal meta(hechas, total)
@@ -60,6 +61,7 @@ func _ready():
 	add_to_group("partida")
 	print("intento ", intentos, " · zona ", zona, " · mejor tiempo ", snappedf(mejor, 0.01))
 	traer_vida()
+	Mutaciones.aplicar(get_tree().get_first_node_in_group("jugador"))
 	zona_cambiada.emit.call_deferred(zona)
 	# Diferido: los alimentos entran a su grupo en su propio _ready().
 	call_deferred("contar_metas")
@@ -92,9 +94,12 @@ static func metas_para(total, porcentaje):
 
 func _physics_process(delta):
 	if estado != Estado.JUGANDO:
+		if reloj <= 0.0:
+			return
 		reloj -= delta
 		if reloj <= 0.001:
-			reiniciar()
+			reloj = 0.0
+			despues_de_terminar()
 		return
 	tiempo += delta
 	if not tarde and tiempo >= tiempo_tarde:
@@ -173,12 +178,27 @@ func siguiente_zona():
 static func nueva_run():
 	zona = 1
 	vida_guardada = -1
+	Mutaciones.elegidas.clear()
 
 # 133.4 s -> "02:13"
 static func reloj_texto(segundos):
 	var s = int(segundos)
 	# floori dice a propósito "quédate con los minutos enteros"; s / 60 daba aviso.
 	return "%02d:%02d" % [floori(s / 60.0), s % 60]
+
+# Al ganar una zona que no es la última se elige mutación antes de seguir.
+func despues_de_terminar():
+	var pantalla = get_tree().get_first_node_in_group("pantalla_mutaciones")
+	if estado == Estado.GANO and not ultima_zona() and pantalla != null:
+		pantalla.elegida.connect(_al_elegir_mutacion, CONNECT_ONE_SHOT)
+		pantalla.mostrar(zona)
+		return
+	reiniciar()
+
+func _al_elegir_mutacion(nombre):
+	if nombre != "":
+		Mutaciones.agregar(nombre)
+	reiniciar()
 
 func reiniciar():
 	if estado == Estado.GANO and not ultima_zona():
