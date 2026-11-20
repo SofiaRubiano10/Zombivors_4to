@@ -89,11 +89,9 @@ func _physics_process(delta):
 		Estado.ESPERAR:
 			frenar()
 		Estado.PERSEGUIR:
-			ir_a(jugador.global_position)
+			perseguir(delta)
 		Estado.ATACAR:
-			frenar()
-			reproducir("attack-melee-right")
-			golpear()
+			atacar(delta)
 		Estado.BUSCAR:
 			ir_a(ultimo_visto)
 		Estado.SOSPECHA:
@@ -173,6 +171,15 @@ func _al_oir(posicion, radio):
 	else:
 		# Otro ruido mientras ya sospechaba: cambia de destino y renueva la paciencia.
 		reloj = tiempo_max_buscar
+
+# Lo que hace al verlo, aparte para que otros tipos de humano (el tirador) lo cambien.
+func perseguir(_delta):
+	ir_a(jugador.global_position)
+
+func atacar(_delta):
+	frenar()
+	reproducir("attack-melee-right")
+	golpear()
 
 # Mientras siga pegado, golpea: la invulnerabilidad de la Salud decide cada cuánto cuenta.
 func golpear():

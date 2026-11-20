@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" path="res://trampa.tscn" id="19_trampa"]
 [ext_resource type="Script" uid="uid://othrpvoa5dw3" path="res://niebla_sala.gd" id="20_niebla"]
 [ext_resource type="PackedScene" path="res://lampara.tscn" id="21_lampara"]
+[ext_resource type="PackedScene" path="res://tirador.tscn" id="22_tirador"]
 [ext_resource type="Script" uid="uid://bkla71jhomhhe" path="res://mueble.gd" id="30_mueble"]
 [ext_resource type="PackedScene" uid="uid://b5hlfccmpria" path="res://muebles/bookcaseClosed.glb" id="m_bookcaseClosed"]
 [ext_resource type="PackedScene" uid="uid://b4set1tppnf3n" path="res://muebles/bookcaseClosedWide.glb" id="m_bookcaseClosedWide"]
@@ -1452,6 +1453,9 @@ danio = 20
 vida = 40.0
 vida_huida = 10.0
 danio_prueba = 15.0
+
+[node name="Tirador" parent="." instance=ExtResource("22_tirador")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -6)
 
 [node name="Trampas" type="Node3D" parent="." unique_id=556978506]
 

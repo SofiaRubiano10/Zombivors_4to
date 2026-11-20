@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tirador.gd" id="1_tirador"]
+[ext_resource type="PackedScene" path="res://personaje/modelo_guardia.tscn" id="2_modelo"]
+
+[sub_resource type="CapsuleShape3D" id="Forma_tirador"]
+radius = 0.35
+height = 1.75
+
+[sub_resource type="StandardMaterial3D" id="Material_arma"]
+albedo_color = Color(0.12, 0.12, 0.13, 1)
+metallic = 0.5
+roughness = 0.5
+
+[sub_resource type="BoxMesh" id="Malla_arma"]
+material = SubResource("Material_arma")
+size = Vector3(0.08, 0.1, 0.6)
+
+[node name="Tirador" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_tirador")
+rango_vision = 8.0
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(0, 0, -3)])
+
+[node name="Modelo" parent="." instance=ExtResource("2_modelo")]
+
+[node name="Arma" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.0, -0.45)
+mesh = SubResource("Malla_arma")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("Forma_tirador")
+
+[node name="Vision" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
