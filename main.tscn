@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://nwsm1v1c4hu1" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
 [ext_resource type="Script" uid="uid://q1ei4flyuc5r" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
 [ext_resource type="PackedScene" uid="uid://cxrydsrs7ug6" path="res://humano.tscn" id="13_humano"]
-[ext_resource type="PackedScene" uid="uid://baa1a68g2g2m6" path="res://cazador_humano.tscn" id="14_cazador"]
+[ext_resource type="PackedScene" path="res://cazador.tscn" id="14_cazador"]
 [ext_resource type="Script" uid="uid://b31sc8fwss4up" path="res://salud.gd" id="15_salud"]
 [ext_resource type="Script" uid="uid://byawbqat6uuj5" path="res://partida.gd" id="16_partida"]
 [ext_resource type="PackedScene" path="res://hud.tscn" id="17_hud"]
@@ -1455,16 +1455,8 @@ rango_ataque = 1.5
 tiempo_busqueda = 2.0
 ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(16, 0, 0)])
 
-[node name="Cazador" parent="." unique_id=1002070441 instance=ExtResource("14_cazador")]
-transform = Transform3D(-0.34031853, 0, 0.94031024, 0, 1, 0, -0.94031024, 0, -0.34031853, 10.257019, 0, 7.0191765)
-rapidez = 1.8
-rango_ataque = 1.3
-tiempo_recarga = 1.5
-alcance_golpe = 1.6
-danio = 20
-vida = 40.0
-vida_huida = 10.0
-danio_prueba = 15.0
+[node name="Cazador" parent="." instance=ExtResource("14_cazador")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)
 
 [node name="Tirador" parent="." instance=ExtResource("22_tirador")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -6)

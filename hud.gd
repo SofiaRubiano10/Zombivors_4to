@@ -38,6 +38,10 @@ func _ready():
 	# Los humanos pueden aparecer después (el cazador): se conectan al entrar.
 	for h in get_tree().get_nodes_in_group("humanos"):
 		conectar_humano(h)
+	# El cazador está escondido (fuera del grupo) hasta que aparece.
+	for nodo in get_tree().get_nodes_in_group("cazador"):
+		conectar_humano(nodo)
+		nodo.aparecio.connect(avisar.bind("LLEGÓ EL CAZADOR", COLOR_PELIGRO, 3))
 	get_tree().node_added.connect(_al_aparecer)
 	call_deferred("conectar_partida")
 
@@ -52,6 +56,8 @@ func conectar_partida():
 func _al_aparecer(nodo):
 	if nodo.has_signal("me_vio"):
 		conectar_humano.call_deferred(nodo)
+	if nodo.has_signal("aparecio"):
+		nodo.aparecio.connect(avisar.bind("LLEGÓ EL CAZADOR", COLOR_PELIGRO, 3))
 
 func conectar_humano(h):
 	if not is_instance_valid(h) or h.me_vio.is_connected(avisar):
