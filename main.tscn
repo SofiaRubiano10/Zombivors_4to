@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://puntuacion.gd" id="28_puntuacion"]
 [ext_resource type="PackedScene" path="res://fin_run.tscn" id="29_fin"]
 [ext_resource type="PackedScene" path="res://pausa.tscn" id="30_pausa"]
+[ext_resource type="Script" path="res://efectos_zombi.gd" id="31_efectos"]
 [ext_resource type="Script" uid="uid://bkla71jhomhhe" path="res://mueble.gd" id="30_mueble"]
 [ext_resource type="PackedScene" uid="uid://b5hlfccmpria" path="res://muebles/bookcaseClosed.glb" id="m_bookcaseClosed"]
 [ext_resource type="PackedScene" uid="uid://b4set1tppnf3n" path="res://muebles/bookcaseClosedWide.glb" id="m_bookcaseClosedWide"]
@@ -1453,6 +1454,9 @@ script = ExtResource("23_mordisco")
 
 [node name="Embestida" type="Node" parent="Personaje"]
 script = ExtResource("24_embestida")
+
+[node name="EfectosZombi" type="Node" parent="Personaje"]
+script = ExtResource("31_efectos")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1386563772 node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
