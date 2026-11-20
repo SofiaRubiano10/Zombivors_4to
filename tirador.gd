@@ -38,6 +38,7 @@ func apuntar_y_disparar(delta):
 		return
 	recarga = cadencia
 	reproducir("attack-melee-right")
+	Sonidos.tocar("disparo")
 	var bala = escena_proyectil.instantiate()
 	bala.danio = danio_proyectil
 	bala.rapidez = velocidad_proyectil

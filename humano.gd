@@ -149,6 +149,7 @@ func cambiar_a(nuevo, d):
 	var antes = estado
 	estado = nuevo
 	if alerta_en(nuevo) and not alerta_en(antes):
+		Sonidos.tocar("alerta")
 		me_vio.emit()
 	if estado == Estado.BUSCAR or estado == Estado.SOSPECHA:
 		reloj = tiempo_max_buscar

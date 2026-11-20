@@ -22,6 +22,7 @@ func usar() -> void:
 	if salud != null:
 		salud.curar(curacion)
 		pausar_descomposicion(salud)
+	Sonidos.tocar("comer")
 	print("alimento comido: ", name, " (+", curacion, " de vida)")
 	var partida = get_tree().get_first_node_in_group("partida")
 	if partida != null:

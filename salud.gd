@@ -48,6 +48,7 @@ func recibir_golpe(danio):
 	if reloj > 0.001 or vida == 0:
 		return
 	reloj = invulnerable
+	Sonidos.tocar("golpe")
 	golpeado.emit(danio)
 	quitar_vida(danio)
 

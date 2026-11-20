@@ -15,6 +15,7 @@ func _ready():
 func _al_entrar(cuerpo):
 	if not cuerpo.is_in_group("jugador"):
 		return
+	Sonidos.tocar("trampa")
 	var salud = cuerpo.get_node_or_null("Salud")
 	if salud != null:
 		salud.recibir_golpe(danio)

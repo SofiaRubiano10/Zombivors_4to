@@ -96,6 +96,7 @@ func abrir_salida():
 		print("meta cumplida, pero la salida ya cerró")
 		return
 	abierta = true
+	Sonidos.tocar("salida")
 	print("salida abierta")
 	salida_abierta.emit()
 
