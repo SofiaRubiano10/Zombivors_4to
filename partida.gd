@@ -104,6 +104,9 @@ func _physics_process(delta):
 			reloj = 0.0
 			despues_de_terminar()
 		return
+	# Menú de pausa abierto: la Partida sigue viva (Always) pero el tiempo no corre.
+	if get_tree().paused:
+		return
 	tiempo += delta
 	if not tarde and tiempo >= tiempo_tarde:
 		cerrar_salida()
@@ -171,6 +174,13 @@ func terminar(nuevo, motivo, espera):
 	if estado == Estado.GANO and (mejor == 0.0 or tiempo < mejor):
 		mejor = tiempo
 	terminada.emit(estado, motivo)
+
+# Desde el menú de pausa: se abandona la run y se empieza otra.
+func reiniciar_run():
+	nueva_run()
+	intentos += 1
+	get_tree().paused = false
+	get_tree().reload_current_scene()
 
 func siguiente_zona():
 	var salud = salud_del_jugador()
