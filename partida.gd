@@ -19,6 +19,8 @@ extends Node
 # escena en la siguiente con la misma vida (static); ganar la última es la victoria
 # final. Perder en cualquier zona termina la run: se vuelve a la zona 1.
 # Clase 5: entre zonas se elige una mutación (pantalla_mutaciones.tscn).
+# Clase 5: cuando la run termina se muestra el resumen (fin_run.tscn) y se espera
+# a que el jugador pida otra.
 
 signal terminada(estado, motivo)
 signal meta(hechas, total)
@@ -54,6 +56,7 @@ var hechas = 0
 var abierta = false
 var tarde = false
 var reloj = 0.0
+var motivo_fin = ""
 
 func _ready():
 	# Always: este nodo sigue vivo aunque el juego quede en pausa.
@@ -160,6 +163,7 @@ func terminar(nuevo, motivo, espera):
 	if estado != Estado.JUGANDO:
 		return
 	estado = nuevo
+	motivo_fin = motivo
 	print("fin: ", Estado.keys()[estado], " cuadro ",
 		Engine.get_physics_frames(), " (", motivo, ") a los ", reloj_texto(tiempo))
 	get_tree().paused = true
@@ -193,7 +197,22 @@ func despues_de_terminar():
 		pantalla.elegida.connect(_al_elegir_mutacion, CONNECT_ONE_SHOT)
 		pantalla.mostrar(zona)
 		return
+	var fin = get_tree().get_first_node_in_group("fin_run")
+	if fin != null and not (estado == Estado.GANO and not ultima_zona()):
+		mostrar_fin(fin)
+		return
 	reiniciar()
+
+func mostrar_fin(fin):
+	var gano = estado == Estado.GANO
+	var pisos = zona if gano else zona - 1
+	var p = get_tree().get_first_node_in_group("puntuacion")
+	var puntos = p.total if p != null else 0
+	var record = p.record if p != null else 0
+	var nuevo = p.nuevo_record if p != null else false
+	var devorados = p.devorados if p != null else 0
+	fin.otra_vez.connect(reiniciar, CONNECT_ONE_SHOT)
+	fin.mostrar(gano, motivo_fin, pisos, zonas_total, devorados, puntos, record, nuevo)
 
 func _al_elegir_mutacion(nombre):
 	if nombre != "":
