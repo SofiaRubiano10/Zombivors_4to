@@ -266,6 +266,9 @@ size = Vector3(11.48, 2.62, 15.48)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carne"]
 albedo_color = Color(0.831, 0.639, 0.451, 1)
 roughness = 0.4
+emission_enabled = true
+emission = Color(0.831, 0.639, 0.451, 1)
+emission_energy_multiplier = 0.35
 
 [sub_resource type="BoxMesh" id="BoxMesh_caja"]
 material = SubResource("StandardMaterial3D_carne")
@@ -273,10 +276,16 @@ material = SubResource("StandardMaterial3D_carne")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cerebro"]
 albedo_color = Color(0.93, 0.5, 0.62, 1)
 roughness = 0.3
+emission_enabled = true
+emission = Color(0.93, 0.5, 0.62, 1)
+emission_energy_multiplier = 0.35
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carrona"]
 albedo_color = Color(0.36, 0.4, 0.22, 1)
 roughness = 0.8
+emission_enabled = true
+emission = Color(0.36, 0.4, 0.22, 1)
+emission_energy_multiplier = 0.35
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_zombi"]
 radius = 0.35
