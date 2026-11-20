@@ -16,6 +16,7 @@ const COLOR_HUESO = Color(0.949, 0.929, 0.894)
 @onready var barra = $BarraComer
 @onready var aviso = $Aviso
 var mordisco = null
+var embestida = null
 var reloj_aviso = 0.0
 # Un aviso importante (TE VIO) no lo tapa uno menor (SOSPECHA) mientras dura.
 var prioridad_aviso = 0
@@ -29,6 +30,7 @@ func _ready():
 	jugador = pj
 	interactuar = pj.get_node_or_null("Interactuar")
 	mordisco = pj.get_node_or_null("Mordisco")
+	embestida = pj.get_node_or_null("Embestida")
 	var salud = pj.get_node("Salud")
 	salud.cambio.connect(mostrar)
 	mostrar(salud.vida)
@@ -94,6 +96,12 @@ func mostrar(vida):
 	actualizar_texto()
 	print("HUD -> ", texto.text)
 
+# "lista", "x2" con dos cargas, o los segundos que faltan.
+func texto_embestida():
+	if embestida.cargas > 0:
+		return "lista" if embestida.cargas == 1 else "x" + str(embestida.cargas)
+	return str(snappedf(embestida.recarga, 0.1)) + " s"
+
 func actualizar_texto():
 	# Se busca aquí: la Partida quizá todavía no existía en _ready().
 	if partida == null:
@@ -104,6 +112,8 @@ func actualizar_texto():
 		linea += "   Tiempo: " + partida.reloj_texto(partida.tiempo)
 		if partida.metas > 0:
 			linea += "   Comida: " + str(mini(partida.hechas, partida.metas)) + "/" + str(partida.metas)
+		if embestida != null:
+			linea += "   Embestida: " + texto_embestida()
 		if partida.tarde:
 			linea += "   SALIDA CERRADA"
 		elif partida.abierta:

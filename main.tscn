@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" path="res://lampara.tscn" id="21_lampara"]
 [ext_resource type="PackedScene" path="res://tirador.tscn" id="22_tirador"]
 [ext_resource type="Script" path="res://mordisco.gd" id="23_mordisco"]
+[ext_resource type="Script" path="res://embestida.gd" id="24_embestida"]
 [ext_resource type="Script" uid="uid://bkla71jhomhhe" path="res://mueble.gd" id="30_mueble"]
 [ext_resource type="PackedScene" uid="uid://b5hlfccmpria" path="res://muebles/bookcaseClosed.glb" id="m_bookcaseClosed"]
 [ext_resource type="PackedScene" uid="uid://b4set1tppnf3n" path="res://muebles/bookcaseClosedWide.glb" id="m_bookcaseClosedWide"]
@@ -1431,6 +1432,9 @@ script = ExtResource("15_salud")
 
 [node name="Mordisco" type="Node" parent="Personaje"]
 script = ExtResource("23_mordisco")
+
+[node name="Embestida" type="Node" parent="Personaje"]
+script = ExtResource("24_embestida")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1386563772 node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
