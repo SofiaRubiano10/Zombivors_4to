@@ -6,6 +6,8 @@ extends Node
 @export var tiempo_necesario: float = 1.5
 
 @onready var pj = get_parent()
+# Mientras el zombi muerde a un humano, la E es del mordisco.
+@onready var mordisco = pj.get_node_or_null("Mordisco") if pj else null
 
 var progreso: float = 0.0
 var actual: Node = null
@@ -13,6 +15,8 @@ var actual: Node = null
 func _physics_process(delta: float) -> void:
 	# Mantener la tecla junto a un interactivo hasta completar
 	var obj = mas_cercano()
+	if mordisco != null and mordisco.objetivo != null:
+		obj = null
 	if not Input.is_action_pressed(tecla) or obj == null:
 		if progreso > 0.0 and pj:
 			pj.multiplicador = 1.0

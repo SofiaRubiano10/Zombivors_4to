@@ -15,6 +15,7 @@ const COLOR_HUESO = Color(0.949, 0.929, 0.894)
 # mantiene E junto a un alimento. Amarillo carne, el color de la comida.
 @onready var barra = $BarraComer
 @onready var aviso = $Aviso
+var mordisco = null
 var reloj_aviso = 0.0
 # Un aviso importante (TE VIO) no lo tapa uno menor (SOSPECHA) mientras dura.
 var prioridad_aviso = 0
@@ -27,6 +28,7 @@ func _ready():
 	var pj = get_tree().get_first_node_in_group("jugador")
 	jugador = pj
 	interactuar = pj.get_node_or_null("Interactuar")
+	mordisco = pj.get_node_or_null("Mordisco")
 	var salud = pj.get_node("Salud")
 	salud.cambio.connect(mostrar)
 	mostrar(salud.vida)
@@ -74,6 +76,9 @@ func _process(delta):
 # El progreso lo lleva Interactuar (de 0 a 1); el HUD solo lo dibuja.
 func actualizar_barra():
 	var progreso = interactuar.progreso if interactuar != null else 0.0
+	# El mordisco usa la misma barra: también es comer.
+	if mordisco != null:
+		progreso = maxf(progreso, mordisco.progreso)
 	var camara = get_viewport().get_camera_3d()
 	if progreso <= 0.0 or camara == null:
 		barra.visible = false
