@@ -7,6 +7,8 @@ extends Node
 # Nivel 3: reaparecer en el punto inicial antes de perder.
 # Clase 1: valores del plan y señal golpeado para quien deba reaccionar al daño.
 # Clase 1: el reloj es el cuerpo, la descomposición quita vida con el tiempo.
+# Clase 4: factor_descomposicion (contrato) multiplica lo rápido que se pudre:
+# 1 normal, 0 detenida. El cerebro lo pone en 0 durante 20 s.
 
 signal cambio(vida)
 signal sin_vida
@@ -19,6 +21,7 @@ signal golpeado(danio)
 @export var intervalo_descomposicion = 10.0
 # Fracción de la vida inicial que se pierde en cada intervalo.
 @export var porcentaje_descomposicion = 0.02
+var factor_descomposicion = 1.0
 var reloj = 0.0
 var acumulado = 0.0
 var vida_inicial = 0
@@ -38,7 +41,7 @@ func _physics_process(delta):
 func descomponer(delta):
 	if vida == 0:
 		return
-	acumulado += delta
+	acumulado += delta * factor_descomposicion
 	if acumulado < intervalo_descomposicion:
 		return
 	acumulado -= intervalo_descomposicion
