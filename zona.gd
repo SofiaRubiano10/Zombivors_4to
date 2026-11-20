@@ -9,10 +9,15 @@ extends Node
 # trampas y por dónde patrulla cada humano, entre puntos ya probados contra el mapa
 # (sin muebles encima y con las rutas libres). Ningún intento se juega igual.
 
+# Tiempos medidos (C5-04): la ruta mínima de un piso (inicio -> 3 alimentos -> salida,
+# a 2.5 m/s y comiendo) tarda entre 25 y 42 s, unos 35 s de media en 12 sorteos.
+# Con sigilo (esperar patrullas, rodear) son unas 3 a 5 veces más. El cierre deja ese
+# margen y baja en cada piso; la run completa queda en 7.5 min como máximo (el plan
+# pide 6 a 8). Tras el cierre queda 1 min hasta que el piso se pierde por tiempo.
 const ZONAS = [
-	{"nombre": "Piso 1", "humanos": 1, "tiradores": 0, "trampas": 0, "tarde": 300.0, "reinicio": 480.0},
-	{"nombre": "Piso 2", "humanos": 2, "tiradores": 1, "trampas": 2, "tarde": 270.0, "reinicio": 450.0},
-	{"nombre": "Piso 3", "humanos": 3, "tiradores": 1, "trampas": 3, "tarde": 240.0, "reinicio": 420.0},
+	{"nombre": "Piso 1", "humanos": 1, "tiradores": 0, "trampas": 0, "tarde": 180.0, "reinicio": 240.0},
+	{"nombre": "Piso 2", "humanos": 2, "tiradores": 1, "trampas": 2, "tarde": 150.0, "reinicio": 210.0},
+	{"nombre": "Piso 3", "humanos": 3, "tiradores": 1, "trampas": 3, "tarde": 120.0, "reinicio": 180.0},
 ]
 
 # Puntos válidos (x, z). Ninguno está en la Recepción, donde empieza el zombi.
