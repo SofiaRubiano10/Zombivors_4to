@@ -13,6 +13,8 @@ extends Node
 @export var alcance = 1.2
 @export var tiempo_mordisco = 1.2
 @export var curacion = 35
+# Sensación de juego: el mundo se congela un instante al devorar (hitstop).
+@export var pausa_devorar = 0.05
 
 @onready var pj = get_parent()
 @onready var interactuar = pj.get_node_or_null("Interactuar")
@@ -62,6 +64,14 @@ func completar():
 	if salud != null:
 		salud.curar(curacion)
 	presa.devorado()
+	hitstop(pausa_devorar)
+
+# time_scale 0 congela la física y las animaciones; el temporizador ignora la escala
+# (último argumento) para poder despertar.
+func hitstop(segundos):
+	Engine.time_scale = 0.0
+	await get_tree().create_timer(segundos, true, false, true).timeout
+	Engine.time_scale = 1.0
 
 func soltar():
 	if objetivo != null:
