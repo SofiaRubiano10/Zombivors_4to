@@ -1,6 +1,11 @@
 class_name SistemaEventos
 extends Node
 
+# Clase 6: es el punto donde se juntan las señales del juego con los efectos, para
+# que salgan a la vez. Al recibir un golpe (Salud.golpeado) el destello rojo de
+# LuzEvento sale encima del zombi en el mismo cuadro que el hit flash y la sacudida;
+# al chocar la embestida (Embestida.choco) la cámara da una sacudida corta.
+
 @export var luz_evento: OmniLight3D
 @export var pico_destello := 4.0
 @export var k_destello := 10.0
@@ -18,6 +23,23 @@ func _ready() -> void:
 			d.evento.connect(_on_evento)
 	if luz_evento:
 		luz_evento.light_energy = 0.0
+	call_deferred("conectar_jugador")
+
+func conectar_jugador() -> void:
+	var jugador: Node = get_tree().get_first_node_in_group("jugador")
+	if jugador == null:
+		return
+	var salud: Node = jugador.get_node_or_null("Salud")
+	if salud != null:
+		salud.golpeado.connect(func(_d): _on_evento(jugador.global_position))
+	var embestida: Node = jugador.get_node_or_null("Embestida")
+	if embestida != null and embestida.has_signal("choco"):
+		embestida.choco.connect(_al_chocar)
+
+func _al_chocar(_posicion: Vector3) -> void:
+	var camara: Camera3D = get_viewport().get_camera_3d()
+	if camara != null and camara.has_method("sacudir"):
+		camara.sacudir()
 
 func _process(delta: float) -> void:
 	# Decaimiento exponencial del destello de daño (Nivel 2)

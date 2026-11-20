@@ -20,6 +20,9 @@ extends Node
 @export var ruido = 3.0
 @export var cargas_max = 1
 
+# Para los efectos (SistemaEventos): dónde chocó con un humano.
+signal choco(posicion)
+
 @onready var pj = get_parent()
 
 var cargas = 1
@@ -76,6 +79,7 @@ func impulsar(delta):
 		print("embestida: aturde a ", presa.name)
 		Sonidos.tocar("golpe")
 		presa.aturdir(aturdimiento)
+		choco.emit(presa.global_position)
 		terminar()
 	elif activo <= 0.0:
 		terminar()
