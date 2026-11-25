@@ -18,6 +18,15 @@ extends CanvasLayer
 # subiendo; los puntos cuentan hacia arriba y sueltan un "+100" flotante; cada
 # alimento comido hace saltar su punto; el reloj se pone rojo y late en los
 # últimos 30 s antes de que cierre la salida; la embestida destella al recargarse.
+# Clase 7: el HUD se adapta y se aparta.
+#  - Lo secundario (puntos, embestida llena, mutaciones) se atenúa si no cambia en
+#    unos segundos y vuelve a encenderse cuando pasa algo. Vida y objetivo, no:
+#    son lo que hace falta para sobrevivir.
+#  - Si el zombi pasa por debajo de un recuadro, ese recuadro se vuelve transparente.
+#  - Con la ventana estrecha pasa a modo compacto, y si el recuadro del centro choca
+#    con los de las esquinas, baja a la fila de abajo. Nada se tapa.
+#  - escala agranda o achica todo el HUD (accesibilidad).
+#  - Con el menú de pausa, las mutaciones o el fin de run abiertos, se esconde.
 
 const COLOR_PELIGRO = Color("#B22222")
 const COLOR_HUESO = Color(0.949, 0.929, 0.894)
@@ -32,6 +41,14 @@ const COLOR_SANO = Color("#7FA650")
 @export var umbral_poca_vida = 0.3
 # Segundos antes del cierre de la salida en los que el reloj avisa.
 @export var aviso_cierre = 30.0
+# Tamaño de todo el HUD (1 = normal). Para pantallas pequeñas o lejos de la tele.
+@export_range(0.6, 2.0, 0.05) var escala = 1.0
+# Segundos sin cambios para que lo secundario se atenúe, y cuánto se atenúa.
+@export var espera_calma = 4.0
+@export var alfa_calma = 0.55
+# Por debajo de este ancho (en píxeles del HUD) se usa el modo compacto.
+@export var ancho_compacto = 980.0
+const MARGEN = 16.0
 
 @onready var raiz = $Raiz
 @onready var panel_vida = $Raiz/PanelVida
@@ -77,6 +94,9 @@ var puntos_mostrados = -1.0
 var puntos_objetivo = -1
 var cargas_vistas = -1
 var segundo_visto = -1
+# Segundos que lleva cada recuadro secundario sin cambiar.
+var calma = {}
+var compacto = false
 var partida = null
 var jugador = null
 var interactuar = null
@@ -121,6 +141,12 @@ func _ready():
 		nodo.aparecio.connect(avisar.bind("LLEGÓ EL CAZADOR", COLOR_PELIGRO, 3))
 	get_tree().node_added.connect(_al_aparecer)
 	call_deferred("conectar_partida")
+	# Always: puede esconderse y volver aunque el juego esté en pausa.
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	for panel in [panel_puntos, panel_embestida, mutaciones]:
+		calma[panel] = 0.0
+	get_viewport().size_changed.connect(acomodar)
+	acomodar.call_deferred()
 
 # Iconos del pack (res://ui/flat_ui/iconos/). Sin el PNG, el recuadro queda solo con texto.
 func poner_iconos():
@@ -210,8 +236,8 @@ func _process(delta):
 	aviso.visible = reloj_aviso > 0.0
 	# Y mientras se desvanece, sube un poco.
 	aviso.position.y = pos_aviso_y - (1.0 - aviso.modulate.a) * 14.0
-	for panel in [panel_objetivo, panel_puntos, panel_embestida]:
-		panel.modulate = panel.modulate.lerp(Color.WHITE, 1.0 - exp(-6.0 * delta))
+	esconder_en_menus(delta)
+	apartar(delta)
 	animar_vida(delta)
 	actualizar_objetivo()
 	actualizar_puntos()
@@ -234,7 +260,7 @@ func actualizar_barra():
 	barra.value = progreso
 	# Un poco por encima de la cabeza (el zombi mide unos 1.8 m).
 	var cabeza = jugador.global_position + Vector3(0, 2.3, 0)
-	barra.position = camara.unproject_position(cabeza) - barra.size * 0.5
+	barra.position = camara.unproject_position(cabeza) / escala - barra.size * 0.5
 
 func actualizar_flecha():
 	var camara = get_viewport().get_camera_3d()
@@ -315,6 +341,7 @@ func actualizar_objetivo():
 	texto_piso.text = "PISO " + str(Partida.zona) + "/" + str(partida.zonas_total)
 	texto_tiempo.text = partida.reloj_texto(partida.tiempo)
 	avisar_cierre()
+	colocar_centro()
 	fila_comida.visible = partida.metas > 0
 	if partida.metas != metas_dibujadas or partida.hechas != hechas_dibujadas:
 		dibujar_pips(partida.metas, mini(partida.hechas, partida.metas))
@@ -363,7 +390,6 @@ func dibujar_pips(metas, hechas):
 		if i < hechas and i >= hechas_dibujadas and hechas_dibujadas >= 0:
 			saltar.call_deferred(pips.get_child(i), 1.8)
 	hechas_dibujadas = hechas
-	centrar(panel_objetivo)
 
 func pintar_pip(pip, lleno):
 	var caja = StyleBoxFlat.new()
@@ -386,6 +412,7 @@ func actualizar_puntos():
 		var r = texto_puntos.get_global_rect()
 		flotar("+" + str(objetivo - puntos_objetivo), COLOR_COMIDA, Vector2(r.end.x, r.end.y + 48.0))
 		saltar(texto_puntos, 1.3)
+		despertar(panel_puntos)
 		panel_puntos.modulate = Color(1.3, 1.2, 1.0)
 	puntos_objetivo = objetivo
 	# Cuenta hacia arriba: rápido si es mucho, nunca más de un segundo.
@@ -406,7 +433,11 @@ func actualizar_embestida():
 	if cargas_vistas >= 0 and listas > cargas_vistas:
 		saltar($Raiz/PanelEmbestida/Fila/Tecla, 1.35)
 		panel_embestida.modulate = Color(1.35, 1.25, 1.0)
+		despertar(panel_embestida)
 	cargas_vistas = listas
+	# Recargando no se atenúa: es información que se está usando.
+	if listas < embestida.cargas_max:
+		despertar(panel_embestida)
 	if listas >= embestida.cargas_max:
 		recarga.value = 1.0
 	else:
@@ -432,6 +463,87 @@ func actualizar_mutaciones():
 		ficha.tooltip_text = Mutaciones.LISTA.get(nombre, "")
 		var texto = Label.new()
 		texto.theme_type_variation = &"LabelChip"
-		texto.text = nombre
+		texto.text = nombre_corto(nombre) if compacto else nombre
 		ficha.add_child(texto)
 		mutaciones.add_child(ficha)
+	despertar(mutaciones)
+
+# "Estómago de hierro" -> "Estómago" en modo compacto.
+func nombre_corto(nombre):
+	return nombre.split(" ")[0]
+
+func despertar(panel):
+	calma[panel] = 0.0
+
+# Lo secundario se atenúa en calma; lo que tapa al zombi se vuelve transparente.
+func apartar(delta):
+	var zombi = posicion_zombi()
+	var paneles = [panel_vida, panel_objetivo, panel_puntos, panel_embestida, mutaciones]
+	for panel in paneles:
+		var alfa = 1.0
+		if calma.has(panel):
+			calma[panel] += delta
+			if calma[panel] > espera_calma:
+				alfa = alfa_calma
+		if zombi != null and panel.visible and panel.get_rect().grow(24.0).has_point(zombi):
+			alfa = minf(alfa, 0.3)
+		var objetivo = Color(1, 1, 1, alfa)
+		if panel == panel_vida:
+			# La vida lleva su propio color (latido); aquí solo se toca su alfa.
+			panel.modulate.a = lerpf(panel.modulate.a, alfa, 1.0 - exp(-6.0 * delta))
+		else:
+			panel.modulate = panel.modulate.lerp(objetivo, 1.0 - exp(-6.0 * delta))
+
+# Dónde está el zombi en la pantalla, en coordenadas del HUD (con su escala).
+func posicion_zombi():
+	var camara = get_viewport().get_camera_3d()
+	if camara == null or jugador == null:
+		return null
+	return camara.unproject_position(jugador.global_position + Vector3(0, 0.9, 0)) / escala
+
+# Pausa, mutaciones o fin de run: el HUD se esconde para no competir con el menú.
+func esconder_en_menus(delta):
+	var hay_menu = false
+	for grupo in ["fin_run", "pantalla_mutaciones"]:
+		var m = get_tree().get_first_node_in_group(grupo)
+		if m != null and m.visible:
+			hay_menu = true
+	# Pausa con el juego en marcha = el menú de pausa (al terminar la zona también
+	# se pausa, pero ahí el HUD sigue para ver los puntos del piso).
+	if get_tree().paused and partida != null and partida.estado == partida.Estado.JUGANDO:
+		hay_menu = true
+	raiz.modulate.a = move_toward(raiz.modulate.a, 0.0 if hay_menu else 1.0, delta / 0.2)
+
+# Escala, modo compacto y que el centro no choque con las esquinas.
+func acomodar():
+	var pantalla = get_viewport().get_visible_rect().size
+	raiz.scale = Vector2.ONE * escala
+	# Raiz ocupa toda la pantalla medida en píxeles del HUD (ya escalados).
+	raiz.offset_right = pantalla.x / escala - pantalla.x
+	raiz.offset_bottom = pantalla.y / escala - pantalla.y
+	var ancho = pantalla.x / escala
+	var antes = compacto
+	compacto = ancho < ancho_compacto
+	$Raiz/PanelVida/Fila/Datos/Barras.custom_minimum_size.x = 150.0 if compacto else 220.0
+	texto_record.visible = not compacto
+	$Raiz/PanelEmbestida/Fila/Datos/Cabecera/Titulo.visible = not compacto
+	$Raiz/PanelEmbestida/Fila/Tecla/Texto.text = "ESP" if compacto else "ESPACIO"
+	if antes != compacto:
+		mutaciones_dibujadas = -1
+	for panel in [panel_vida, panel_puntos, panel_embestida]:
+		panel.reset_size()
+	panel_puntos.position.x = ancho - MARGEN - panel_puntos.size.x
+	panel_embestida.position = Vector2(ancho, pantalla.y / escala) - panel_embestida.size - Vector2(MARGEN, MARGEN)
+	pos_vida = Vector2(MARGEN, MARGEN)
+	if partida != null:
+		colocar_centro.call_deferred()
+
+# El recuadro del centro va arriba; si no cabe entre las esquinas, baja.
+func colocar_centro():
+	centrar(panel_objetivo)
+	var izquierda = panel_vida.position.x + panel_vida.size.x + 8.0
+	var derecha = panel_puntos.position.x - 8.0
+	var cabe = panel_objetivo.position.x >= izquierda and panel_objetivo.position.x + panel_objetivo.size.x <= derecha
+	var abajo = maxf(panel_vida.position.y + panel_vida.size.y, panel_puntos.position.y + panel_puntos.size.y) + 8.0
+	panel_objetivo.position.y = MARGEN if cabe else abajo
+	pos_aviso_y = panel_objetivo.position.y + panel_objetivo.size.y + 22.0
