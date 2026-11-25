@@ -1,59 +1,320 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_hud"]
-
-[sub_resource type="StyleBoxFlat" id="Fondo_barra"]
-bg_color = Color(0.169, 0.176, 0.192, 0.85)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.949, 0.929, 0.894, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="Relleno_barra"]
-bg_color = Color(0.831, 0.639, 0.451, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+[ext_resource type="Theme" path="res://ui/tema_flat.tres" id="2_tema"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
 
-[node name="Texto" type="Label" parent="."]
-offset_left = 18.0
-offset_top = 14.0
-offset_right = 318.0
-offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 1)
-theme_override_font_sizes/font_size = 22
-text = "Vida: "
+[node name="Raiz" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_tema")
 
-[node name="BarraComer" type="ProgressBar" parent="."]
+[node name="PanelVida" type="PanelContainer" parent="Raiz"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 286.0
+offset_bottom = 74.0
+mouse_filter = 2
+
+[node name="Fila" type="HBoxContainer" parent="Raiz/PanelVida"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Icono" type="TextureRect" parent="Raiz/PanelVida/Fila"]
 visible = false
-offset_right = 70.0
-offset_bottom = 10.0
-max_value = 1.0
-step = 0.001
-show_percentage = false
-theme_override_styles/background = SubResource("Fondo_barra")
-theme_override_styles/fill = SubResource("Relleno_barra")
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Aviso" type="Label" parent="."]
+[node name="Datos" type="VBoxContainer" parent="Raiz/PanelVida/Fila"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Cabecera" type="HBoxContainer" parent="Raiz/PanelVida/Fila/Datos"]
+layout_mode = 2
+
+[node name="Titulo" type="Label" parent="Raiz/PanelVida/Fila/Datos/Cabecera"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"LabelPequeno"
+text = "VIDA"
+
+[node name="Valor" type="Label" parent="Raiz/PanelVida/Fila/Datos/Cabecera"]
+layout_mode = 2
+text = "100"
+horizontal_alignment = 2
+
+[node name="Barras" type="Control" parent="Raiz/PanelVida/Fila/Datos"]
+custom_minimum_size = Vector2(220, 16)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Rastro" type="ProgressBar" parent="Raiz/PanelVida/Fila/Datos/Barras"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"BarraRastro"
+step = 0.01
+value = 100.0
+show_percentage = false
+
+[node name="Barra" type="ProgressBar" parent="Raiz/PanelVida/Fila/Datos/Barras"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"BarraEncima"
+step = 0.01
+value = 100.0
+show_percentage = false
+
+[node name="PanelObjetivo" type="PanelContainer" parent="Raiz"]
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -300.0
-offset_top = 60.0
-offset_right = 300.0
-offset_bottom = 110.0
+offset_left = -120.0
+offset_top = 16.0
+offset_right = 120.0
+offset_bottom = 80.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 34
+mouse_filter = 2
+
+[node name="Columna" type="VBoxContainer" parent="Raiz/PanelObjetivo"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Fila" type="HBoxContainer" parent="Raiz/PanelObjetivo/Columna"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="IconoPiso" type="TextureRect" parent="Raiz/PanelObjetivo/Columna/Fila"]
+visible = false
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Piso" type="Label" parent="Raiz/PanelObjetivo/Columna/Fila"]
+layout_mode = 2
+text = "PISO 1/3"
+
+[node name="Punto" type="Label" parent="Raiz/PanelObjetivo/Columna/Fila"]
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+text = "•"
+
+[node name="IconoTiempo" type="TextureRect" parent="Raiz/PanelObjetivo/Columna/Fila"]
+visible = false
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Tiempo" type="Label" parent="Raiz/PanelObjetivo/Columna/Fila"]
+layout_mode = 2
+text = "00:00"
+
+[node name="FilaComida" type="HBoxContainer" parent="Raiz/PanelObjetivo/Columna"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="IconoComida" type="TextureRect" parent="Raiz/PanelObjetivo/Columna/FilaComida"]
+visible = false
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Titulo" type="Label" parent="Raiz/PanelObjetivo/Columna/FilaComida"]
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+text = "COMIDA"
+
+[node name="Pips" type="HBoxContainer" parent="Raiz/PanelObjetivo/Columna/FilaComida"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 5
+
+[node name="Estado" type="Label" parent="Raiz/PanelObjetivo/Columna/FilaComida"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+text = "SALIDA ABIERTA"
+
+[node name="PanelPuntos" type="PanelContainer" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -176.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 82.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="Columna" type="VBoxContainer" parent="Raiz/PanelPuntos"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Fila" type="HBoxContainer" parent="Raiz/PanelPuntos/Columna"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="Icono" type="TextureRect" parent="Raiz/PanelPuntos/Columna/Fila"]
+visible = false
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Puntos" type="Label" parent="Raiz/PanelPuntos/Columna/Fila"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+theme_type_variation = &"LabelGrande"
+text = "0"
+horizontal_alignment = 2
+
+[node name="Record" type="Label" parent="Raiz/PanelPuntos/Columna"]
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+text = "RÉCORD 0"
+horizontal_alignment = 2
+
+[node name="PanelEmbestida" type="PanelContainer" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -236.0
+offset_top = -70.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Fila" type="HBoxContainer" parent="Raiz/PanelEmbestida"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Tecla" type="PanelContainer" parent="Raiz/PanelEmbestida/Fila"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"PanelTecla"
+
+[node name="Texto" type="Label" parent="Raiz/PanelEmbestida/Fila/Tecla"]
+layout_mode = 2
+theme_type_variation = &"LabelTecla"
+text = "ESPACIO"
+
+[node name="Datos" type="VBoxContainer" parent="Raiz/PanelEmbestida/Fila"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 3
+
+[node name="Cabecera" type="HBoxContainer" parent="Raiz/PanelEmbestida/Fila/Datos"]
+layout_mode = 2
+
+[node name="Titulo" type="Label" parent="Raiz/PanelEmbestida/Fila/Datos/Cabecera"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"LabelPequeno"
+text = "EMBESTIDA"
+
+[node name="Estado" type="Label" parent="Raiz/PanelEmbestida/Fila/Datos/Cabecera"]
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+text = "LISTA"
+horizontal_alignment = 2
+
+[node name="Recarga" type="ProgressBar" parent="Raiz/PanelEmbestida/Fila/Datos"]
+custom_minimum_size = Vector2(110, 10)
+layout_mode = 2
+mouse_filter = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+show_percentage = false
+
+[node name="Icono" type="TextureRect" parent="Raiz/PanelEmbestida/Fila"]
+visible = false
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Mutaciones" type="HBoxContainer" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -46.0
+offset_right = 56.0
+offset_bottom = -16.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Aviso" type="PanelContainer" parent="Raiz"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 104.0
+offset_right = 110.0
+offset_bottom = 164.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_type_variation = &"PanelAviso"
+
+[node name="Texto" type="Label" parent="Raiz/Aviso"]
+layout_mode = 2
+theme_type_variation = &"LabelGrande"
+theme_override_font_sizes/font_size = 32
+text = "TE VIO"
 horizontal_alignment = 1
+
+[node name="BarraComer" type="ProgressBar" parent="Raiz"]
+visible = false
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 10.0
+mouse_filter = 2
+max_value = 1.0
+step = 0.001
+show_percentage = false
