@@ -68,10 +68,11 @@ func completar():
 
 # time_scale 0 congela la física y las animaciones; el temporizador ignora la escala
 # (último argumento) para poder despertar.
+# La vuelta a 1 la hace el temporizador (no este nodo): si la escena se recarga en
+# medio, el juego no se queda congelado para siempre.
 func hitstop(segundos):
 	Engine.time_scale = 0.0
-	await get_tree().create_timer(segundos, true, false, true).timeout
-	Engine.time_scale = 1.0
+	get_tree().create_timer(segundos, true, false, true).timeout.connect(Engine.set.bind("time_scale", 1.0))
 
 func soltar():
 	if objetivo != null:

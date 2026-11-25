@@ -56,12 +56,12 @@ static func aplicar(tema: Theme) -> void:
 		en_uso = true
 		for destino in CAJAS[png]:
 			var vieja = tema.get_stylebox(destino[1], destino[0])
-			tema.set_stylebox(destino[1], destino[0], caja(textura, MARGENES[png], vieja))
+			tema.set_stylebox(destino[1], destino[0], caja_de_textura(textura, MARGENES[png], vieja))
 	if en_uso:
 		print("interfaz: usando el Flat Design UI Pack (SunGraphica)")
 
 # Conserva los márgenes de contenido de la caja plana para que nada se mueva.
-static func caja(textura: Texture2D, margen: int, vieja: StyleBox) -> StyleBoxTexture:
+static func caja_de_textura(textura: Texture2D, margen: int, vieja: StyleBox) -> StyleBoxTexture:
 	var s = StyleBoxTexture.new()
 	s.texture = textura
 	s.texture_margin_left = margen
@@ -106,8 +106,8 @@ static func icono(nombre: String) -> Texture2D:
 
 # Cambia el color de una caja (plana o de textura). Usar sobre una copia
 # (duplicate()), no sobre la del tema, que la comparte toda la interfaz.
-static func colorear(caja: StyleBox, color: Color) -> void:
-	if caja is StyleBoxFlat:
-		caja.bg_color = color
-	elif caja is StyleBoxTexture:
-		caja.modulate_color = color
+static func colorear(estilo: StyleBox, color: Color) -> void:
+	if estilo is StyleBoxFlat:
+		estilo.bg_color = color
+	elif estilo is StyleBoxTexture:
+		estilo.modulate_color = color
