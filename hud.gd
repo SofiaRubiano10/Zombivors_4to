@@ -121,6 +121,11 @@ func _ready():
 	rastro_vida.max_value = vida_max
 	relleno_vida = barra_vida.get_theme_stylebox("fill").duplicate()
 	barra_vida.add_theme_stylebox_override("fill", relleno_vida)
+	# Las otras barras, color comida: así un relleno blanco del pack sirve para todas.
+	for b in [recarga, barra]:
+		var relleno = b.get_theme_stylebox("fill").duplicate()
+		PielFlat.colorear(relleno, COLOR_COMIDA)
+		b.add_theme_stylebox_override("fill", relleno)
 	pos_vida = panel_vida.position
 	pos_aviso_y = aviso.position.y
 	salud.cambio.connect(mostrar)

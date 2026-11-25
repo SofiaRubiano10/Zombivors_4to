@@ -34,5 +34,8 @@ textura del pack al arrancar. Cada archivo es opcional: el que falte sigue plano
 4. Si un borde se ve estirado o aplastado, ajusta su número en MARGENES
    (ui/piel_flat.gd): es cuántos píxeles de borde no se estiran (9-slice).
 
-Consejo: la barra de relleno se tiñe por código (verde -> ámbar -> rojo según la
-vida), así que funciona mejor un relleno blanco o gris claro del pack.
+Consejos:
+- El relleno de barra se tiñe por código (vida: verde -> ámbar -> rojo; comer y
+  embestida: color comida), así que funciona mejor uno blanco o gris claro.
+- El texto del HUD es claro (hueso) con contorno oscuro: elige paneles, avisos y
+  botones OSCUROS o de color fuerte del pack. Sobre un panel blanco no se lee.
