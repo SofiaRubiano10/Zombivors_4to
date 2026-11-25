@@ -10,18 +10,29 @@ extends CanvasLayer
 #   arriba izquierda -> vida          arriba centro -> piso, tiempo y comida
 #   arriba derecha   -> puntos        abajo derecha -> embestida
 #   abajo izquierda  -> mutaciones    centro arriba -> avisos
+# Clase 7: la vida es un elemento vivo. La barra baja con un rastro claro que se
+# queda un momento (se ve cuánto dolió), el recuadro tiembla y se pone rojo con
+# cada golpe, destella al curar y, con poca vida, late junto a un borde rojo en
+# la pantalla. El color va de verde (sano) a ámbar y a rojo.
 
 const COLOR_PELIGRO = Color("#B22222")
 const COLOR_HUESO = Color(0.949, 0.929, 0.894)
 const COLOR_COMIDA = Color(0.831, 0.639, 0.451)
 const COLOR_APAGADO = Color(0.09, 0.094, 0.106, 0.9)
+const COLOR_SANO = Color("#7FA650")
 @export var duracion_aviso = 2.0
+# Lo que el rastro de daño espera antes de bajar y lo rápido que baja (vida/s).
+@export var espera_rastro = 0.45
+@export var rapidez_rastro = 60.0
+# Por debajo de esta fracción de vida el recuadro late y aparece el borde rojo.
+@export var umbral_poca_vida = 0.3
 
 @onready var raiz = $Raiz
 @onready var panel_vida = $Raiz/PanelVida
 @onready var valor_vida = $Raiz/PanelVida/Fila/Datos/Cabecera/Valor
 @onready var barra_vida = $Raiz/PanelVida/Fila/Datos/Barras/Barra
 @onready var rastro_vida = $Raiz/PanelVida/Fila/Datos/Barras/Rastro
+@onready var vineta = $Raiz/Vineta
 @onready var panel_objetivo = $Raiz/PanelObjetivo
 @onready var texto_piso = $Raiz/PanelObjetivo/Columna/Fila/Piso
 @onready var texto_tiempo = $Raiz/PanelObjetivo/Columna/Fila/Tiempo
@@ -50,6 +61,11 @@ var prioridad_aviso = 0
 var flecha = Polygon2D.new()
 var vida_actual = 0
 var vida_max = 100
+var reloj_rastro = 0.0
+var sacudida = 0.0
+var pos_vida = Vector2.ZERO
+var relleno_vida = null
+var latido = 0.0
 var partida = null
 var jugador = null
 var interactuar = null
@@ -72,8 +88,14 @@ func _ready():
 	vida_max = maxi(salud.vida_inicial if salud.vida_inicial > 0 else salud.vida, 1)
 	barra_vida.max_value = vida_max
 	rastro_vida.max_value = vida_max
+	relleno_vida = barra_vida.get_theme_stylebox("fill").duplicate()
+	barra_vida.add_theme_stylebox_override("fill", relleno_vida)
+	pos_vida = panel_vida.position
 	salud.cambio.connect(mostrar)
+	salud.golpeado.connect(_al_recibir_golpe)
 	mostrar(salud.vida)
+	barra_vida.value = salud.vida
+	rastro_vida.value = salud.vida
 	flecha.polygon = PackedVector2Array([Vector2(14, 0), Vector2(-8, -9), Vector2(-8, 9)])
 	flecha.color = COLOR_COMIDA
 	flecha.visible = false
@@ -145,6 +167,7 @@ func _process(delta):
 	# El último medio segundo se desvanece.
 	aviso.modulate.a = clampf(reloj_aviso / 0.5, 0.0, 1.0)
 	aviso.visible = reloj_aviso > 0.0
+	animar_vida(delta)
 	actualizar_objetivo()
 	actualizar_puntos()
 	actualizar_embestida()
@@ -191,11 +214,50 @@ func actualizar_flecha():
 	flecha.rotation = hacia.angle()
 
 func mostrar(vida):
+	if vida > vida_actual and vida_actual > 0:
+		destellar(panel_vida, Color(1.0, 1.35, 0.9))
+	elif vida < vida_actual:
+		# Cada pérdida reinicia la espera: el rastro baja cuando paran los golpes.
+		reloj_rastro = espera_rastro
 	vida_actual = vida
-	barra_vida.value = vida
-	rastro_vida.value = vida
 	valor_vida.text = str(vida)
 	print("HUD -> vida ", vida)
+
+func _al_recibir_golpe(_danio):
+	sacudida = 0.3
+	destellar(panel_vida, Color(1.8, 0.55, 0.55))
+
+# Un golpe de color que se apaga solo (lo devuelve a blanco animar_vida).
+func destellar(control, color):
+	control.modulate = color
+
+func animar_vida(delta):
+	# La barra sigue a la vida rápido; el rastro espera y luego baja despacio.
+	barra_vida.value = lerpf(barra_vida.value, vida_actual, 1.0 - exp(-14.0 * delta))
+	if rastro_vida.value < vida_actual:
+		rastro_vida.value = vida_actual
+	reloj_rastro = maxf(reloj_rastro - delta, 0.0)
+	if reloj_rastro <= 0.0:
+		rastro_vida.value = move_toward(rastro_vida.value, vida_actual, rapidez_rastro * delta)
+	var fraccion = float(vida_actual) / vida_max
+	PielFlat.colorear(relleno_vida, color_vida(fraccion))
+	# Temblor del recuadro tras un golpe.
+	sacudida = maxf(sacudida - delta, 0.0)
+	var fuerza = 7.0 * sacudida / 0.3
+	panel_vida.position = pos_vida + Vector2(randf_range(-fuerza, fuerza), randf_range(-fuerza, fuerza))
+	# Con poca vida late (más rápido cuanto menos queda) y el borde rojo aparece.
+	var peligro = clampf(1.0 - fraccion / umbral_poca_vida, 0.0, 1.0) if vida_actual > 0 else 0.0
+	latido += delta * lerpf(4.0, 9.0, peligro)
+	var pulso = (sin(latido) * 0.5 + 0.5) * peligro
+	var base = Color.WHITE.lerp(Color(1.4, 0.75, 0.75), pulso)
+	panel_vida.modulate = panel_vida.modulate.lerp(base, 1.0 - exp(-8.0 * delta))
+	vineta.modulate.a = lerpf(vineta.modulate.a, peligro * (0.35 + 0.35 * pulso), 1.0 - exp(-6.0 * delta))
+
+# Verde sano -> ámbar a media vida -> rojo con poca.
+func color_vida(fraccion):
+	if fraccion > 0.5:
+		return COLOR_COMIDA.lerp(COLOR_SANO, (fraccion - 0.5) / 0.5)
+	return COLOR_PELIGRO.lerp(COLOR_COMIDA, clampf((fraccion - 0.15) / 0.35, 0.0, 1.0))
 
 # Piso, cronómetro y comida que falta para abrir la salida.
 func actualizar_objetivo():

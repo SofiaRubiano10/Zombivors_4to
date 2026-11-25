@@ -3,6 +3,18 @@
 [ext_resource type="Script" path="res://hud.gd" id="1_hud"]
 [ext_resource type="Theme" path="res://ui/tema_flat.tres" id="2_tema"]
 
+[sub_resource type="Gradient" id="Gradiente_vineta"]
+offsets = PackedFloat32Array(0, 0.6, 1)
+colors = PackedColorArray(0.698, 0.133, 0.133, 0, 0.698, 0.133, 0.133, 0, 0.698, 0.133, 0.133, 0.85)
+
+[sub_resource type="GradientTexture2D" id="Textura_vineta"]
+gradient = SubResource("Gradiente_vineta")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1.05, 1.05)
+
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
 
@@ -15,6 +27,18 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_tema")
+
+[node name="Vineta" type="TextureRect" parent="Raiz"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("Textura_vineta")
+expand_mode = 1
 
 [node name="PanelVida" type="PanelContainer" parent="Raiz"]
 layout_mode = 0

@@ -79,11 +79,10 @@ static func cargar(archivo: String) -> Texture2D:
 static func icono(nombre: String) -> Texture2D:
 	return cargar("iconos/" + nombre + ".png")
 
-# Cambia el color de una caja (plana o de textura) sin tocar la del tema.
-static func pintar(caja_base: StyleBox, color: Color) -> StyleBox:
-	var copia = caja_base.duplicate()
-	if copia is StyleBoxFlat:
-		copia.bg_color = color
-	elif copia is StyleBoxTexture:
-		copia.modulate_color = color
-	return copia
+# Cambia el color de una caja (plana o de textura). Usar sobre una copia
+# (duplicate()), no sobre la del tema, que la comparte toda la interfaz.
+static func colorear(caja: StyleBox, color: Color) -> void:
+	if caja is StyleBoxFlat:
+		caja.bg_color = color
+	elif caja is StyleBoxTexture:
+		caja.modulate_color = color
