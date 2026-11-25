@@ -1,0 +1,37 @@
+FLAT DESIGN UI PACK (SunGraphica) - DÓNDE VAN LOS ARCHIVOS
+==========================================================
+
+El pack se compra en https://sungraphica.itch.io/flat-design-ui-pack (desde 2 USD).
+Licencia del autor: uso personal y comercial, se puede modificar; NO se puede
+revender ni redistribuir el pack. Pide crédito: "SunGraphica".
+  -> Si el repositorio es público, mejor no subir los PNG (sería redistribuirlos):
+     cada uno los copia en su equipo. El juego funciona igual sin ellos.
+
+Sin estos archivos la interfaz usa el tema plano de ui/tema_flat.tres (mismos
+colores, mismas formas). Con ellos, ui/piel_flat.gd cambia cada pieza por la
+textura del pack al arrancar. Cada archivo es opcional: el que falte sigue plano.
+
+1. Descomprime "Flat design UI pack.zip" FUERA del proyecto.
+2. Elige en la carpeta "Transparent PNG" las piezas y cópialas aquí con ESTOS nombres:
+
+   res://ui/flat_ui/
+     panel.png           marco/panel liso (fondo de los recuadros del HUD)
+     aviso.png           cartel o cinta de título (avisos: TE VIO, SALIDA ABIERTA)
+     chip.png            botón pequeño o etiqueta (mutaciones elegidas)
+     tecla.png           botón cuadrado pequeño (la tecla ESPACIO)
+     barra_fondo.png     fondo de barra de progreso (vida, comer, embestida)
+     barra_relleno.png   relleno de barra (mejor uno claro/blanco: el HUD lo tiñe)
+     boton.png           botón normal (menús)
+     boton_encima.png    botón con el ratón encima / seleccionado
+     boton_pulsado.png   botón pulsado
+
+   res://ui/flat_ui/iconos/      (de los 170 iconos; mejor PNG cuadrados)
+     vida.png  tiempo.png  piso.png  comida.png  puntos.png  embestida.png
+
+3. Abre Godot: importa los PNG solo. Ejecuta (F5). En el Output sale
+   "interfaz: usando el Flat Design UI Pack (SunGraphica)".
+4. Si un borde se ve estirado o aplastado, ajusta su número en MARGENES
+   (ui/piel_flat.gd): es cuántos píxeles de borde no se estiran (9-slice).
+
+Consejo: la barra de relleno se tiñe por código (verde -> ámbar -> rojo según la
+vida), así que funciona mejor un relleno blanco o gris claro del pack.
