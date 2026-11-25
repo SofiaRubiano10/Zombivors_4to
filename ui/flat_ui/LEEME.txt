@@ -16,6 +16,7 @@ textura del pack al arrancar. Cada archivo es opcional: el que falte sigue plano
 
    res://ui/flat_ui/
      panel.png           marco/panel liso (fondo de los recuadros del HUD)
+     panel_menu.png      ventana grande (pausa, mutaciones, fin de run)
      aviso.png           cartel o cinta de título (avisos: TE VIO, SALIDA ABIERTA)
      chip.png            botón pequeño o etiqueta (mutaciones elegidas)
      tecla.png           botón cuadrado pequeño (la tecla ESPACIO)

@@ -4,6 +4,7 @@ extends CanvasLayer
 # Cuando la run termina (perdiste en cualquier piso, o escapaste del tercero) la
 # Partida la muestra en vez de reiniciar sola: pisos superados, humanos devorados,
 # puntaje total y, si toca, "NUEVO RÉCORD". Enter o el botón empiezan otra run.
+# Clase 7: el resumen va en una tarjeta con el tema flat (PielFlat.tarjeta).
 
 signal otra_vez
 
@@ -32,7 +33,7 @@ func mostrar(gano, motivo, pisos, pisos_total, devorados, puntos, record, nuevo_
 	fondo.add_child(centro)
 	var columna = VBoxContainer.new()
 	columna.add_theme_constant_override("separation", 10)
-	centro.add_child(columna)
+	PielFlat.tarjeta(centro).add_child(columna)
 	etiqueta(columna, "¡ESCAPASTE DEL EDIFICIO!" if gano else "FIN DE LA RUN", 40, COMIDA if gano else PELIGRO)
 	if not gano:
 		etiqueta(columna, "(" + motivo + ")", 20, HUESO)

@@ -3,6 +3,7 @@ extends CanvasLayer
 # Clase 5 - Tarea A (Juan Diego): la pantalla entre zonas. Sin arte: texto y
 # tres botones con mutaciones al azar. También se elige con las teclas 1, 2 y 3.
 # Funciona con el juego en pausa (process_mode Always).
+# Clase 7: va en una tarjeta con el tema flat (PielFlat.tarjeta).
 
 signal elegida(nombre)
 
@@ -38,7 +39,7 @@ func armar(numero_zona):
 	fondo.add_child(centro)
 	var columna = VBoxContainer.new()
 	columna.add_theme_constant_override("separation", 14)
-	centro.add_child(columna)
+	PielFlat.tarjeta(centro).add_child(columna)
 	var titulo = Label.new()
 	titulo.text = "PISO " + str(numero_zona) + " SUPERADO\nElige una mutación"
 	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

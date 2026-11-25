@@ -4,12 +4,15 @@ extends CanvasLayer
 # Escape (la acción ui_cancel) congela el juego y muestra Continuar / Reiniciar.
 # Solo mientras se juega: si la partida ya terminó, la pausa es de la Partida.
 # Reiniciar empieza una run nueva desde el Piso 1.
+# Clase 7: va en una tarjeta con el tema flat (PielFlat.tarjeta) que entra con un
+# salto al abrir y, si se usa el Flat Design UI Pack, da el crédito a su autor.
 
 const HUESO = Color(0.949, 0.929, 0.894)
 const FONDO = Color(0.169, 0.176, 0.192, 0.85)
 
 var fondo = null
 var continuar = null
+var tarjeta = null
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -25,9 +28,10 @@ func armar():
 	var centro = CenterContainer.new()
 	centro.set_anchors_preset(Control.PRESET_FULL_RECT)
 	fondo.add_child(centro)
+	tarjeta = PielFlat.tarjeta(centro)
 	var columna = VBoxContainer.new()
 	columna.add_theme_constant_override("separation", 12)
-	centro.add_child(columna)
+	tarjeta.add_child(columna)
 	var titulo = Label.new()
 	titulo.text = "PAUSA"
 	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -36,6 +40,12 @@ func armar():
 	columna.add_child(titulo)
 	continuar = boton(columna, "Continuar", cerrar)
 	boton(columna, "Reiniciar run", reiniciar)
+	if PielFlat.en_uso:
+		var credito = Label.new()
+		credito.text = "Interfaz: SunGraphica"
+		credito.theme_type_variation = &"LabelPequeno"
+		credito.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		columna.add_child(credito)
 
 func boton(padre, texto, accion):
 	var b = Button.new()
@@ -61,6 +71,7 @@ func se_puede_pausar():
 
 func abrir():
 	visible = true
+	PielFlat.entrar(tarjeta)
 	get_tree().paused = true
 	continuar.grab_focus.call_deferred()
 

@@ -15,6 +15,7 @@ const CARPETA = "res://ui/flat_ui/"
 const CAJAS = {
 	"panel.png": [["PanelContainer", "panel"]],
 	"aviso.png": [["PanelAviso", "panel"]],
+	"panel_menu.png": [["PanelMenu", "panel"]],
 	"chip.png": [["PanelChip", "panel"]],
 	"tecla.png": [["PanelTecla", "panel"]],
 	"barra_fondo.png": [["ProgressBar", "background"], ["BarraRastro", "background"]],
@@ -28,6 +29,7 @@ const CAJAS = {
 const MARGENES = {
 	"panel.png": 24,
 	"aviso.png": 24,
+	"panel_menu.png": 32,
 	"chip.png": 12,
 	"tecla.png": 10,
 	"barra_fondo.png": 8,
@@ -36,6 +38,8 @@ const MARGENES = {
 	"boton_encima.png": 20,
 	"boton_pulsado.png": 20,
 }
+
+const TEMA = preload("res://ui/tema_flat.tres")
 
 static var aplicada = false
 static var en_uso = false
@@ -74,6 +78,27 @@ static func cargar(archivo: String) -> Texture2D:
 	if not ResourceLoader.exists(ruta):
 		return null
 	return load(ruta) as Texture2D
+
+# Clase 7: los menús (pausa, mutaciones, fin de run) van en una tarjeta con el
+# tema, que entra con un pequeño salto. padre es el CenterContainer del menú.
+static func tarjeta(padre: Control) -> PanelContainer:
+	aplicar(TEMA)
+	padre.theme = TEMA
+	var t = PanelContainer.new()
+	t.theme_type_variation = &"PanelMenu"
+	padre.add_child(t)
+	# El tamaño se conoce al cuadro siguiente: el pivote se centra cuando cambia.
+	t.resized.connect(func(): t.pivot_offset = t.size * 0.5)
+	entrar(t)
+	return t
+
+# La entrada de la tarjeta; se puede repetir (la pausa la reusa cada vez).
+static func entrar(t: Control) -> void:
+	t.modulate.a = 0.0
+	t.scale = Vector2.ONE * 0.9
+	var tw = t.create_tween().set_parallel()
+	tw.tween_property(t, "modulate:a", 1.0, 0.18)
+	tw.tween_property(t, "scale", Vector2.ONE, 0.28).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 # Iconos del HUD: res://ui/flat_ui/iconos/<nombre>.png, o null si no está.
 static func icono(nombre: String) -> Texture2D:
