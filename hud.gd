@@ -14,6 +14,10 @@ extends CanvasLayer
 # queda un momento (se ve cuánto dolió), el recuadro tiembla y se pone rojo con
 # cada golpe, destella al curar y, con poca vida, late junto a un borde rojo en
 # la pantalla. El color va de verde (sano) a ámbar y a rojo.
+# Clase 7: lo demás también reacciona. Los avisos entran con un salto y salen
+# subiendo; los puntos cuentan hacia arriba y sueltan un "+100" flotante; cada
+# alimento comido hace saltar su punto; el reloj se pone rojo y late en los
+# últimos 30 s antes de que cierre la salida; la embestida destella al recargarse.
 
 const COLOR_PELIGRO = Color("#B22222")
 const COLOR_HUESO = Color(0.949, 0.929, 0.894)
@@ -26,6 +30,8 @@ const COLOR_SANO = Color("#7FA650")
 @export var rapidez_rastro = 60.0
 # Por debajo de esta fracción de vida el recuadro late y aparece el borde rojo.
 @export var umbral_poca_vida = 0.3
+# Segundos antes del cierre de la salida en los que el reloj avisa.
+@export var aviso_cierre = 30.0
 
 @onready var raiz = $Raiz
 @onready var panel_vida = $Raiz/PanelVida
@@ -66,6 +72,11 @@ var sacudida = 0.0
 var pos_vida = Vector2.ZERO
 var relleno_vida = null
 var latido = 0.0
+var pos_aviso_y = 0.0
+var puntos_mostrados = -1.0
+var puntos_objetivo = -1
+var cargas_vistas = -1
+var segundo_visto = -1
 var partida = null
 var jugador = null
 var interactuar = null
@@ -91,6 +102,7 @@ func _ready():
 	relleno_vida = barra_vida.get_theme_stylebox("fill").duplicate()
 	barra_vida.add_theme_stylebox_override("fill", relleno_vida)
 	pos_vida = panel_vida.position
+	pos_aviso_y = aviso.position.y
 	salud.cambio.connect(mostrar)
 	salud.golpeado.connect(_al_recibir_golpe)
 	mostrar(salud.vida)
@@ -152,10 +164,39 @@ func avisar(texto, color, prioridad):
 		return
 	texto_aviso.text = texto
 	texto_aviso.add_theme_color_override("font_color", color)
+	var caja = aviso.get_theme_stylebox("panel").duplicate()
+	if caja is StyleBoxFlat:
+		caja.border_color = color
+	aviso.add_theme_stylebox_override("panel", caja)
 	aviso.visible = true
 	centrar(aviso)
+	saltar(aviso, 0.6)
 	reloj_aviso = duracion_aviso
 	prioridad_aviso = prioridad
+
+# Un salto de tamaño que vuelve a 1 con rebote. desde < 1 crece, > 1 encoge.
+func saltar(control, desde = 1.3):
+	control.pivot_offset = control.size * 0.5
+	if control.has_meta("salto") and control.get_meta("salto").is_valid():
+		control.get_meta("salto").kill()
+	control.scale = Vector2.ONE * desde
+	var t = control.create_tween()
+	t.tween_property(control, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	control.set_meta("salto", t)
+
+# Texto que sube y se desvanece ("+100").
+func flotar(texto, color, donde):
+	var l = Label.new()
+	l.text = texto
+	l.add_theme_color_override("font_color", color)
+	l.add_theme_font_size_override("font_size", 20)
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	raiz.add_child(l)
+	l.position = donde - l.get_minimum_size() * Vector2(1.0, 0.0)
+	var t = l.create_tween().set_parallel()
+	t.tween_property(l, "position:y", donde.y - 34.0, 0.9).set_ease(Tween.EASE_OUT)
+	t.tween_property(l, "modulate:a", 0.0, 0.9).set_delay(0.3)
+	t.chain().tween_callback(l.queue_free)
 
 # Un recuadro anclado al centro se ajusta a su texto y vuelve al medio.
 func centrar(control):
@@ -167,6 +208,10 @@ func _process(delta):
 	# El último medio segundo se desvanece.
 	aviso.modulate.a = clampf(reloj_aviso / 0.5, 0.0, 1.0)
 	aviso.visible = reloj_aviso > 0.0
+	# Y mientras se desvanece, sube un poco.
+	aviso.position.y = pos_aviso_y - (1.0 - aviso.modulate.a) * 14.0
+	for panel in [panel_objetivo, panel_puntos, panel_embestida]:
+		panel.modulate = panel.modulate.lerp(Color.WHITE, 1.0 - exp(-6.0 * delta))
 	animar_vida(delta)
 	actualizar_objetivo()
 	actualizar_puntos()
@@ -269,17 +314,34 @@ func actualizar_objetivo():
 		return
 	texto_piso.text = "PISO " + str(Partida.zona) + "/" + str(partida.zonas_total)
 	texto_tiempo.text = partida.reloj_texto(partida.tiempo)
+	avisar_cierre()
 	fila_comida.visible = partida.metas > 0
 	if partida.metas != metas_dibujadas or partida.hechas != hechas_dibujadas:
 		dibujar_pips(partida.metas, mini(partida.hechas, partida.metas))
+	var falta = partida.tiempo_tarde - partida.tiempo
 	if partida.tarde:
 		mostrar_estado_salida("SALIDA CERRADA", COLOR_PELIGRO)
+	elif partida.abierta and falta <= aviso_cierre:
+		mostrar_estado_salida("CIERRA EN " + str(ceili(falta)) + " s", COLOR_PELIGRO)
 	elif partida.abierta:
 		mostrar_estado_salida("SALIDA ABIERTA", COLOR_COMIDA)
 	else:
 		estado_salida.visible = false
 
+# Los últimos segundos antes de que cierre la salida: el reloj se pone rojo y late
+# una vez por segundo.
+func avisar_cierre():
+	var falta = partida.tiempo_tarde - partida.tiempo
+	var cerca = not partida.tarde and falta <= aviso_cierre
+	texto_tiempo.add_theme_color_override("font_color", COLOR_PELIGRO if cerca or partida.tarde else COLOR_HUESO)
+	var segundo = ceili(falta)
+	if cerca and segundo != segundo_visto:
+		saltar(texto_tiempo, 1.25)
+	segundo_visto = segundo
+
 func mostrar_estado_salida(texto, color):
+	if not estado_salida.visible or estado_salida.text.begins_with("SALIDA") != texto.begins_with("SALIDA"):
+		saltar(panel_objetivo, 1.12)
 	estado_salida.visible = true
 	estado_salida.text = texto
 	estado_salida.add_theme_color_override("font_color", color)
@@ -297,6 +359,9 @@ func dibujar_pips(metas, hechas):
 		metas_dibujadas = metas
 	for i in pips.get_child_count():
 		pintar_pip(pips.get_child(i), i < hechas)
+		# El que se acaba de comer salta.
+		if i < hechas and i >= hechas_dibujadas and hechas_dibujadas >= 0:
+			saltar.call_deferred(pips.get_child(i), 1.8)
 	hechas_dibujadas = hechas
 	centrar(panel_objetivo)
 
@@ -314,14 +379,34 @@ func actualizar_puntos():
 	panel_puntos.visible = puntos != null
 	if puntos == null:
 		return
-	texto_puntos.text = str(puntos.en_curso())
+	var objetivo = puntos.en_curso()
+	if puntos_mostrados < 0.0:
+		puntos_mostrados = objetivo
+	elif objetivo > puntos_objetivo:
+		var r = texto_puntos.get_global_rect()
+		flotar("+" + str(objetivo - puntos_objetivo), COLOR_COMIDA, Vector2(r.end.x, r.end.y + 48.0))
+		saltar(texto_puntos, 1.3)
+		panel_puntos.modulate = Color(1.3, 1.2, 1.0)
+	puntos_objetivo = objetivo
+	# Cuenta hacia arriba: rápido si es mucho, nunca más de un segundo.
+	var rapidez = maxf(absf(objetivo - puntos_mostrados) * 3.0, 120.0)
+	puntos_mostrados = move_toward(puntos_mostrados, objetivo, rapidez * get_process_delta_time())
+	texto_puntos.text = str(int(round(puntos_mostrados)))
 	texto_record.text = "RÉCORD " + str(maxi(puntos.record, 0))
+	# Récord superado en esta run: lo dice.
+	if puntos.record > 0 and objetivo > puntos.record:
+		texto_record.text = "¡NUEVO RÉCORD!"
 
 # Barra que se llena mientras recarga. "LISTA", "x2" con dos cargas.
 func actualizar_embestida():
 	if embestida == null:
 		return
 	var listas = embestida.cargas
+	# Recuperó una carga: la tecla salta y el recuadro destella.
+	if cargas_vistas >= 0 and listas > cargas_vistas:
+		saltar($Raiz/PanelEmbestida/Fila/Tecla, 1.35)
+		panel_embestida.modulate = Color(1.35, 1.25, 1.0)
+	cargas_vistas = listas
 	if listas >= embestida.cargas_max:
 		recarga.value = 1.0
 	else:
