@@ -7,6 +7,11 @@ extends "res://humano.gd"
 #  - Oye TODOS los ruidos del zombi, estén donde estén, y va al último a 2.8 m/s.
 #  - Si no hay ruido que seguir, va a vigilar la salida.
 #  - Por lo demás es un humano: ve, persigue, golpea, y se le puede morder o aturdir.
+# Clase 8 (sensación de juego): cuando te persigue se siente. "amenaza" va de 0 a 1
+# según lo cerca que está mientras persigue o ataca; sube rápido y baja en unos 2 s
+# cuando te pierde. Con ella late un corazón (más rápido y fuerte cuanto más cerca:
+# de 60 a 140 por minuto) y la leen el HUD (borde rojo que late con el corazón) y la
+# cámara (se cierra y tiembla).
 
 signal aparecio
 
@@ -17,11 +22,21 @@ var activo = false
 var partida = null
 var oyo_algo = false
 var capa_original = 0
+# 0 tranquilo, 1 encima. Lo leen el HUD y la cámara.
+var amenaza = 0.0
+# Segundos desde el último latido: el HUD late a la vez que el sonido.
+var desde_latido = 10.0
+@export var distancia_calma = 10.0
+@export var distancia_maxima = 2.0
+var corazon = null
 
 func _ready():
 	super()
 	add_to_group("cazador")
 	capa_original = collision_layer
+	corazon = AudioStreamPlayer.new()
+	corazon.stream = Sonidos.latido()
+	add_child(corazon)
 	esconder()
 
 func esconder():
@@ -30,8 +45,9 @@ func esconder():
 	remove_from_group("humanos")
 	set_physics_process(false)
 
-func _process(_delta):
+func _process(delta):
 	if activo:
+		sentir(delta)
 		return
 	if partida == null:
 		partida = get_tree().get_first_node_in_group("partida")
@@ -58,6 +74,22 @@ func aparecer():
 	print(name, " aparece en ", global_position)
 	Sonidos.tocar("alerta")
 	aparecio.emit()
+
+# La amenaza y el latido. Con el juego en pausa no corre (el cazador se pausa).
+func sentir(delta):
+	var objetivo = 0.0
+	if alerta_en(estado):
+		var d = distancia_a(jugador.global_position)
+		objetivo = clampf(1.0 - (d - distancia_maxima) / (distancia_calma - distancia_maxima), 0.3, 1.0)
+	var k = 5.0 if objetivo > amenaza else 0.6
+	amenaza = lerpf(amenaza, objetivo, 1.0 - exp(-k * delta))
+	if amenaza < 0.02:
+		amenaza = 0.0
+	desde_latido += delta
+	if amenaza > 0.05 and desde_latido >= 60.0 / lerpf(60.0, 140.0, amenaza):
+		desde_latido = 0.0
+		corazon.volume_db = lerpf(-16.0, -1.0, amenaza)
+		corazon.play()
 
 func entrada_lejana():
 	var mejor = entradas[0]

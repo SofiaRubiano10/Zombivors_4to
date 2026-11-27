@@ -27,6 +27,8 @@ extends CanvasLayer
 #    con los de las esquinas, baja a la fila de abajo. Nada se tapa.
 #  - escala agranda o achica todo el HUD (accesibilidad).
 #  - Con el menú de pausa, las mutaciones o el fin de run abiertos, se esconde.
+# Clase 8: si el cazador te persigue, el borde rojo late con su corazón (lo marca
+# Cazador.amenaza) aunque tengas la vida llena, y su aviso tiene prioridad.
 
 const COLOR_PELIGRO = Color("#B22222")
 const COLOR_HUESO = Color(0.949, 0.929, 0.894)
@@ -186,9 +188,15 @@ func _al_aparecer(nodo):
 		nodo.aparecio.connect(avisar.bind("LLEGÓ EL CAZADOR", COLOR_PELIGRO, 3))
 
 func conectar_humano(h):
-	if not is_instance_valid(h) or h.me_vio.is_connected(avisar):
+	# Una sola vez por humano (las señales con bind no se reconocen con is_connected).
+	if not is_instance_valid(h) or h.has_meta("hud_conectado"):
 		return
-	h.me_vio.connect(avisar.bind("TE VIO", COLOR_PELIGRO, 2))
+	h.set_meta("hud_conectado", true)
+	# El cazador es el peor: su aviso tapa a los demás.
+	if h.has_signal("aparecio"):
+		h.me_vio.connect(avisar.bind("¡EL CAZADOR TE VIO!", COLOR_PELIGRO, 3))
+	else:
+		h.me_vio.connect(avisar.bind("TE VIO", COLOR_PELIGRO, 2))
 	if h.has_signal("sospecha"):
 		h.sospecha.connect(avisar.bind("SOSPECHA", COLOR_HUESO, 1))
 
@@ -328,7 +336,12 @@ func animar_vida(delta):
 	var pulso = (sin(latido) * 0.5 + 0.5) * peligro
 	var base = Color.WHITE.lerp(Color(1.4, 0.75, 0.75), pulso)
 	panel_vida.modulate = panel_vida.modulate.lerp(base, 1.0 - exp(-8.0 * delta))
-	vineta.modulate.a = lerpf(vineta.modulate.a, peligro * (0.35 + 0.35 * pulso), 1.0 - exp(-6.0 * delta))
+	var rojo = peligro * (0.35 + 0.35 * pulso)
+	# El cazador: un golpe de rojo con cada latido que se apaga enseguida.
+	var cazador = get_tree().get_first_node_in_group("cazador")
+	if cazador != null and "amenaza" in cazador and cazador.amenaza > 0.0:
+		rojo = maxf(rojo, cazador.amenaza * (0.25 + 0.45 * exp(-7.0 * cazador.desde_latido)))
+	vineta.modulate.a = lerpf(vineta.modulate.a, rojo, 1.0 - exp(-14.0 * delta))
 
 # Verde sano -> ámbar a media vida -> rojo con poca.
 func color_vida(fraccion):
