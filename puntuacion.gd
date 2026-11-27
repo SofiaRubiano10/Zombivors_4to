@@ -9,6 +9,10 @@ extends Node
 #    y todo lo del piso x1.5 si no recibiste ni un golpe (la descomposición no cuenta).
 #  - El récord se guarda en disco (ConfigFile en user://): sobrevive a cerrar el juego.
 # total y devorados son static: se acumulan durante toda la run.
+# Clase 8: los pisos altos dan más: todo lo que se gana se multiplica por el piso
+# (x1, x1.5, x2). Lo ganado es también dinero: la tienda de mutaciones entre pisos
+# cobra del "saldo" (lo ganado menos lo gastado). El récord cuenta todo lo ganado,
+# así que comprar no te baja el récord.
 
 # static para que las pruebas puedan usar otro archivo y no pisar el récord real.
 static var archivo = "user://zombivors.cfg"
@@ -16,6 +20,9 @@ static var archivo = "user://zombivors.cfg"
 static var total = 0
 static var devorados = 0
 static var record = -1
+# Lo que se gastó en la tienda durante esta run.
+static var gastado = 0
+const MULTIPLICADOR = [1.0, 1.5, 2.0]
 
 # Lo ganado en este piso; se suma al total al terminarlo.
 var puntos_zona = 0
@@ -36,6 +43,7 @@ func conectar():
 		if partida.zona == 1:
 			total = 0
 			devorados = 0
+			gastado = 0
 		partida.meta.connect(_al_comer)
 		partida.terminada.connect(_al_terminar)
 	var pj = get_tree().get_first_node_in_group("jugador")
@@ -51,7 +59,13 @@ func conectar_humano(h):
 	if not h.devorado_signal.is_connected(_al_devorar):
 		h.devorado_signal.connect(_al_devorar)
 
+# Multiplicador del piso: el 1 da x1, el 2 x1.5, el 3 x2 (y si hubiera más, x2).
+static func multiplicador(piso):
+	return MULTIPLICADOR[clampi(piso, 1, MULTIPLICADOR.size()) - 1]
+
 func sumar(puntos, motivo):
+	var piso = partida.zona if partida != null else 1
+	puntos = int(round(puntos * multiplicador(piso)))
 	puntos_zona += puntos
 	print("+", puntos, " (", motivo, ") · piso ", puntos_zona, " · run ", total + puntos_zona)
 
@@ -85,6 +99,16 @@ func fin_de_run(estado):
 # Lo que se ve en el HUD durante la run.
 func en_curso():
 	return total + puntos_zona
+
+# Lo que se puede gastar en la tienda: lo ganado en pisos terminados menos lo gastado.
+static func saldo():
+	return total - gastado
+
+static func gastar(cantidad):
+	if cantidad > saldo():
+		return false
+	gastado += cantidad
+	return true
 
 static func leer_record():
 	var cfg = ConfigFile.new()
