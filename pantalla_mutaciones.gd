@@ -48,7 +48,7 @@ func armar(numero_zona):
 	columna.add_child(titulo)
 	for i in opciones.size():
 		var boton = Button.new()
-		boton.text = str(i + 1) + ". " + opciones[i] + "\n" + Mutaciones.LISTA[opciones[i]]
+		boton.text = str(i + 1) + ". " + opciones[i] + "\n" + Mutaciones.descripcion(opciones[i])
 		boton.custom_minimum_size = Vector2(520, 70)
 		boton.add_theme_font_size_override("font_size", 20)
 		boton.pressed.connect(elegir.bind(i))

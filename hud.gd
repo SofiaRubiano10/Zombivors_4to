@@ -479,7 +479,7 @@ func actualizar_mutaciones():
 		var ficha = PanelContainer.new()
 		ficha.theme_type_variation = &"PanelChip"
 		ficha.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		ficha.tooltip_text = Mutaciones.LISTA.get(nombre, "")
+		ficha.tooltip_text = Mutaciones.descripcion(nombre)
 		var texto = Label.new()
 		texto.theme_type_variation = &"LabelChip"
 		texto.text = nombre_corto(nombre) if compacto else nombre
