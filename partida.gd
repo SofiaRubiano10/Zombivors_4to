@@ -19,6 +19,8 @@ extends Node
 # escena en la siguiente con la misma vida (static); ganar la última es la victoria
 # final. Perder en cualquier zona termina la run: se vuelve a la zona 1.
 # Clase 5: entre zonas se elige una mutación (pantalla_mutaciones.tscn).
+# Clase 8: esa pantalla es ahora una tienda: las compras se agregan al pagarlas y al
+# cerrarla manda "" (no hay nada más que agregar).
 # Clase 5: cuando la run termina se muestra el resumen (fin_run.tscn) y se espera
 # a que el jugador pida otra.
 
