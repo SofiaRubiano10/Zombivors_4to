@@ -5,6 +5,8 @@ extends MeshInstance3D
 # lejos está el zombi de ESTA sala. Como es una caja (y no una tapa), oculta lo
 # que hay dentro desde cualquier ángulo de la cámara: muebles, comida, humanos.
 # Cada sala tiene su nodo con este script; no se conocen entre sí.
+# Clase 8: con poca vida el zombi ve menos, y la niebla de las salas de alrededor se
+# cierra antes: distancia_oscura se multiplica por el alcance de la LuzJugador.
 
 # Hasta esta distancia de la sala (en metros) se ve del todo.
 @export var distancia_clara = 0.5
@@ -19,6 +21,7 @@ extends MeshInstance3D
 @export_range(0.0, 1.0) var oscuridad = 1.0
 
 var jugador = null
+var luz = null
 var material = StandardMaterial3D.new()
 var opacidad = 1.0
 
@@ -38,8 +41,12 @@ func _process(delta):
 		jugador = get_tree().get_first_node_in_group("jugador")
 		if jugador == null:
 			return
+		luz = jugador.get_node_or_null("LuzJugador")
 	var d = distancia_a_sala(jugador.global_position)
-	var objetivo = opacidad_para(d, distancia_clara, distancia_oscura) * opacidad_max
+	var oscura = distancia_oscura
+	if luz != null and "alcance" in luz:
+		oscura = maxf(distancia_oscura * luz.alcance, distancia_clara + 1.0)
+	var objetivo = opacidad_para(d, distancia_clara, oscura) * opacidad_max
 	opacidad = lerpf(opacidad, objetivo, 1.0 - exp(-suavizado * delta))
 	material.albedo_color.a = opacidad
 	# Del todo abierta no se dibuja: no gasta nada.

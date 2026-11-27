@@ -56,7 +56,8 @@ func _process(delta: float) -> void:
 	if luz_variable != null:
 		luz_variable.light_color = color_bajo.lerp(color_alto, variable)
 		if "peligro" in luz_variable:
-			# La LuzJugador pone su propia energía (depende de lo oscuro que esté): solo recibe el peligro.
+			# La LuzJugador pone su propia energía (depende de lo oscuro que esté): solo recibe
+			# el peligro, y con él encoge la vista del zombi.
 			luz_variable.peligro = variable
 		else:
 			var energia_deseada: float = 2.5 + 1.5 * variable
