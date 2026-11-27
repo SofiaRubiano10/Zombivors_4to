@@ -224,7 +224,8 @@ func mostrar_fin(fin):
 	var nuevo = p.nuevo_record if p != null else false
 	var devorados = p.devorados if p != null else 0
 	fin.otra_vez.connect(reiniciar, CONNECT_ONE_SHOT)
-	fin.mostrar(gano, motivo_fin, pisos, zonas_total, devorados, puntos, record, nuevo)
+	var gastado = p.gastado if p != null else 0
+	fin.mostrar(gano, motivo_fin, pisos, zonas_total, devorados, puntos, record, nuevo, gastado)
 
 func _al_elegir_mutacion(nombre):
 	if nombre != "":

@@ -5,6 +5,7 @@ extends CanvasLayer
 # Partida la muestra en vez de reiniciar sola: pisos superados, humanos devorados,
 # puntaje total y, si toca, "NUEVO RÉCORD". Enter o el botón empiezan otra run.
 # Clase 7: el resumen va en una tarjeta con el tema flat (PielFlat.tarjeta).
+# Clase 8: también dice cuánto se gastó en la tienda de mutaciones.
 
 signal otra_vez
 
@@ -21,7 +22,7 @@ func _ready():
 	layer = 11
 	visible = false
 
-func mostrar(gano, motivo, pisos, pisos_total, devorados, puntos, record, nuevo_record):
+func mostrar(gano, motivo, pisos, pisos_total, devorados, puntos, record, nuevo_record, gastado = 0):
 	if fondo != null:
 		fondo.queue_free()
 	fondo = ColorRect.new()
@@ -40,6 +41,8 @@ func mostrar(gano, motivo, pisos, pisos_total, devorados, puntos, record, nuevo_
 	etiqueta(columna, "Pisos superados: " + str(pisos) + " / " + str(pisos_total), 24, HUESO)
 	etiqueta(columna, "Humanos devorados: " + str(devorados), 24, HUESO)
 	etiqueta(columna, "Puntaje: " + str(puntos), 30, HUESO)
+	if gastado > 0:
+		etiqueta(columna, "Gastado en mutaciones: " + str(gastado), 20, COMIDA)
 	if nuevo_record:
 		etiqueta(columna, "NUEVO RÉCORD", 34, COMIDA)
 	else:

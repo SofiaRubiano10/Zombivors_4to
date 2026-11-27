@@ -67,6 +67,8 @@ const MARGEN = 16.0
 @onready var panel_puntos = $Raiz/PanelPuntos
 @onready var texto_puntos = $Raiz/PanelPuntos/Columna/Fila/Puntos
 @onready var texto_record = $Raiz/PanelPuntos/Columna/Record
+# Clase 8: lo que hay para gastar en la tienda y el multiplicador del piso.
+@onready var texto_saldo = $Raiz/PanelPuntos/Columna/Saldo
 @onready var panel_embestida = $Raiz/PanelEmbestida
 @onready var recarga = $Raiz/PanelEmbestida/Fila/Datos/Recarga
 @onready var estado_embestida = $Raiz/PanelEmbestida/Fila/Datos/Cabecera/Estado
@@ -457,6 +459,8 @@ func actualizar_puntos():
 	# Récord superado en esta run: lo dice.
 	if puntos.record > 0 and objetivo > puntos.record:
 		texto_record.text = "¡NUEVO RÉCORD!"
+	var piso = partida.zona if partida != null else 1
+	texto_saldo.text = "SALDO " + str(Puntuacion.saldo()) + " · x" + String.num(Puntuacion.multiplicador(piso))
 
 # Barra que se llena mientras recarga. "LISTA", "x2" con dos cargas.
 func actualizar_embestida():

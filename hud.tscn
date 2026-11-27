@@ -232,6 +232,13 @@ theme_type_variation = &"LabelPequeno"
 text = "RÉCORD 0"
 horizontal_alignment = 2
 
+[node name="Saldo" type="Label" parent="Raiz/PanelPuntos/Columna"]
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+theme_override_colors/font_color = Color(0.831, 0.639, 0.451, 1)
+text = "SALDO 0 · x1"
+horizontal_alignment = 2
+
 [node name="PanelEmbestida" type="PanelContainer" parent="Raiz"]
 layout_mode = 1
 anchors_preset = 3
