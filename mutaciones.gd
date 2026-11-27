@@ -20,6 +20,15 @@ const LISTA = {
 	"Hambre voraz": {"texto": "La comida cura un 50 % más.", "nivel": 2},
 	"Mandíbula": {"texto": "El mordisco tarda 0.7 s.", "nivel": 2},
 	"Embestida doble": {"texto": "Dos cargas de embestida.", "nivel": 2},
+	# Clase 8: mutaciones nuevas.
+	"Ojos de noche": {"texto": "Ves un 25 % más lejos y más abierto.", "nivel": 1},
+	"Carrera libre": {"texto": "Correr ya no te quita vida.", "nivel": 1},
+	"Piel gruesa": {"texto": "Los golpes quitan un 25 % menos.", "nivel": 2},
+	"Aturdidor": {"texto": "La embestida aturde 2.5 s en vez de 1.5 s.", "nivel": 2},
+	"Instinto": {"texto": "Te avisa 15 s antes de que llegue el cazador.", "nivel": 2},
+	"Sombra": {"texto": "Los humanos te ven a un 25 % menos de distancia.", "nivel": 3},
+	"Regeneración": {"texto": "Recuperas 1 de vida cada 4 s.", "nivel": 3},
+	"Segunda vida": {"texto": "Si mueres, revives una vez en esta run.", "nivel": 3},
 }
 const PRECIO_NIVEL = {1: 400, 2: 800, 3: 1400}
 
@@ -95,6 +104,22 @@ static func aplicar(pj: Node) -> void:
 	if tiene("Embestida doble") and embestida != null:
 		embestida.cargas_max = 2
 		embestida.cargas = 2
-	# Hambre voraz la mira el alimento al comerse; Olfato, el HUD.
+	var luz = pj.get_node_or_null("LuzJugador")
+	if tiene("Ojos de noche") and luz != null and "factor_vision" in luz:
+		luz.factor_vision = 1.25
+	if tiene("Carrera libre"):
+		pj.costo_correr = 0.0
+	if tiene("Piel gruesa") and salud != null:
+		salud.factor_danio = 0.75
+	if tiene("Aturdidor") and embestida != null:
+		embestida.aturdimiento = 2.5
+	if tiene("Regeneración") and salud != null:
+		salud.regeneracion = 4.0
+	# Una sola vez por run: al usarse se gasta y desaparece de la lista.
+	if tiene("Segunda vida") and salud != null:
+		salud.reapariciones += 1
+		salud.reaparecio.connect(func(): elegidas.erase("Segunda vida"), CONNECT_ONE_SHOT)
+	# Hambre voraz la mira el alimento al comerse; Olfato e Instinto, el HUD;
+	# Sombra, cada humano al nacer (humano.gd).
 	if not elegidas.is_empty():
 		print("mutaciones: ", elegidas)

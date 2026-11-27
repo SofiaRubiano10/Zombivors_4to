@@ -62,6 +62,11 @@ var sujetado = 0.0
 
 func _ready():
 	add_to_group("humanos")
+	# Clase 8, mutación "Sombra": todos los humanos (también tirador y cazador) ven
+	# y siguen al zombi a un 25 % menos de distancia.
+	if Mutaciones.tiene("Sombra"):
+		rango_vision *= 0.75
+		rango_perder *= 0.75
 	# Criterio visual 1: contorno rojo cuando el zombi está cerca.
 	BordeRojo.poner(self)
 	jugador = get_tree().get_first_node_in_group("jugador")

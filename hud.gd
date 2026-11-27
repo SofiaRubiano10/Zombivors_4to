@@ -99,6 +99,7 @@ var segundo_visto = -1
 # Segundos que lleva cada recuadro secundario sin cambiar.
 var calma = {}
 var compacto = false
+var instinto_avisado = false
 var partida = null
 var jugador = null
 var interactuar = null
@@ -132,6 +133,8 @@ func _ready():
 	pos_aviso_y = aviso.position.y
 	salud.cambio.connect(mostrar)
 	salud.golpeado.connect(_al_recibir_golpe)
+	if salud.has_signal("reaparecio"):
+		salud.reaparecio.connect(avisar.bind("¡SEGUNDA VIDA!", COLOR_COMIDA, 3))
 	mostrar(salud.vida)
 	barra_vida.value = salud.vida
 	rastro_vida.value = salud.vida
@@ -360,6 +363,7 @@ func actualizar_objetivo():
 	texto_piso.text = "PISO " + str(Partida.zona) + "/" + str(partida.zonas_total)
 	texto_tiempo.text = partida.reloj_texto(partida.tiempo)
 	avisar_cierre()
+	avisar_instinto()
 	colocar_centro()
 	fila_comida.visible = partida.metas > 0
 	if partida.metas != metas_dibujadas or partida.hechas != hechas_dibujadas:
@@ -384,6 +388,17 @@ func avisar_cierre():
 	if cerca and segundo != segundo_visto:
 		saltar(texto_tiempo, 1.25)
 	segundo_visto = segundo
+
+# Mutación "Instinto": 15 s antes de que aparezca el cazador, un aviso.
+func avisar_instinto():
+	if instinto_avisado or not Mutaciones.tiene("Instinto"):
+		return
+	var cazador = get_tree().get_first_node_in_group("cazador")
+	if cazador == null or not "antelacion" in cazador or cazador.activo:
+		return
+	if partida.tiempo >= partida.tiempo_tarde - cazador.antelacion - 15.0:
+		instinto_avisado = true
+		avisar("EL CAZADOR LLEGA EN 15 s", COLOR_PELIGRO, 2)
 
 func mostrar_estado_salida(texto, color):
 	if not estado_salida.visible or estado_salida.text.begins_with("SALIDA") != texto.begins_with("SALIDA"):

@@ -13,6 +13,8 @@ extends Node
 signal cambio(vida)
 signal sin_vida
 signal golpeado(danio)
+# Clase 8: avisa cuando se usa una reaparición (mutación "Segunda vida").
+signal reaparecio
 
 @export var vida = 100
 @export var invulnerable = 0.5
@@ -22,6 +24,11 @@ signal golpeado(danio)
 # Fracción de la vida inicial que se pierde en cada intervalo.
 @export var porcentaje_descomposicion = 0.02
 var factor_descomposicion = 1.0
+# Clase 8, mutaciones: "Piel gruesa" baja el daño de los golpes (0.75) y
+# "Regeneración" cura 1 punto cada "regeneracion" segundos (0 = no).
+var factor_danio = 1.0
+var regeneracion = 0.0
+var reloj_regeneracion = 0.0
 var reloj = 0.0
 var acumulado = 0.0
 var vida_inicial = 0
@@ -36,6 +43,15 @@ func _ready():
 func _physics_process(delta):
 	reloj = maxf(reloj - delta, 0.0)
 	descomponer(delta)
+	regenerar(delta)
+
+func regenerar(delta):
+	if regeneracion <= 0.0 or vida == 0 or vida >= vida_inicial:
+		return
+	reloj_regeneracion += delta
+	if reloj_regeneracion >= regeneracion:
+		reloj_regeneracion -= regeneracion
+		curar(1)
 
 # No pasa por recibir_golpe: el cuerpo se pudre aunque seas invulnerable.
 func descomponer(delta):
@@ -50,6 +66,7 @@ func descomponer(delta):
 func recibir_golpe(danio):
 	if reloj > 0.001 or vida == 0:
 		return
+	danio = maxi(1, int(round(danio * factor_danio)))
 	reloj = invulnerable
 	Sonidos.tocar("golpe")
 	golpeado.emit(danio)
@@ -78,6 +95,7 @@ func _al_quedar_sin_vida():
 		pj.global_position = punto
 		reloj = espera_reaparecer
 		cambio.emit(vida)
+		reaparecio.emit()
 		print("reaparece cuadro ", Engine.get_physics_frames())
 		return
 	var partida = get_tree().get_first_node_in_group("partida")
