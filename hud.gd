@@ -81,7 +81,7 @@ var reloj_aviso = 0.0
 var prioridad_aviso = 0
 # Mutación "Olfato": una flecha color comida alrededor del zombi que apunta al
 # alimento más cercano.
-var flecha = Polygon2D.new()
+var flecha = null
 var vida_actual = 0
 var vida_max = 100
 var reloj_rastro = 0.0
@@ -133,6 +133,8 @@ func _ready():
 	mostrar(salud.vida)
 	barra_vida.value = salud.vida
 	rastro_vida.value = salud.vida
+	# Se crea aquí y no al declarar: así no queda suelta si el HUD se borra antes.
+	flecha = Polygon2D.new()
 	flecha.polygon = PackedVector2Array([Vector2(14, 0), Vector2(-8, -9), Vector2(-8, 9)])
 	flecha.color = COLOR_COMIDA
 	flecha.visible = false
@@ -297,7 +299,6 @@ func mostrar(vida):
 		reloj_rastro = espera_rastro
 	vida_actual = vida
 	valor_vida.text = str(vida)
-	print("HUD -> vida ", vida)
 
 func _al_recibir_golpe(_danio):
 	sacudida = 0.3
