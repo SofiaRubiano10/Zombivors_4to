@@ -9,6 +9,18 @@ extends Node
 var progreso: float = 0.0
 var actual: Node = null
 
+# Clase 2: si te golpean mientras comes, pierdes lo que llevabas.
+func _ready() -> void:
+	var salud = pj.get_node_or_null("Salud") if pj else null
+	if salud != null:
+		salud.golpeado.connect(_al_ser_golpeado)
+
+func _al_ser_golpeado(_danio) -> void:
+	if progreso > 0.0:
+		progreso = 0.0
+		actual = null
+		Sentidos.aviso(get_tree(), "¡Te interrumpieron mientras comías!", Color(1.0, 0.6, 0.2))
+
 func _physics_process(delta: float) -> void:
 	# Mantener la tecla junto a un interactivo hasta completar
 	var obj = mas_cercano()
@@ -50,6 +62,8 @@ func mas_cercano() -> Node:
 	var mejor: Node = null
 	for obj in get_tree().get_nodes_in_group("interactivos"):
 		var d = distancia_a(obj)
+		if obj.is_queued_for_deletion():
+			continue
 		if d <= alcance and (mejor == null or d < distancia_a(mejor)):
 			mejor = obj
 	return mejor
