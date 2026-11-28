@@ -7,9 +7,12 @@ extends Node
 # Nivel 3: reinicia sola y recuerda intentos y mejor tiempo (static).
 
 # Clase 1: valores del plan y señales del contrato (terminada, meta).
+# Clase 2: saciar el hambre ya no gana: abre la SALIDA (señal salida_abierta)
+# y hay que llegar a ella. Las presas son comida o cazadores devorados.
 
 signal terminada(estado, motivo)
 signal meta(hechas, total)
+signal salida_abierta
 enum Estado { JUGANDO, GANO, PERDIO }
 
 @export var tiempo_limite = 120.0
@@ -18,6 +21,8 @@ enum Estado { JUGANDO, GANO, PERDIO }
 # Cuántas metas hay que cumplir para ganar. 0 = no se cuentan.
 @export var metas = 3
 @export var espera_reinicio = 1.0
+# true: las metas abren la salida. false: las metas ganan directamente.
+@export var con_salida = true
 # static: es del script, no del nodo. Sobrevive a recargar la escena.
 static var intentos = 1
 static var mejor = 0.0
@@ -26,6 +31,7 @@ var estado = Estado.JUGANDO
 var tiempo = 0.0
 var hechas = 0
 var reloj = 0.0
+var abierta = false
 
 func _ready():
 	# Always: este nodo sigue vivo aunque el juego quede en pausa.
@@ -54,11 +60,22 @@ func avisar_meta():
 	hechas += 1
 	print("meta ", hechas, " de ", metas)
 	meta.emit(hechas, metas)
-	if metas > 0 and hechas >= metas:
-		ganar()
+	if metas > 0 and hechas >= metas and not abierta:
+		# Sin salida en la escena (escenas de prueba) se gana como antes.
+		if con_salida and get_tree().get_first_node_in_group("salida") != null:
+			abrir_salida()
+		else:
+			ganar()
 
-func ganar():
-	terminar(Estado.GANO, "ganó")
+# Como la megafonía: quien esté en el grupo "salida" se entera.
+func abrir_salida():
+	abierta = true
+	print("salida abierta cuadro ", Engine.get_physics_frames())
+	get_tree().call_group("salida", "abrir")
+	salida_abierta.emit()
+
+func ganar(motivo = "escapaste de las oficinas"):
+	terminar(Estado.GANO, motivo)
 
 func perder(motivo):
 	terminar(Estado.PERDIO, motivo)
@@ -77,6 +94,13 @@ func terminar(nuevo, motivo):
 		mejor = usado
 	terminada.emit(estado, motivo)
 
+
+# Para el HUD: las variables static se leen mejor con una función.
+func intento_actual():
+	return intentos
+
+func mejor_tiempo():
+	return mejor
 
 func reiniciar():
 	intentos += 1

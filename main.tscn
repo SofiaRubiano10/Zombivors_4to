@@ -13,13 +13,15 @@
 [ext_resource type="Script" path="res://salud.gd" id="15_salud"]
 [ext_resource type="Script" path="res://partida.gd" id="16_partida"]
 [ext_resource type="PackedScene" path="res://hud.tscn" id="17_hud"]
+[ext_resource type="Script" path="res://navegacion.gd" id="18_navegacion"]
+[ext_resource type="Script" path="res://salida.gd" id="19_salida"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
 background_color = Color(0.169, 0.176, 0.192, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.169, 0.176, 0.192, 1)
-ambient_light_energy = 0.05
+ambient_light_color = Color(0.45, 0.5, 0.68, 1)
+ambient_light_energy = 0.55
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_suelo"]
 size = Vector3(30, 0.2, 30)
@@ -33,15 +35,18 @@ material = SubResource("StandardMaterial3D_suelo")
 size = Vector3(30, 0.2, 30)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_caja"]
-size = Vector3(1, 1, 1)
+size = Vector3(0.6, 0.6, 0.6)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carne"]
-albedo_color = Color(0.831, 0.639, 0.451, 1)
+albedo_color = Color(0.86, 0.36, 0.42, 1)
 roughness = 0.4
+emission_enabled = true
+emission = Color(0.86, 0.36, 0.42, 1)
+emission_energy_multiplier = 0.6
 
 [sub_resource type="BoxMesh" id="BoxMesh_caja"]
 material = SubResource("StandardMaterial3D_carne")
-size = Vector3(1, 1, 1)
+size = Vector3(0.6, 0.6, 0.6)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_zombi"]
 radius = 0.35
@@ -55,6 +60,141 @@ roughness = 0.7
 material = SubResource("StandardMaterial3D_zombi")
 radius = 0.35
 height = 1.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_muro_ext"]
+albedo_color = Color(0.42, 0.45, 0.5, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tabique"]
+albedo_color = Color(0.62, 0.66, 0.72, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_archivador"]
+albedo_color = Color(0.4, 0.33, 0.26, 1)
+roughness = 0.7
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_oficinas"]
+geometry_parsed_geometry_type = 1
+agent_height = 1.75
+agent_radius = 0.5
+agent_max_climb = 0.25
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_salida"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_salida"]
+albedo_color = Color(0.85, 0.15, 0.15, 1)
+emission_enabled = true
+emission = Color(0.85, 0.15, 0.15, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_salida"]
+size = Vector3(2, 0.06, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro1"]
+size = Vector3(28, 2, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro1"]
+material = SubResource("StandardMaterial3D_muro_ext")
+size = Vector3(28, 2, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro2"]
+size = Vector3(0.5, 2, 27)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro2"]
+material = SubResource("StandardMaterial3D_muro_ext")
+size = Vector3(0.5, 2, 27)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro3"]
+size = Vector3(3.5, 1.5, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro3"]
+material = SubResource("StandardMaterial3D_tabique")
+size = Vector3(3.5, 1.5, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro4"]
+size = Vector3(7, 1.5, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro4"]
+material = SubResource("StandardMaterial3D_tabique")
+size = Vector3(7, 1.5, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro5"]
+size = Vector3(8, 1.5, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro5"]
+material = SubResource("StandardMaterial3D_tabique")
+size = Vector3(8, 1.5, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro6"]
+size = Vector3(2.5, 1.5, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro6"]
+material = SubResource("StandardMaterial3D_tabique")
+size = Vector3(2.5, 1.5, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro7"]
+size = Vector3(5.5, 1.5, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro7"]
+material = SubResource("StandardMaterial3D_tabique")
+size = Vector3(5.5, 1.5, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro8"]
+size = Vector3(5, 1.5, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro8"]
+material = SubResource("StandardMaterial3D_tabique")
+size = Vector3(5, 1.5, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro9"]
+size = Vector3(0.3, 1.5, 2.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro9"]
+material = SubResource("StandardMaterial3D_tabique")
+size = Vector3(0.3, 1.5, 2.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro10"]
+size = Vector3(0.3, 1.5, 4.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro10"]
+material = SubResource("StandardMaterial3D_tabique")
+size = Vector3(0.3, 1.5, 4.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro11"]
+size = Vector3(0.3, 1.5, 3.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro11"]
+material = SubResource("StandardMaterial3D_tabique")
+size = Vector3(0.3, 1.5, 3.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro12"]
+size = Vector3(4, 1.3, 0.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro12"]
+material = SubResource("StandardMaterial3D_archivador")
+size = Vector3(4, 1.3, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro13"]
+size = Vector3(3, 1.3, 0.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro13"]
+material = SubResource("StandardMaterial3D_archivador")
+size = Vector3(3, 1.3, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro14"]
+size = Vector3(0.8, 1.3, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro14"]
+material = SubResource("StandardMaterial3D_archivador")
+size = Vector3(0.8, 1.3, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muro15"]
+size = Vector3(0.8, 1.3, 3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muro15"]
+material = SubResource("StandardMaterial3D_archivador")
+size = Vector3(0.8, 1.3, 3)
 
 [node name="Main" type="Node3D"]
 
@@ -73,13 +213,13 @@ entorno = NodePath("../WorldEnvironment")
 energia_sol = 0.35
 azimut = -30.0
 ambiente_dia = 0.3
-ambiente_noche = 0.05
+ambiente_noche = 0.55
 
 [node name="CicloDia" type="Node" parent="SistemaSol"]
 script = ExtResource("8_ciclodia")
-hora = 8.0
+hora = 20.0
 duracion_dia = 48.0
-pausado = false
+pausado = true
 
 [node name="LuzEvento" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
@@ -95,19 +235,304 @@ pico_destello = 4.0
 k_destello = 10.0
 luz_variable = NodePath("../Personaje/LuzJugador")
 
-[node name="Suelo" type="StaticBody3D" parent="."]
+[node name="Navegacion" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_oficinas")
+script = ExtResource("18_navegacion")
+
+[node name="Suelo" type="StaticBody3D" parent="Navegacion"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Suelo"]
 shape = SubResource("BoxShape3D_suelo")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Suelo"]
 mesh = SubResource("BoxMesh_suelo")
+
+[node name="Oficinas" type="Node3D" parent="Navegacion"]
+
+[node name="Exterior01" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -13.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Exterior01"]
+shape = SubResource("BoxShape3D_muro1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Exterior01"]
+mesh = SubResource("BoxMesh_muro1")
+
+[node name="Exterior02" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 13.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Exterior02"]
+shape = SubResource("BoxShape3D_muro1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Exterior02"]
+mesh = SubResource("BoxMesh_muro1")
+
+[node name="Exterior03" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Exterior03"]
+shape = SubResource("BoxShape3D_muro2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Exterior03"]
+mesh = SubResource("BoxMesh_muro2")
+
+[node name="Exterior04" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Exterior04"]
+shape = SubResource("BoxShape3D_muro2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Exterior04"]
+mesh = SubResource("BoxMesh_muro2")
+
+[node name="Tabique05" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.75, 0.75, -4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique05"]
+shape = SubResource("BoxShape3D_muro3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique05"]
+mesh = SubResource("BoxMesh_muro3")
+
+[node name="Tabique06" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.75, -4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique06"]
+shape = SubResource("BoxShape3D_muro4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique06"]
+mesh = SubResource("BoxMesh_muro4")
+
+[node name="Tabique07" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.75, -4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique07"]
+shape = SubResource("BoxShape3D_muro5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique07"]
+mesh = SubResource("BoxMesh_muro5")
+
+[node name="Tabique08" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.25, 0.75, -4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique08"]
+shape = SubResource("BoxShape3D_muro6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique08"]
+mesh = SubResource("BoxMesh_muro6")
+
+[node name="Tabique09" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.75, 0.75, 4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique09"]
+shape = SubResource("BoxShape3D_muro7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique09"]
+mesh = SubResource("BoxMesh_muro7")
+
+[node name="Tabique10" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.75, 4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique10"]
+shape = SubResource("BoxShape3D_muro8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique10"]
+mesh = SubResource("BoxMesh_muro8")
+
+[node name="Tabique11" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.75, 4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique11"]
+shape = SubResource("BoxShape3D_muro4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique11"]
+mesh = SubResource("BoxMesh_muro4")
+
+[node name="Tabique12" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.75, 0.75, 4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique12"]
+shape = SubResource("BoxShape3D_muro3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique12"]
+mesh = SubResource("BoxMesh_muro3")
+
+[node name="Tabique13" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.75, -12.25)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique13"]
+shape = SubResource("BoxShape3D_muro9")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique13"]
+mesh = SubResource("BoxMesh_muro9")
+
+[node name="Tabique14" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.75, -6.75)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique14"]
+shape = SubResource("BoxShape3D_muro10")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique14"]
+mesh = SubResource("BoxMesh_muro10")
+
+[node name="Tabique15" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.75, 6.25)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique15"]
+shape = SubResource("BoxShape3D_muro11")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique15"]
+mesh = SubResource("BoxMesh_muro11")
+
+[node name="Tabique16" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.75, 11.75)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique16"]
+shape = SubResource("BoxShape3D_muro11")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique16"]
+mesh = SubResource("BoxMesh_muro11")
+
+[node name="Tabique17" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.75, -11.25)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique17"]
+shape = SubResource("BoxShape3D_muro10")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique17"]
+mesh = SubResource("BoxMesh_muro10")
+
+[node name="Tabique18" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.75, -5.75)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique18"]
+shape = SubResource("BoxShape3D_muro9")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique18"]
+mesh = SubResource("BoxMesh_muro9")
+
+[node name="Tabique19" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.75, 6.75)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique19"]
+shape = SubResource("BoxShape3D_muro10")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique19"]
+mesh = SubResource("BoxMesh_muro10")
+
+[node name="Tabique20" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.75, 12.25)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Tabique20"]
+shape = SubResource("BoxShape3D_muro9")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Tabique20"]
+mesh = SubResource("BoxMesh_muro9")
+
+[node name="Archivador21" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.65, -2.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador21"]
+shape = SubResource("BoxShape3D_muro12")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador21"]
+mesh = SubResource("BoxMesh_muro12")
+
+[node name="Archivador22" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.65, -1.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador22"]
+shape = SubResource("BoxShape3D_muro12")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador22"]
+mesh = SubResource("BoxMesh_muro12")
+
+[node name="Archivador23" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.65, -1.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador23"]
+shape = SubResource("BoxShape3D_muro12")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador23"]
+mesh = SubResource("BoxMesh_muro12")
+
+[node name="Archivador24" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0.65, 7.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador24"]
+shape = SubResource("BoxShape3D_muro13")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador24"]
+mesh = SubResource("BoxMesh_muro13")
+
+[node name="Archivador25" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0.65, -8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador25"]
+shape = SubResource("BoxShape3D_muro14")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador25"]
+mesh = SubResource("BoxMesh_muro14")
+
+[node name="Archivador26" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0.65, 7)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador26"]
+shape = SubResource("BoxShape3D_muro14")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador26"]
+mesh = SubResource("BoxMesh_muro14")
+
+[node name="Archivador27" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.65, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador27"]
+shape = SubResource("BoxShape3D_muro14")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador27"]
+mesh = SubResource("BoxMesh_muro14")
+
+[node name="Archivador28" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.65, -11)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador28"]
+shape = SubResource("BoxShape3D_muro14")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador28"]
+mesh = SubResource("BoxMesh_muro14")
+
+[node name="Archivador29" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.65, 7)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador29"]
+shape = SubResource("BoxShape3D_muro14")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador29"]
+mesh = SubResource("BoxMesh_muro14")
+
+[node name="Archivador30" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.65, -0.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador30"]
+shape = SubResource("BoxShape3D_muro15")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador30"]
+mesh = SubResource("BoxMesh_muro15")
+
+[node name="Archivador31" type="StaticBody3D" parent="Navegacion/Oficinas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0.65, -11)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navegacion/Oficinas/Archivador31"]
+shape = SubResource("BoxShape3D_muro14")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navegacion/Oficinas/Archivador31"]
+mesh = SubResource("BoxMesh_muro14")
 
 [node name="Cajas" type="Node3D" parent="."]
 
 [node name="Caja1" type="StaticBody3D" parent="Cajas" groups=["interactivos"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.3, 11.5)
 script = ExtResource("6_alimento")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja1"]
@@ -117,7 +542,7 @@ shape = SubResource("BoxShape3D_caja")
 mesh = SubResource("BoxMesh_caja")
 
 [node name="Caja2" type="StaticBody3D" parent="Cajas" groups=["interactivos"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.3, -10.5)
 script = ExtResource("6_alimento")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja2"]
@@ -127,7 +552,7 @@ shape = SubResource("BoxShape3D_caja")
 mesh = SubResource("BoxMesh_caja")
 
 [node name="Caja3" type="StaticBody3D" parent="Cajas" groups=["interactivos"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0.3, 11.5)
 script = ExtResource("6_alimento")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja3"]
@@ -136,7 +561,18 @@ shape = SubResource("BoxShape3D_caja")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja3"]
 mesh = SubResource("BoxMesh_caja")
 
+[node name="Caja4" type="StaticBody3D" parent="Cajas" groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.3, -0.5)
+script = ExtResource("6_alimento")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja4"]
+shape = SubResource("BoxShape3D_caja")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja4"]
+mesh = SubResource("BoxMesh_caja")
+
 [node name="Personaje" type="CharacterBody3D" parent="." groups=["jugador"] node_paths=PackedStringArray("camara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, 11.5)
 script = ExtResource("1_personaje")
 camara = NodePath("../Camera3D")
 speed_caminar = 2.5
@@ -181,34 +617,77 @@ suavizado = 2.5
 limite_min = Vector2(-14, -14)
 limite_max = Vector2(14, 14)
 
-[node name="Humano" parent="." instance=ExtResource("13_humano")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 7)
-rapidez = 2.0
-espera = 1.0
-ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(8, 0, 0)])
+[node name="GuardiaPasillo" parent="." instance=ExtResource("13_humano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, 2.5)
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(-23, 0, 0)])
 rango_vision = 7.0
 rango_ataque = 1.5
-rango_perder = 10.0
-tiempo_busqueda = 2.0
+tiempo_busqueda = 3.0
+danio = 15
+
+[node name="GuardiaArriba" parent="." instance=ExtResource("13_humano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -8)
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(14, 0, 0)])
+rango_vision = 7.0
+rango_ataque = 1.5
+danio = 15
+
+[node name="GuardiaAbajo" parent="." instance=ExtResource("13_humano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 9)
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(13.5, 0, 0)])
+espera = 1.5
+rango_vision = 6.0
+rango_ataque = 1.5
 danio = 15
 
 [node name="Cazador" parent="." instance=ExtResource("14_cazador")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 3)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -8.5, 0, -7.5)
 rapidez = 1.8
 rango_ataque = 1.3
 tiempo_aviso = 0.5
 tiempo_recarga = 1.5
 alcance_golpe = 1.6
+fuerza_empuje = 5.0
 vida = 40.0
 vida_huida = 10.0
 danio = 20
 
+[node name="Salida" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -12)
+script = ExtResource("19_salida")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Salida"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_salida")
+
+[node name="Puerta" type="MeshInstance3D" parent="Salida"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+mesh = SubResource("BoxMesh_salida")
+material_override = SubResource("StandardMaterial3D_salida")
+
+[node name="Luz" type="OmniLight3D" parent="Salida"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+light_color = Color(0.85, 0.15, 0.15, 1)
+light_energy = 2.0
+omni_range = 4.0
+
+[node name="Cartel" type="Label3D" parent="Salida"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+pixel_size = 0.01
+billboard = 1
+no_depth_test = true
+modulate = Color(0.85, 0.15, 0.15, 1)
+outline_modulate = Color(0, 0, 0, 1)
+text = "SALIDA"
+font_size = 96
+outline_size = 24
 
 [node name="Partida" type="Node" parent="."]
 script = ExtResource("16_partida")
 tiempo_limite = 120.0
 gana_con_tiempo = false
 metas = 3
-espera_reinicio = 1.0
+espera_reinicio = 3.0
+con_salida = true
 
 [node name="HUD" parent="." instance=ExtResource("17_hud")]
