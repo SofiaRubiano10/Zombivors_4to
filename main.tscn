@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://cqe74xl2ef4c1" path="res://camara_sigue.gd" id="4_camara"]
 [ext_resource type="Script" uid="uid://b0dgo74cfp3ap" path="res://interactuar.gd" id="5_interactuar"]
 [ext_resource type="PackedScene" path="res://personaje/modelo_zombi.tscn" id="6_2cqfq"]
-[ext_resource type="Script" uid="uid://bpl0vxfb5b82j" path="res://alimento.gd" id="6_alimento"]
 [ext_resource type="Script" uid="uid://nwsm1v1c4hu1" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
 [ext_resource type="Script" uid="uid://q1ei4flyuc5r" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
 [ext_resource type="PackedScene" uid="uid://cxrydsrs7ug6" path="res://humano.tscn" id="13_humano"]
@@ -45,6 +44,9 @@
 [ext_resource type="PackedScene" uid="uid://d33july61ys8y" path="res://muebles/table.glb" id="m_table"]
 [ext_resource type="PackedScene" uid="uid://c0t2wq0bfacq2" path="res://muebles/tableCoffee.glb" id="m_tableCoffee"]
 [ext_resource type="PackedScene" uid="uid://c0ludic4741fg" path="res://muebles/trashcan.glb" id="m_trashcan"]
+[ext_resource type="PackedScene" path="res://alimento_carne.tscn" id="32_carne"]
+[ext_resource type="PackedScene" path="res://alimento_carrona.tscn" id="33_carrona"]
+[ext_resource type="PackedScene" path="res://alimento_cerebro.tscn" id="34_cerebro"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -261,32 +263,6 @@ size = Vector3(23.48, 2.62, 15.48)
 
 [sub_resource type="BoxMesh" id="Caja_niebla_Archivo"]
 size = Vector3(11.48, 2.62, 15.48)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_caja"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carne"]
-albedo_color = Color(0.831, 0.639, 0.451, 1)
-roughness = 0.4
-emission_enabled = true
-emission = Color(0.831, 0.639, 0.451, 1)
-emission_energy_multiplier = 0.35
-
-[sub_resource type="BoxMesh" id="BoxMesh_caja"]
-material = SubResource("StandardMaterial3D_carne")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cerebro"]
-albedo_color = Color(0.93, 0.5, 0.62, 1)
-roughness = 0.3
-emission_enabled = true
-emission = Color(0.93, 0.5, 0.62, 1)
-emission_energy_multiplier = 0.35
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carrona"]
-albedo_color = Color(0.36, 0.4, 0.22, 1)
-roughness = 0.8
-emission_enabled = true
-emission = Color(0.36, 0.4, 0.22, 1)
-emission_energy_multiplier = 0.35
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_zombi"]
 radius = 0.35
@@ -1349,74 +1325,20 @@ estado = 2
 
 [node name="Cajas" type="Node3D" parent="." unique_id=571500221]
 
-[node name="Cerebro" type="Area3D" parent="Cajas" unique_id=690156957 groups=["interactivos"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0.5, 15)
-collision_layer = 8
-collision_mask = 0
-script = ExtResource("6_alimento")
-curacion = 40
-pausa_descomposicion = 20.0
+[node name="Cerebro" parent="Cajas" instance=ExtResource("34_cerebro")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 21, 0, 15)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Cerebro" unique_id=681627185]
-shape = SubResource("BoxShape3D_caja")
+[node name="Carne1" parent="Cajas" instance=ExtResource("32_carne")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -18, 0, -12)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Cerebro" unique_id=651223079]
-mesh = SubResource("BoxMesh_caja")
-surface_material_override/0 = SubResource("StandardMaterial3D_cerebro")
+[node name="Carne2" parent="Cajas" instance=ExtResource("32_carne")]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, -8, 0, 14)
 
-[node name="Caja2" type="Area3D" parent="Cajas" unique_id=1540602165 groups=["interactivos"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0.5, -12)
-collision_layer = 8
-collision_mask = 0
-script = ExtResource("6_alimento")
+[node name="Carrona1" parent="Cajas" instance=ExtResource("33_carrona")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -10)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja2" unique_id=589279075]
-shape = SubResource("BoxShape3D_caja")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja2" unique_id=1521750782]
-mesh = SubResource("BoxMesh_caja")
-
-[node name="Caja3" type="Area3D" parent="Cajas" unique_id=1240157516 groups=["interactivos"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.5, 14)
-collision_layer = 8
-collision_mask = 0
-script = ExtResource("6_alimento")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja3" unique_id=29659854]
-shape = SubResource("BoxShape3D_caja")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja3" unique_id=741984988]
-mesh = SubResource("BoxMesh_caja")
-
-[node name="Carrona1" type="Area3D" parent="Cajas" unique_id=402227541 groups=["interactivos"]]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -3, 0.3, -10)
-collision_layer = 8
-collision_mask = 0
-script = ExtResource("6_alimento")
-curacion = 8
-tiempo_comer = 0.5
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Carrona1" unique_id=1261084105]
-shape = SubResource("BoxShape3D_caja")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Carrona1" unique_id=1841428500]
-mesh = SubResource("BoxMesh_caja")
-surface_material_override/0 = SubResource("StandardMaterial3D_carrona")
-
-[node name="Carrona2" type="Area3D" parent="Cajas" unique_id=2112885636 groups=["interactivos"]]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 6, 0.3, -10)
-collision_layer = 8
-collision_mask = 0
-script = ExtResource("6_alimento")
-curacion = 8
-tiempo_comer = 0.5
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Carrona2" unique_id=1748971920]
-shape = SubResource("BoxShape3D_caja")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Carrona2" unique_id=880285121]
-mesh = SubResource("BoxMesh_caja")
-surface_material_override/0 = SubResource("StandardMaterial3D_carrona")
+[node name="Carrona2" parent="Cajas" instance=ExtResource("33_carrona")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6, 0, -10)
 
 [node name="Personaje" type="CharacterBody3D" parent="." unique_id=1717637401 node_paths=PackedStringArray("camara") groups=["jugador"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 10)
