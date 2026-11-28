@@ -200,6 +200,7 @@ tiempo_aviso = 0.5
 tiempo_recarga = 1.0
 alcance_golpe = 1.8
 danio = 1
+empieza_cazando = true
 
 [node name="HUD" parent="." instance=ExtResource("17_hud")]
 

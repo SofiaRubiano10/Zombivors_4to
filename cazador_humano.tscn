@@ -38,3 +38,26 @@ mesh = SubResource("CapsuleMesh_cazador")
 [node name="Arma" type="MeshInstance3D" parent="Modelo"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.0, -0.45)
 mesh = SubResource("BoxMesh_arma")
+
+[node name="Agente" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.5
+target_desired_distance = 0.3
+path_max_distance = 2.0
+
+[node name="Alerta" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35, 0)
+pixel_size = 0.01
+billboard = 1
+no_depth_test = true
+modulate = Color(1, 0.93, 0.75, 1)
+outline_modulate = Color(0, 0, 0, 1)
+font_size = 110
+outline_size = 28
+
+[node name="Linterna" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.6, -0.3)
+light_color = Color(1, 0.93, 0.75, 1)
+light_energy = 3.0
+spot_range = 7.0
+spot_attenuation = 0.8
+spot_angle = 40.0
