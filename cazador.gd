@@ -77,10 +77,11 @@ func aparecer():
 
 # La amenaza y el latido. Con el juego en pausa no corre (el cazador se pausa).
 func sentir(delta):
-	var objetivo = 0.0
-	if alerta_en(estado):
-		var d = distancia_a(jugador.global_position)
-		objetivo = clampf(1.0 - (d - distancia_maxima) / (distancia_calma - distancia_maxima), 0.3, 1.0)
+	# Persiguiendo cuenta entero (como mínimo 0.3); si solo anda cerca, la mitad:
+	# ya se siente que está ahí aunque todavía no te haya visto.
+	var d = distancia_a(jugador.global_position)
+	var cerca = clampf(1.0 - (d - distancia_maxima) / (distancia_calma - distancia_maxima), 0.0, 1.0)
+	var objetivo = maxf(cerca, 0.3) if alerta_en(estado) else cerca * 0.5
 	var k = 5.0 if objetivo > amenaza else 0.6
 	amenaza = lerpf(amenaza, objetivo, 1.0 - exp(-k * delta))
 	if amenaza < 0.02:
@@ -88,7 +89,7 @@ func sentir(delta):
 	desde_latido += delta
 	if amenaza > 0.05 and desde_latido >= 60.0 / lerpf(60.0, 140.0, amenaza):
 		desde_latido = 0.0
-		corazon.volume_db = lerpf(-16.0, -1.0, amenaza)
+		corazon.volume_db = lerpf(-10.0, 2.0, amenaza)
 		corazon.play()
 
 func entrada_lejana():

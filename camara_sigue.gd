@@ -7,7 +7,7 @@ extends Camera3D
 # Clase 6 (sensación de juego): al recibir daño la cámara se sacude 0.15 s. Usa
 # h_offset y v_offset (corren la imagen, no la cámara), así no estorba al seguimiento.
 # Clase 8: cuando el cazador te persigue la cámara se cierra un poco sobre el zombi
-# (size baja hasta un 12 %) y, si está muy cerca, tiembla suave sin parar. Lo marca
+# (size baja hasta un 18 %) y, si está muy cerca, tiembla suave sin parar. Lo marca
 # la "amenaza" del cazador (0 a 1); cuando te pierde, la cámara se abre despacio.
 
 @export var objetivo: Node3D
@@ -19,7 +19,7 @@ extends Camera3D
 @export var fuerza_sacudida: float = 0.25 # metros que se corre la imagen como mucho
 
 var sacudida: float = 0.0
-@export var cierre_amenaza: float = 0.12 # Parte del size que se cierra con amenaza 1
+@export var cierre_amenaza: float = 0.18 # Parte del size que se cierra con amenaza 1
 @export var temblor_amenaza: float = 0.05 # Metros de temblor continuo con amenaza 1
 var size_base: float = 0.0
 var amenaza: float = 0.0

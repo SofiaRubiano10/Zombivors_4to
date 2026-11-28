@@ -39,7 +39,7 @@ func latido() -> AudioStreamWAV:
 	datos.resize(int(muestras * dur) * 2)
 	for i in int(muestras * dur):
 		var t = float(i) / muestras
-		var v = golpe_grave(t, 0.0, 58.0, 1.0) + golpe_grave(t, 0.17, 50.0, 0.7)
+		var v = golpe_grave(t, 0.0, 82.0, 0.8) + golpe_grave(t, 0.17, 70.0, 0.6)
 		datos.encode_s16(i * 2, int(clampf(v, -1.0, 1.0) * 30000.0))
 	var w = AudioStreamWAV.new()
 	w.format = AudioStreamWAV.FORMAT_16_BITS
@@ -49,13 +49,18 @@ func latido() -> AudioStreamWAV:
 	latido_cache = w
 	return w
 
-# Un golpe sordo: seno grave que baja un poco de tono y se apaga rápido.
+# Un golpe sordo: seno grave que baja un poco de tono y se apaga rápido. Lleva dos
+# armónicos y un chasquido al empezar: un parlante de portátil no reproduce los
+# graves solos (por debajo de unos 100 Hz casi no suenan) y el latido no se oía.
 static func golpe_grave(t: float, inicio: float, hz: float, fuerza: float) -> float:
 	var x = t - inicio
 	if x < 0.0:
 		return 0.0
-	var envolvente = minf(x / 0.008, 1.0) * exp(-x * 22.0)
-	return sin(TAU * hz * x * (1.0 - 0.6 * x)) * envolvente * fuerza
+	var envolvente = minf(x / 0.006, 1.0) * exp(-x * 20.0)
+	var fase = TAU * hz * x * (1.0 - 0.6 * x)
+	var tono = sin(fase) + 0.6 * sin(2.0 * fase) + 0.35 * sin(3.0 * fase)
+	var chasquido = sin(TAU * 900.0 * x) * exp(-x * 400.0) * 0.5
+	return (tono / 1.95 + chasquido) * envolvente * fuerza
 
 func tocar(nombre):
 	if not sonidos.has(nombre):
