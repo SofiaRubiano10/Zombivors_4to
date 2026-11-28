@@ -1,30 +1,59 @@
 [gd_scene format=3 uid="uid://c6y7p8q4r1e2n"]
 
-[ext_resource type="Script" path="res://personaje.gd" id="1_personaje"]
-[ext_resource type="Script" path="res://camara_sigue.gd" id="4_camara"]
-[ext_resource type="Script" path="res://interactuar.gd" id="5_interactuar"]
-[ext_resource type="Script" path="res://scripts/sistema_sol.gd" id="7_sistemasol"]
-[ext_resource type="Script" path="res://scripts/ciclo_dia.gd" id="8_ciclodia"]
-[ext_resource type="Script" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
-[ext_resource type="Script" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
-[ext_resource type="PackedScene" path="res://humano.tscn" id="13_humano"]
-[ext_resource type="PackedScene" path="res://cazador_humano.tscn" id="14_cazador"]
-[ext_resource type="Script" path="res://salud.gd" id="15_salud"]
-[ext_resource type="Script" path="res://partida.gd" id="16_partida"]
+[ext_resource type="Script" uid="uid://ccm6ajcm7q55" path="res://personaje.gd" id="1_personaje"]
+[ext_resource type="Script" uid="uid://cqe74xl2ef4c1" path="res://camara_sigue.gd" id="4_camara"]
+[ext_resource type="Script" uid="uid://b0dgo74cfp3ap" path="res://interactuar.gd" id="5_interactuar"]
+[ext_resource type="PackedScene" path="res://personaje/modelo_zombi.tscn" id="6_2cqfq"]
+[ext_resource type="Script" uid="uid://bpl0vxfb5b82j" path="res://alimento.gd" id="6_alimento"]
+[ext_resource type="Script" uid="uid://nwsm1v1c4hu1" path="res://scripts/luz_jugador.gd" id="10_luzjugador"]
+[ext_resource type="Script" uid="uid://q1ei4flyuc5r" path="res://sistema_eventos.gd" id="11_sistemaeventos"]
+[ext_resource type="PackedScene" uid="uid://cxrydsrs7ug6" path="res://humano.tscn" id="13_humano"]
+[ext_resource type="PackedScene" path="res://cazador.tscn" id="14_cazador"]
+[ext_resource type="Script" uid="uid://b31sc8fwss4up" path="res://salud.gd" id="15_salud"]
+[ext_resource type="Script" uid="uid://byawbqat6uuj5" path="res://partida.gd" id="16_partida"]
 [ext_resource type="PackedScene" path="res://hud.tscn" id="17_hud"]
-[ext_resource type="PackedScene" path="res://alimento_carne.tscn" id="18_carne"]
-[ext_resource type="PackedScene" path="res://alimento_carrona.tscn" id="19_carrona"]
-[ext_resource type="PackedScene" path="res://alimento_cerebro.tscn" id="20_cerebro"]
+[ext_resource type="PackedScene" path="res://salida.tscn" id="18_salida"]
+[ext_resource type="PackedScene" path="res://trampa.tscn" id="19_trampa"]
+[ext_resource type="Script" uid="uid://othrpvoa5dw3" path="res://niebla_sala.gd" id="20_niebla"]
+[ext_resource type="PackedScene" path="res://lampara.tscn" id="21_lampara"]
+[ext_resource type="PackedScene" path="res://tirador.tscn" id="22_tirador"]
+[ext_resource type="Script" path="res://mordisco.gd" id="23_mordisco"]
+[ext_resource type="Script" path="res://embestida.gd" id="24_embestida"]
+[ext_resource type="Script" path="res://navegacion.gd" id="25_navegacion"]
+[ext_resource type="Script" path="res://zona.gd" id="26_zona"]
+[ext_resource type="PackedScene" path="res://pantalla_mutaciones.tscn" id="27_mutaciones"]
+[ext_resource type="Script" path="res://puntuacion.gd" id="28_puntuacion"]
+[ext_resource type="PackedScene" path="res://fin_run.tscn" id="29_fin"]
+[ext_resource type="PackedScene" path="res://pausa.tscn" id="30_pausa"]
+[ext_resource type="Script" path="res://efectos_zombi.gd" id="31_efectos"]
+[ext_resource type="Script" uid="uid://bkla71jhomhhe" path="res://mueble.gd" id="30_mueble"]
+[ext_resource type="PackedScene" uid="uid://b5hlfccmpria" path="res://muebles/bookcaseClosed.glb" id="m_bookcaseClosed"]
+[ext_resource type="PackedScene" uid="uid://b4set1tppnf3n" path="res://muebles/bookcaseClosedWide.glb" id="m_bookcaseClosedWide"]
+[ext_resource type="PackedScene" uid="uid://bcfe7njylys7t" path="res://muebles/bookcaseOpen.glb" id="m_bookcaseOpen"]
+[ext_resource type="PackedScene" uid="uid://cw20ex3wow8bs" path="res://muebles/cardboardBoxClosed.glb" id="m_cardboardBoxClosed"]
+[ext_resource type="PackedScene" uid="uid://c4two7oq20f5m" path="res://muebles/cardboardBoxOpen.glb" id="m_cardboardBoxOpen"]
+[ext_resource type="PackedScene" uid="uid://6me7n34147yx" path="res://muebles/chair.glb" id="m_chair"]
+[ext_resource type="PackedScene" uid="uid://dbn7v8ygl37tb" path="res://muebles/chairDesk.glb" id="m_chairDesk"]
+[ext_resource type="PackedScene" uid="uid://bqu7s1n3lvrno" path="res://muebles/coatRackStanding.glb" id="m_coatRackStanding"]
+[ext_resource type="PackedScene" uid="uid://cbxld6k23okoh" path="res://muebles/computerKeyboard.glb" id="m_computerKeyboard"]
+[ext_resource type="PackedScene" uid="uid://0vgvyms7a62k" path="res://muebles/computerScreen.glb" id="m_computerScreen"]
+[ext_resource type="PackedScene" uid="uid://b0m2s3n4so1tt" path="res://muebles/desk.glb" id="m_desk"]
+[ext_resource type="PackedScene" uid="uid://bi0l5b55vbmhb" path="res://muebles/deskCorner.glb" id="m_deskCorner"]
+[ext_resource type="PackedScene" uid="uid://gkxqnwvu512m" path="res://muebles/loungeSofa.glb" id="m_loungeSofa"]
+[ext_resource type="PackedScene" uid="uid://ghgrj50oh1yk" path="res://muebles/plantSmall1.glb" id="m_plantSmall1"]
+[ext_resource type="PackedScene" uid="uid://dmi5opcbkymbc" path="res://muebles/pottedPlant.glb" id="m_pottedPlant"]
+[ext_resource type="PackedScene" uid="uid://d33july61ys8y" path="res://muebles/table.glb" id="m_table"]
+[ext_resource type="PackedScene" uid="uid://c0t2wq0bfacq2" path="res://muebles/tableCoffee.glb" id="m_tableCoffee"]
+[ext_resource type="PackedScene" uid="uid://c0ludic4741fg" path="res://muebles/trashcan.glb" id="m_trashcan"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
-background_color = Color(0.169, 0.176, 0.192, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.169, 0.176, 0.192, 1)
-ambient_light_energy = 0.05
+ambient_light_color = Color(0.36, 0.45, 0.7, 1)
+ambient_light_energy = 0.3
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_suelo"]
-size = Vector3(30, 0.2, 30)
+size = Vector3(48, 0.2, 36)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_suelo"]
 albedo_color = Color(0.169, 0.176, 0.192, 1)
@@ -32,153 +61,1469 @@ roughness = 0.8
 
 [sub_resource type="BoxMesh" id="BoxMesh_suelo"]
 material = SubResource("StandardMaterial3D_suelo")
-size = Vector3(30, 0.2, 30)
+size = Vector3(48, 0.2, 36)
+
+[sub_resource type="BoxShape3D" id="Forma_Norte"]
+size = Vector3(48.5, 2.6, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="Material_muro"]
+albedo_color = Color(0.42, 0.43, 0.45, 1)
+roughness = 0.9
+distance_fade_mode = 2
+distance_fade_min_distance = 9.5
+distance_fade_max_distance = 11.0
+
+[sub_resource type="BoxMesh" id="Malla_Norte"]
+material = SubResource("Material_muro")
+size = Vector3(48.5, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_Sur"]
+size = Vector3(48.5, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_Sur"]
+material = SubResource("Material_muro")
+size = Vector3(48.5, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_Oeste"]
+size = Vector3(0.5, 2.6, 36.5)
+
+[sub_resource type="BoxMesh" id="Malla_Oeste"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 36.5)
+
+[sub_resource type="BoxShape3D" id="Forma_Este"]
+size = Vector3(0.5, 2.6, 36.5)
+
+[sub_resource type="BoxMesh" id="Malla_Este"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 36.5)
+
+[sub_resource type="BoxShape3D" id="Forma_PasilloNorte1"]
+size = Vector3(5, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_PasilloNorte1"]
+material = SubResource("Material_muro")
+size = Vector3(5, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_PasilloNorte2"]
+size = Vector3(10, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_PasilloNorte2"]
+material = SubResource("Material_muro")
+size = Vector3(10, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_PasilloNorte3"]
+size = Vector3(10, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_PasilloNorte3"]
+material = SubResource("Material_muro")
+size = Vector3(10, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_PasilloNorte4"]
+size = Vector3(10, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_PasilloNorte4"]
+material = SubResource("Material_muro")
+size = Vector3(10, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_PasilloNorte5"]
+size = Vector3(5, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_PasilloNorte5"]
+material = SubResource("Material_muro")
+size = Vector3(5, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_PasilloSur1"]
+size = Vector3(5, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_PasilloSur1"]
+material = SubResource("Material_muro")
+size = Vector3(5, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_PasilloSur2"]
+size = Vector3(12, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_PasilloSur2"]
+material = SubResource("Material_muro")
+size = Vector3(12, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_PasilloSur3"]
+size = Vector3(6, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_PasilloSur3"]
+material = SubResource("Material_muro")
+size = Vector3(6, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_PasilloSur4"]
+size = Vector3(12, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_PasilloSur4"]
+material = SubResource("Material_muro")
+size = Vector3(12, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_PasilloSur5"]
+size = Vector3(5, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_PasilloSur5"]
+material = SubResource("Material_muro")
+size = Vector3(5, 2.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Forma_DivisorAB1"]
+size = Vector3(0.5, 2.6, 5)
+
+[sub_resource type="BoxMesh" id="Malla_DivisorAB1"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 5)
+
+[sub_resource type="BoxShape3D" id="Forma_DivisorAB2"]
+size = Vector3(0.5, 2.6, 9)
+
+[sub_resource type="BoxMesh" id="Malla_DivisorAB2"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 9)
+
+[sub_resource type="BoxShape3D" id="Forma_DivisorBJuntas"]
+size = Vector3(0.5, 2.6, 16)
+
+[sub_resource type="BoxMesh" id="Malla_DivisorBJuntas"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 16)
+
+[sub_resource type="BoxShape3D" id="Forma_DivisorJuntasGer1"]
+size = Vector3(0.5, 2.6, 9)
+
+[sub_resource type="BoxMesh" id="Malla_DivisorJuntasGer1"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 9)
+
+[sub_resource type="BoxShape3D" id="Forma_DivisorJuntasGer2"]
+size = Vector3(0.5, 2.6, 5)
+
+[sub_resource type="BoxMesh" id="Malla_DivisorJuntasGer2"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 5)
+
+[sub_resource type="BoxShape3D" id="Forma_DivisorRecepcion1"]
+size = Vector3(0.5, 2.6, 9)
+
+[sub_resource type="BoxMesh" id="Malla_DivisorRecepcion1"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 9)
+
+[sub_resource type="BoxShape3D" id="Forma_DivisorRecepcion2"]
+size = Vector3(0.5, 2.6, 5)
+
+[sub_resource type="BoxMesh" id="Malla_DivisorRecepcion2"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 5)
+
+[sub_resource type="BoxShape3D" id="Forma_DivisorArchivo1"]
+size = Vector3(0.5, 2.6, 11)
+
+[sub_resource type="BoxMesh" id="Malla_DivisorArchivo1"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 11)
+
+[sub_resource type="BoxShape3D" id="Forma_DivisorArchivo2"]
+size = Vector3(0.5, 2.6, 3)
+
+[sub_resource type="BoxMesh" id="Malla_DivisorArchivo2"]
+material = SubResource("Material_muro")
+size = Vector3(0.5, 2.6, 3)
+
+[sub_resource type="BoxShape3D" id="Forma_Mampara"]
+size = Vector3(12, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Malla_Mampara"]
+material = SubResource("Material_muro")
+size = Vector3(12, 2.6, 0.5)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_OficinaA"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_OficinaB"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_Juntas"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_Gerencia"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_Pasillo"]
+size = Vector3(47.48, 2.62, 3.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_Recepcion"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_AreaAbierta"]
+size = Vector3(23.48, 2.62, 15.48)
+
+[sub_resource type="BoxMesh" id="Caja_niebla_Archivo"]
+size = Vector3(11.48, 2.62, 15.48)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_caja"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carne"]
+albedo_color = Color(0.831, 0.639, 0.451, 1)
+roughness = 0.4
+emission_enabled = true
+emission = Color(0.831, 0.639, 0.451, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_caja"]
+material = SubResource("StandardMaterial3D_carne")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cerebro"]
+albedo_color = Color(0.93, 0.5, 0.62, 1)
+roughness = 0.3
+emission_enabled = true
+emission = Color(0.93, 0.5, 0.62, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carrona"]
+albedo_color = Color(0.36, 0.4, 0.22, 1)
+roughness = 0.8
+emission_enabled = true
+emission = Color(0.36, 0.4, 0.22, 1)
+emission_energy_multiplier = 0.35
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_zombi"]
 radius = 0.35
 height = 1.75
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_zombi"]
-albedo_color = Color(0.341, 0.451, 0.212, 1)
-roughness = 0.7
+[node name="Main" type="Node3D" unique_id=754564777]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_zombi"]
-material = SubResource("StandardMaterial3D_zombi")
-radius = 0.35
-height = 1.75
-
-[node name="Main" type="Node3D"]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=550586862]
 environment = SubResource("Environment_1")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1474883715]
 transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 10, 0)
-light_energy = 0.35
+light_color = Color(0.55, 0.65, 0.9, 1)
+light_energy = 0.4
 shadow_enabled = true
 
-[node name="SistemaSol" type="Node" parent="." node_paths=PackedStringArray("sol", "entorno")]
-script = ExtResource("7_sistemasol")
-sol = NodePath("../DirectionalLight3D")
-entorno = NodePath("../WorldEnvironment")
-energia_sol = 0.35
-azimut = -30.0
-ambiente_dia = 0.3
-ambiente_noche = 0.05
-
-[node name="CicloDia" type="Node" parent="SistemaSol"]
-script = ExtResource("8_ciclodia")
-hora = 8.0
-duracion_dia = 48.0
-pausado = false
-
-[node name="LuzEvento" type="OmniLight3D" parent="."]
+[node name="LuzEvento" type="OmniLight3D" parent="." unique_id=1113448916]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 light_color = Color(0.698, 0.133, 0.133, 1)
 light_energy = 0.0
-omni_range = 5.0
 omni_attenuation = 1.5
 
-[node name="SistemaEventos" type="Node" parent="." node_paths=PackedStringArray("luz_evento", "luz_variable")]
+[node name="SistemaEventos" type="Node" parent="." unique_id=31720063 node_paths=PackedStringArray("luz_evento", "luz_variable")]
 script = ExtResource("11_sistemaeventos")
 luz_evento = NodePath("../LuzEvento")
-pico_destello = 4.0
-k_destello = 10.0
 luz_variable = NodePath("../Personaje/LuzJugador")
 
-[node name="Suelo" type="StaticBody3D" parent="."]
+[node name="Suelo" type="StaticBody3D" parent="." unique_id=404777033]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo" unique_id=43281966]
 shape = SubResource("BoxShape3D_suelo")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Suelo" unique_id=1185536975]
 mesh = SubResource("BoxMesh_suelo")
 
-[node name="Comida" type="Node3D" parent="."]
+[node name="Mapa" type="Node3D" parent="." unique_id=626925086]
 
-[node name="Carne" parent="Comida" instance=ExtResource("18_carne")]
-transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 3, 0, 3)
+[node name="Muros" type="Node3D" parent="Mapa" unique_id=1764881187]
 
-[node name="Carrona" parent="Comida" instance=ExtResource("19_carrona")]
-transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, -5, 0, -2)
+[node name="Norte" type="StaticBody3D" parent="Mapa/Muros" unique_id=1478780818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -18)
 
-[node name="Cerebro" parent="Comida" instance=ExtResource("20_cerebro")]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 4, 0, -4)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Norte" unique_id=722391240]
+shape = SubResource("Forma_Norte")
 
-[node name="Personaje" type="CharacterBody3D" parent="." groups=["jugador"] node_paths=PackedStringArray("camara")]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/Norte" unique_id=1807511636]
+mesh = SubResource("Malla_Norte")
+
+[node name="Sur" type="StaticBody3D" parent="Mapa/Muros" unique_id=121066782]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 18)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Sur" unique_id=1701475669]
+shape = SubResource("Forma_Sur")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/Sur" unique_id=627914601]
+mesh = SubResource("Malla_Sur")
+
+[node name="Oeste" type="StaticBody3D" parent="Mapa/Muros" unique_id=588240288]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 1.3, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Oeste" unique_id=1306050079]
+shape = SubResource("Forma_Oeste")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/Oeste" unique_id=1186372753]
+mesh = SubResource("Malla_Oeste")
+
+[node name="Este" type="StaticBody3D" parent="Mapa/Muros" unique_id=2091138447]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1.3, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Este" unique_id=1773955354]
+shape = SubResource("Forma_Este")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/Este" unique_id=1719652916]
+mesh = SubResource("Malla_Este")
+
+[node name="PasilloNorte1" type="StaticBody3D" parent="Mapa/Muros" unique_id=1193400015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 1.3, -2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloNorte1" unique_id=696601509]
+shape = SubResource("Forma_PasilloNorte1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/PasilloNorte1" unique_id=19765250]
+mesh = SubResource("Malla_PasilloNorte1")
+
+[node name="PasilloNorte2" type="StaticBody3D" parent="Mapa/Muros" unique_id=1289632041]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.3, -2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloNorte2" unique_id=981606647]
+shape = SubResource("Forma_PasilloNorte2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/PasilloNorte2" unique_id=580329223]
+mesh = SubResource("Malla_PasilloNorte2")
+
+[node name="PasilloNorte3" type="StaticBody3D" parent="Mapa/Muros" unique_id=508960142]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloNorte3" unique_id=1676257227]
+shape = SubResource("Forma_PasilloNorte3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/PasilloNorte3" unique_id=1481400506]
+mesh = SubResource("Malla_PasilloNorte3")
+
+[node name="PasilloNorte4" type="StaticBody3D" parent="Mapa/Muros" unique_id=969727747]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.3, -2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloNorte4" unique_id=1494659161]
+shape = SubResource("Forma_PasilloNorte4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/PasilloNorte4" unique_id=1947734399]
+mesh = SubResource("Malla_PasilloNorte4")
+
+[node name="PasilloNorte5" type="StaticBody3D" parent="Mapa/Muros" unique_id=1424982384]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5, 1.3, -2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloNorte5" unique_id=737673836]
+shape = SubResource("Forma_PasilloNorte5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/PasilloNorte5" unique_id=550639438]
+mesh = SubResource("Malla_PasilloNorte5")
+
+[node name="PasilloSur1" type="StaticBody3D" parent="Mapa/Muros" unique_id=333963018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 1.3, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloSur1" unique_id=1522713404]
+shape = SubResource("Forma_PasilloSur1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/PasilloSur1" unique_id=887258096]
+mesh = SubResource("Malla_PasilloSur1")
+
+[node name="PasilloSur2" type="StaticBody3D" parent="Mapa/Muros" unique_id=628840082]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1.3, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloSur2" unique_id=400153136]
+shape = SubResource("Forma_PasilloSur2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/PasilloSur2" unique_id=369754824]
+mesh = SubResource("Malla_PasilloSur2")
+
+[node name="PasilloSur3" type="StaticBody3D" parent="Mapa/Muros" unique_id=1194531818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloSur3" unique_id=708067599]
+shape = SubResource("Forma_PasilloSur3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/PasilloSur3" unique_id=1416404171]
+mesh = SubResource("Malla_PasilloSur3")
+
+[node name="PasilloSur4" type="StaticBody3D" parent="Mapa/Muros" unique_id=724676432]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1.3, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloSur4" unique_id=198020945]
+shape = SubResource("Forma_PasilloSur4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/PasilloSur4" unique_id=1940863473]
+mesh = SubResource("Malla_PasilloSur4")
+
+[node name="PasilloSur5" type="StaticBody3D" parent="Mapa/Muros" unique_id=437673009]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5, 1.3, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/PasilloSur5" unique_id=1105615802]
+shape = SubResource("Forma_PasilloSur5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/PasilloSur5" unique_id=408908251]
+mesh = SubResource("Malla_PasilloSur5")
+
+[node name="DivisorAB1" type="StaticBody3D" parent="Mapa/Muros" unique_id=1641216110]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.3, -15.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorAB1" unique_id=176608254]
+shape = SubResource("Forma_DivisorAB1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/DivisorAB1" unique_id=57926232]
+mesh = SubResource("Malla_DivisorAB1")
+
+[node name="DivisorAB2" type="StaticBody3D" parent="Mapa/Muros" unique_id=613336049]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.3, -6.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorAB2" unique_id=1763436030]
+shape = SubResource("Forma_DivisorAB2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/DivisorAB2" unique_id=1232190104]
+mesh = SubResource("Malla_DivisorAB2")
+
+[node name="DivisorBJuntas" type="StaticBody3D" parent="Mapa/Muros" unique_id=1276663769]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorBJuntas" unique_id=1333578766]
+shape = SubResource("Forma_DivisorBJuntas")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/DivisorBJuntas" unique_id=608753677]
+mesh = SubResource("Malla_DivisorBJuntas")
+
+[node name="DivisorJuntasGer1" type="StaticBody3D" parent="Mapa/Muros" unique_id=490672269]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.3, -13.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorJuntasGer1" unique_id=571928095]
+shape = SubResource("Forma_DivisorJuntasGer1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/DivisorJuntasGer1" unique_id=1150697046]
+mesh = SubResource("Malla_DivisorJuntasGer1")
+
+[node name="DivisorJuntasGer2" type="StaticBody3D" parent="Mapa/Muros" unique_id=2070814802]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.3, -4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorJuntasGer2" unique_id=1429583460]
+shape = SubResource("Forma_DivisorJuntasGer2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/DivisorJuntasGer2" unique_id=98613615]
+mesh = SubResource("Malla_DivisorJuntasGer2")
+
+[node name="DivisorRecepcion1" type="StaticBody3D" parent="Mapa/Muros" unique_id=597250596]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.3, 6.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorRecepcion1" unique_id=106520941]
+shape = SubResource("Forma_DivisorRecepcion1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/DivisorRecepcion1" unique_id=1925546756]
+mesh = SubResource("Malla_DivisorRecepcion1")
+
+[node name="DivisorRecepcion2" type="StaticBody3D" parent="Mapa/Muros" unique_id=1378722533]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.3, 15.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorRecepcion2" unique_id=94368417]
+shape = SubResource("Forma_DivisorRecepcion2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/DivisorRecepcion2" unique_id=1661068299]
+mesh = SubResource("Malla_DivisorRecepcion2")
+
+[node name="DivisorArchivo1" type="StaticBody3D" parent="Mapa/Muros" unique_id=2084084435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.3, 7.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorArchivo1" unique_id=885690565]
+shape = SubResource("Forma_DivisorArchivo1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/DivisorArchivo1" unique_id=1740062883]
+mesh = SubResource("Malla_DivisorArchivo1")
+
+[node name="DivisorArchivo2" type="StaticBody3D" parent="Mapa/Muros" unique_id=1654984607]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.3, 16.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/DivisorArchivo2" unique_id=1176350962]
+shape = SubResource("Forma_DivisorArchivo2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/DivisorArchivo2" unique_id=1618994845]
+mesh = SubResource("Malla_DivisorArchivo2")
+
+[node name="Mampara" type="StaticBody3D" parent="Mapa/Muros" unique_id=113920080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/Muros/Mampara" unique_id=515836529]
+shape = SubResource("Forma_Mampara")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa/Muros/Mampara" unique_id=677684681]
+mesh = SubResource("Malla_Mampara")
+
+[node name="Niebla" type="Node3D" parent="Mapa" unique_id=1512256363]
+
+[node name="OficinaA" type="MeshInstance3D" parent="Mapa/Niebla" unique_id=1790170576]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.31, -10)
+mesh = SubResource("Caja_niebla_OficinaA")
+script = ExtResource("20_niebla")
+oscuridad = 0.35
+
+[node name="OficinaB" type="MeshInstance3D" parent="Mapa/Niebla" unique_id=356880709]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.31, -10)
+mesh = SubResource("Caja_niebla_OficinaB")
+script = ExtResource("20_niebla")
+oscuridad = 0.7
+
+[node name="Juntas" type="MeshInstance3D" parent="Mapa/Niebla" unique_id=1803282822]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1.31, -10)
+mesh = SubResource("Caja_niebla_Juntas")
+script = ExtResource("20_niebla")
+
+[node name="Gerencia" type="MeshInstance3D" parent="Mapa/Niebla" unique_id=1706866545]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.31, -10)
+mesh = SubResource("Caja_niebla_Gerencia")
+script = ExtResource("20_niebla")
+oscuridad = 0.35
+
+[node name="Pasillo" type="MeshInstance3D" parent="Mapa/Niebla" unique_id=2067565450]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31, 0)
+mesh = SubResource("Caja_niebla_Pasillo")
+script = ExtResource("20_niebla")
+oscuridad = 0.7
+
+[node name="Recepcion" type="MeshInstance3D" parent="Mapa/Niebla" unique_id=786231349]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.31, 10)
+mesh = SubResource("Caja_niebla_Recepcion")
+script = ExtResource("20_niebla")
+oscuridad = 0.35
+
+[node name="AreaAbierta" type="MeshInstance3D" parent="Mapa/Niebla" unique_id=992242211]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31, 10)
+mesh = SubResource("Caja_niebla_AreaAbierta")
+script = ExtResource("20_niebla")
+oscuridad = 0.6
+
+[node name="Archivo" type="MeshInstance3D" parent="Mapa/Niebla" unique_id=1646884590]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.31, 10)
+mesh = SubResource("Caja_niebla_Archivo")
+script = ExtResource("20_niebla")
+
+[node name="Muebles" type="Node3D" parent="Mapa" unique_id=413158368]
+
+[node name="OficinaA" type="Node3D" parent="Mapa/Muebles" unique_id=1703274859]
+
+[node name="Desk" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1958984972]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 0, -15)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=321043469]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 0.76, -15.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1502523763]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 0.76, -14.75)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=434721972]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -21.5, 0, -14.05)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk2" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=2064189637]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0, -16)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen2" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=943942405]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0.76, -16.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard2" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1727806300]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0.76, -15.75)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk2" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=518513397]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -14.5, 0, -15.05)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk3" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1748511042]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 0, -7)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen3" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=128980189]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 0.76, -7.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard3" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1917629283]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 0.76, -6.75)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk3" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1546449019]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -21.5, 0, -6.05)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk4" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=341520618]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0, -7)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen4" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1115060248]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0.76, -7.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard4" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1173248716]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0.76, -6.75)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk4" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=403907599]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -14.5, 0, -6.05)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="BookcaseClosedWide" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=985252325]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -17.45)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosed" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1084420823]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -23.45, 0, -11)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosed")
+
+[node name="BookcaseClosedWide2" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1434734665]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -21, 0, -11)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="PottedPlant" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1662956086]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.3, 0, -2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_pottedPlant")
+
+[node name="Trashcan" type="Node3D" parent="Mapa/Muebles/OficinaA" unique_id=1113158550]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8, 0, -2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_trashcan")
+escala = 0.8
+
+[node name="OficinaB" type="Node3D" parent="Mapa/Muebles" unique_id=1349728333]
+
+[node name="Desk" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=438496763]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0, -15.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=975281869]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0.76, -15.7)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=894697351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0.76, -15.25)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=1212967244]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -9.5, 0, -14.55)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk2" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=2030974508]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -15.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen2" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=334354560]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.76, -15.7)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard2" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=1050226488]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.76, -15.25)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk2" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=265856754]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -3, 0, -14.55)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk3" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=1437885892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0, -6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen3" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=1095767331]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0.76, -6.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard3" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=1106272960]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0.76, -5.75)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk3" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=1516177676]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -9.5, 0, -5.05)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="BookcaseOpen" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=510512946]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.6, 0, -14)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseOpen")
+
+[node name="BookcaseClosed" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=1238399923]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.6, 0, -6.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosed")
+
+[node name="CardboardBoxClosed" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=315076694]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxClosed")
+solido = false
+
+[node name="CardboardBoxOpen" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=1532589013]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -1.7, 0, -3.4)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxOpen")
+solido = false
+
+[node name="Trashcan" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=1438532067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.4, 0, -17.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_trashcan")
+escala = 0.8
+
+[node name="PlantSmall1" type="Node3D" parent="Mapa/Muebles/OficinaB" unique_id=1807658346]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.76, -6.6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_plantSmall1")
+solido = false
+
+[node name="Juntas" type="Node3D" parent="Mapa/Muebles" unique_id=135335242]
+
+[node name="Table" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=1452851005]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 6, 0, -14.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_table")
+
+[node name="Table2" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=842509134]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 6, 0, -13.1)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_table")
+
+[node name="Chair" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=625963472]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 4.9, 0, -15.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair2" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=1178688876]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 4.9, 0, -13.9)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair3" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=517426992]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 4.9, 0, -12.6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair4" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=1212728795]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 7.1, 0, -15.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair5" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=960325061]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 7.1, 0, -13.9)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair6" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=58524850]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 7.1, 0, -12.6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="Chair7" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=916831006]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -16.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chair")
+solido = false
+
+[node name="BookcaseClosed" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=115085190]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.6, 0, -8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosed")
+
+[node name="BookcaseClosed2" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=1964925903]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.6, 0, -12)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosed")
+
+[node name="CoatRackStanding" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=1222060604]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.3, 0, -17.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_coatRackStanding")
+solido = false
+
+[node name="PlantSmall1" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=1265266431]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, -2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_plantSmall1")
+solido = false
+
+[node name="Trashcan" type="Node3D" parent="Mapa/Muebles/Juntas" unique_id=1443676766]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.3, 0, -2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_trashcan")
+escala = 0.8
+
+[node name="Gerencia" type="Node3D" parent="Mapa/Muebles" unique_id=615203429]
+
+[node name="DeskCorner" type="Node3D" parent="Mapa/Muebles/Gerencia" unique_id=777343670]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -15)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_deskCorner")
+
+[node name="ComputerScreen" type="Node3D" parent="Mapa/Muebles/Gerencia" unique_id=1567048659]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.7, 0.76, -15.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ChairDesk" type="Node3D" parent="Mapa/Muebles/Gerencia" unique_id=1505225208]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 14.7, 0, -13.4)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="BookcaseClosedWide" type="Node3D" parent="Mapa/Muebles/Gerencia" unique_id=1283744356]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -17.45)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide2" type="Node3D" parent="Mapa/Muebles/Gerencia" unique_id=612404431]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 23.45, 0, -10)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="LoungeSofa" type="Node3D" parent="Mapa/Muebles/Gerencia" unique_id=397761067]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 23.2, 0, -5.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_loungeSofa")
+
+[node name="TableCoffee" type="Node3D" parent="Mapa/Muebles/Gerencia" unique_id=1270953473]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 21.6, 0, -5.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_tableCoffee")
+
+[node name="PottedPlant" type="Node3D" parent="Mapa/Muebles/Gerencia" unique_id=960798266]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.8, 0, -2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_pottedPlant")
+
+[node name="PottedPlant2" type="Node3D" parent="Mapa/Muebles/Gerencia" unique_id=1403350871]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.3, 0, -17.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_pottedPlant")
+
+[node name="Recepcion" type="Node3D" parent="Mapa/Muebles" unique_id=1740136745]
+
+[node name="DeskCorner" type="Node3D" parent="Mapa/Muebles/Recepcion" unique_id=323812670]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -21.5, 0, 6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_deskCorner")
+
+[node name="ComputerScreen" type="Node3D" parent="Mapa/Muebles/Recepcion" unique_id=661470357]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -21.5, 0.76, 6.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ChairDesk" type="Node3D" parent="Mapa/Muebles/Recepcion" unique_id=1914850834]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 0, 4.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="LoungeSofa" type="Node3D" parent="Mapa/Muebles/Recepcion" unique_id=526847831]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -23.2, 0, 14.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_loungeSofa")
+
+[node name="LoungeSofa2" type="Node3D" parent="Mapa/Muebles/Recepcion" unique_id=1450122072]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -20, 0, 17.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_loungeSofa")
+
+[node name="TableCoffee" type="Node3D" parent="Mapa/Muebles/Recepcion" unique_id=1212370096]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 0, 15)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_tableCoffee")
+
+[node name="PottedPlant" type="Node3D" parent="Mapa/Muebles/Recepcion" unique_id=1712756555]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.3, 0, 17.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_pottedPlant")
+
+[node name="PottedPlant2" type="Node3D" parent="Mapa/Muebles/Recepcion" unique_id=801624529]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8, 0, 17.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_pottedPlant")
+
+[node name="CoatRackStanding" type="Node3D" parent="Mapa/Muebles/Recepcion" unique_id=2033566754]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8, 0, 2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_coatRackStanding")
+solido = false
+
+[node name="AreaAbierta" type="Node3D" parent="Mapa/Muebles" unique_id=908939140]
+
+[node name="Desk" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=49375589]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.4, 0, 4.4)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=402588386]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.4, 0.76, 4.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1795103814]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.4, 0.76, 4.65)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1619088557]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -9.4, 0, 5.35)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk2" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=228161290]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.9, 0, 4.4)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen2" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1612215131]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.9, 0.76, 4.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard2" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=752567891]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.9, 0.76, 4.65)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk2" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1850219635]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -7.9, 0, 5.35)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk3" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=113843245]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 4.4)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen3" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=960626545]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.76, 4.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard3" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=578016176]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.76, 4.65)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk3" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=315922896]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 7, 0, 5.35)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk4" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1667360199]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -9.4, 0, 8.6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen4" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=120944545]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -9.4, 0.76, 8.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard4" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1618190240]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -9.4, 0.76, 8.35)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk4" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1233510801]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.4, 0, 7.65)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk5" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=523784121]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 0, 15.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen5" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=400432541]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 0.76, 16)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard5" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=2020064804]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 0.76, 15.55)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk5" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1305549872]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 14.85)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="Desk6" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1915146880]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 0, 15.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_desk")
+
+[node name="ComputerScreen6" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=2078353597]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 0.76, 16)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerScreen")
+solido = false
+
+[node name="ComputerKeyboard6" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1372281610]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 0.76, 15.55)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_computerKeyboard")
+solido = false
+
+[node name="ChairDesk6" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1909363378]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 14.85)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_chairDesk")
+solido = false
+
+[node name="BookcaseClosedWide" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1677825319]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 10.55)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide2" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1192931107]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 10.55)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="CardboardBoxClosed" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1768695661]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 17.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxClosed")
+solido = false
+
+[node name="CardboardBoxOpen" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=619420659]
+transform = Transform3D(0.766044, 0, -0.642788, 0, 1, 0, 0.642788, 0, 0.766044, 8.6, 0, 16.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxOpen")
+solido = false
+
+[node name="CardboardBoxClosed2" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=1265521003]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -11, 0, 17.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxClosed")
+solido = false
+
+[node name="PottedPlant" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=873718071]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.3, 0, 2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_pottedPlant")
+
+[node name="PottedPlant2" type="Node3D" parent="Mapa/Muebles/AreaAbierta" unique_id=2060992550]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.3, 0, 2.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_pottedPlant")
+
+[node name="Archivo" type="Node3D" parent="Mapa/Muebles" unique_id=1356913806]
+
+[node name="BookcaseClosedWide" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=1776908174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3, 0, 6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide2" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=251050494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.9, 0, 6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide3" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=247272161]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.1, 0, 6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide4" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=1511812907]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7, 0, 6)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide5" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=501757326]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3, 0, 10)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide6" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=1541961963]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.9, 0, 10)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide7" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=26114345]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.1, 0, 10)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide8" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=1288908892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7, 0, 10)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide9" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=1891372792]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 14.3, 0, 5.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide10" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=257178348]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 15.9, 0, 5.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide11" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=1315186397]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 20.1, 0, 5.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide12" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=1412291553]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 21.7, 0, 5.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide13" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=2102615263]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 14.3, 0, 9.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide14" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=887600133]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 15.9, 0, 9.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide15" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=1560656628]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 20.1, 0, 9.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="BookcaseClosedWide16" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=450273919]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 21.7, 0, 9.5)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_bookcaseClosedWide")
+
+[node name="CardboardBoxClosed" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=533142864]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 0, 17.2)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxClosed")
+solido = false
+
+[node name="CardboardBoxOpen" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=1768404275]
+transform = Transform3D(0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 22.5, 0, 16.9)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxOpen")
+solido = false
+
+[node name="CardboardBoxClosed2" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=1567361747]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, 17.3)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxClosed")
+solido = false
+
+[node name="CardboardBoxClosed3" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=938930621]
+transform = Transform3D(0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, 0.984808, 23.2, 0, 11.8)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxClosed")
+solido = false
+
+[node name="CardboardBoxClosed4" type="Node3D" parent="Mapa/Muebles/Archivo" unique_id=167810456]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2, 0, 2.9)
+script = ExtResource("30_mueble")
+modelo = ExtResource("m_cardboardBoxClosed")
+solido = false
+
+[node name="Navegacion" type="NavigationRegion3D" parent="."]
+script = ExtResource("25_navegacion")
+
+[node name="Lamparas" type="Node3D" parent="." unique_id=2114950623]
+
+[node name="RecepcionNorte" parent="Lamparas" unique_id=1772677098 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2.5, 6)
+
+[node name="RecepcionSur" parent="Lamparas" unique_id=634713084 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2.5, 14)
+
+[node name="OficinaANorte" parent="Lamparas" unique_id=7993545 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2.5, -14)
+
+[node name="OficinaASur" parent="Lamparas" unique_id=1911043257 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2.5, -6)
+
+[node name="GerenciaNorte" parent="Lamparas" unique_id=2124162426 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 2.5, -14)
+
+[node name="GerenciaSur" parent="Lamparas" unique_id=1042262293 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 2.5, -6)
+
+[node name="AreaAbiertaOeste" parent="Lamparas" unique_id=1448290882 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2.5, 6)
+
+[node name="AreaAbiertaEste" parent="Lamparas" unique_id=497403242 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.5, 6)
+
+[node name="OficinaB" parent="Lamparas" unique_id=122030768 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.5, -10)
+estado = 1
+energia = 4.0
+
+[node name="PasilloOeste" parent="Lamparas" unique_id=1529788589 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 2.5, 0)
+
+[node name="PasilloCentro" parent="Lamparas" unique_id=1941568195 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+estado = 2
+
+[node name="PasilloEste" parent="Lamparas" unique_id=58436792 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 2.5, 0)
+estado = 1
+energia = 4.0
+
+[node name="Juntas" parent="Lamparas" unique_id=1205029935 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.5, -10)
+estado = 2
+
+[node name="AreaAbiertaSur" parent="Lamparas" unique_id=757678942 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.5, 14)
+estado = 2
+
+[node name="Archivo" parent="Lamparas" unique_id=768275524 instance=ExtResource("21_lampara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 2.5, 10)
+estado = 2
+
+[node name="Cajas" type="Node3D" parent="." unique_id=571500221]
+
+[node name="Cerebro" type="Area3D" parent="Cajas" unique_id=690156957 groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0.5, 15)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("6_alimento")
+curacion = 40
+pausa_descomposicion = 20.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Cerebro" unique_id=681627185]
+shape = SubResource("BoxShape3D_caja")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Cerebro" unique_id=651223079]
+mesh = SubResource("BoxMesh_caja")
+surface_material_override/0 = SubResource("StandardMaterial3D_cerebro")
+
+[node name="Caja2" type="Area3D" parent="Cajas" unique_id=1540602165 groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0.5, -12)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("6_alimento")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja2" unique_id=589279075]
+shape = SubResource("BoxShape3D_caja")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja2" unique_id=1521750782]
+mesh = SubResource("BoxMesh_caja")
+
+[node name="Caja3" type="Area3D" parent="Cajas" unique_id=1240157516 groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.5, 14)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("6_alimento")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja3" unique_id=29659854]
+shape = SubResource("BoxShape3D_caja")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja3" unique_id=741984988]
+mesh = SubResource("BoxMesh_caja")
+
+[node name="Carrona1" type="Area3D" parent="Cajas" unique_id=402227541 groups=["interactivos"]]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -3, 0.3, -10)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("6_alimento")
+curacion = 8
+tiempo_comer = 0.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Carrona1" unique_id=1261084105]
+shape = SubResource("BoxShape3D_caja")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Carrona1" unique_id=1841428500]
+mesh = SubResource("BoxMesh_caja")
+surface_material_override/0 = SubResource("StandardMaterial3D_carrona")
+
+[node name="Carrona2" type="Area3D" parent="Cajas" unique_id=2112885636 groups=["interactivos"]]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 6, 0.3, -10)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("6_alimento")
+curacion = 8
+tiempo_comer = 0.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Carrona2" unique_id=1748971920]
+shape = SubResource("BoxShape3D_caja")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Carrona2" unique_id=880285121]
+mesh = SubResource("BoxMesh_caja")
+surface_material_override/0 = SubResource("StandardMaterial3D_carrona")
+
+[node name="Personaje" type="CharacterBody3D" parent="." unique_id=1717637401 node_paths=PackedStringArray("camara") groups=["jugador"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 10)
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_personaje")
 camara = NodePath("../Camera3D")
-speed_caminar = 2.5
-speed_correr = 4.2
-tiempo_arranque = 0.5
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Personaje"]
+[node name="Modelo" parent="Personaje" unique_id=908274342 instance=ExtResource("6_2cqfq")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Personaje" unique_id=266874855]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
 shape = SubResource("CapsuleShape3D_zombi")
 
-[node name="Modelo" type="Node3D" parent="Personaje"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Personaje/Modelo"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
-mesh = SubResource("CapsuleMesh_zombi")
-
-[node name="LuzJugador" type="SpotLight3D" parent="Personaje"]
+[node name="LuzJugador" type="SpotLight3D" parent="Personaje" unique_id=1326829774 node_paths=PackedStringArray("halo")]
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.2, 0)
 shadow_enabled = true
 script = ExtResource("10_luzjugador")
-rango = 5.0
-altura = 1.2
+halo = NodePath("../Halo")
 
-[node name="Interactuar" type="Node" parent="Personaje"]
+[node name="Halo" type="OmniLight3D" parent="Personaje" unique_id=484443593]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+light_color = Color(0.831, 0.639, 0.451, 1)
+light_energy = 0.0
+omni_attenuation = 1.2
+
+[node name="Interactuar" type="Node" parent="Personaje" unique_id=2067956955]
 script = ExtResource("5_interactuar")
-alcance = 1.5
-tiempo_necesario = 1.5
 
-[node name="Salud" type="Node" parent="Personaje"]
+[node name="Salud" type="Node" parent="Personaje" unique_id=818642435]
 script = ExtResource("15_salud")
-vida = 100
-invulnerable = 0.5
-reapariciones = 0
-espera_reaparecer = 2.0
 
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
+[node name="Mordisco" type="Node" parent="Personaje"]
+script = ExtResource("23_mordisco")
+
+[node name="Embestida" type="Node" parent="Personaje"]
+script = ExtResource("24_embestida")
+
+[node name="EfectosZombi" type="Node" parent="Personaje"]
+script = ExtResource("31_efectos")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1386563772 node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 6, 8, 6)
+projection = 1
+size = 13.0
 script = ExtResource("4_camara")
 objetivo = NodePath("../Personaje")
-distancia = Vector3(6, 8, 6)
-suavizado = 2.5
-limite_min = Vector2(-14, -14)
-limite_max = Vector2(14, 14)
+limite_min = Vector2(-21, -15)
+limite_max = Vector2(21, 15)
 
-[node name="Humano" parent="." instance=ExtResource("13_humano")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 7)
-rapidez = 2.0
-espera = 1.0
-ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(8, 0, 0)])
-rango_vision = 7.0
+[node name="Zona" type="Node" parent="."]
+script = ExtResource("26_zona")
+humanos = Array[NodePath]([NodePath("../Humano"), NodePath("../Humano2"), NodePath("../Humano3")])
+tiradores = Array[NodePath]([NodePath("../Tirador")])
+trampas = Array[NodePath]([NodePath("../Trampas/Trampa1"), NodePath("../Trampas/Trampa2"), NodePath("../Trampas/Trampa3")])
+
+[node name="Humano" parent="." unique_id=1389714821 instance=ExtResource("13_humano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 0)
 rango_ataque = 1.5
-rango_perder = 10.0
 tiempo_busqueda = 2.0
-danio = 15
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(16, 0, 0)])
 
 [node name="Cazador" parent="." instance=ExtResource("14_cazador")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 3)
-rapidez = 1.8
-rango_ataque = 1.3
-tiempo_aviso = 0.5
-tiempo_recarga = 1.5
-alcance_golpe = 1.6
-vida = 40.0
-vida_huida = 10.0
-danio_prueba = 15.0
-danio = 20
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)
 
-[node name="Partida" type="Node" parent="."]
+[node name="Humano2" parent="." instance=ExtResource("13_humano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 0)
+rango_ataque = 1.5
+tiempo_busqueda = 2.0
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(0, 0, -13), Vector3(-4, 0, -13), Vector3(0, 0, -13)])
+
+[node name="Humano3" parent="." instance=ExtResource("13_humano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+rango_ataque = 1.5
+tiempo_busqueda = 2.0
+ruta = Array[Vector3]([Vector3(0, 0, 0), Vector3(0, 0, 7), Vector3(8, 0, 7), Vector3(8, 0, 0)])
+
+[node name="Tirador" parent="." instance=ExtResource("22_tirador")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -6)
+
+[node name="Trampas" type="Node3D" parent="." unique_id=556978506]
+
+[node name="Trampa1" parent="Trampas" unique_id=83416670 instance=ExtResource("19_trampa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -3.2)
+tiempo_congelado = 2.5
+
+[node name="Trampa2" parent="Trampas" unique_id=855710491 instance=ExtResource("19_trampa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.6, 0, 13.8)
+tiempo_congelado = 2.5
+
+[node name="Trampa3" parent="Trampas" instance=ExtResource("19_trampa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
+tiempo_congelado = 2.5
+
+[node name="Salida" parent="." unique_id=1414450315 instance=ExtResource("18_salida")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -14)
+
+[node name="Partida" type="Node" parent="." unique_id=1105442492]
 script = ExtResource("16_partida")
-tiempo_limite = 120.0
-gana_con_tiempo = false
-metas = 3
-espera_reinicio = 1.0
 
-[node name="HUD" parent="." instance=ExtResource("17_hud")]
+[node name="Puntuacion" type="Node" parent="."]
+script = ExtResource("28_puntuacion")
+
+[node name="HUD" parent="." unique_id=1635678149 instance=ExtResource("17_hud")]
+
+[node name="PantallaMutaciones" parent="." instance=ExtResource("27_mutaciones")]
+
+[node name="FinRun" parent="." instance=ExtResource("29_fin")]
+
+[node name="Pausa" parent="." instance=ExtResource("30_pausa")]

@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://b6ku1s5vpr16h" path="res://personaje/character-soldier.glb" id="1_guardia"]
+
+[node name="Modelo" instance=ExtResource("1_guardia")]
+transform = Transform3D(-2.6, 0, -2.2730303e-07, 0, 2.6, 0, 2.2730303e-07, 0, -2.6, 0, 0, 0)

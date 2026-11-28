@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://cazador.gd" id="1_cazador"]
+[ext_resource type="PackedScene" path="res://personaje/modelo_guardia.tscn" id="2_modelo"]
+
+[sub_resource type="CapsuleShape3D" id="Forma_cazador"]
+radius = 0.35
+height = 1.75
+
+[node name="Cazador" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_cazador")
+rapidez = 2.8
+rango_vision = 7.0
+danio = 20
+tiempo_max_buscar = 20.0
+ruta = Array[Vector3]([Vector3(0, 0, 0)])
+
+[node name="Modelo" parent="." instance=ExtResource("2_modelo")]
+transform = Transform3D(-3.0, 0, -2.6e-07, 0, 3.0, 0, 2.6e-07, 0, -3.0, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("Forma_cazador")
+
+[node name="Vision" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)

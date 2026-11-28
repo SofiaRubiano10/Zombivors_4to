@@ -7,10 +7,14 @@ extends Node
 # Nivel 3: reaparecer en el punto inicial antes de perder.
 # Clase 1: valores del plan y señal golpeado para quien deba reaccionar al daño.
 # Clase 1: el reloj es el cuerpo, la descomposición quita vida con el tiempo.
+# Clase 4: factor_descomposicion (contrato) multiplica lo rápido que se pudre:
+# 1 normal, 0 detenida. El cerebro lo pone en 0 durante 20 s.
 
 signal cambio(vida)
 signal sin_vida
 signal golpeado(danio)
+# Clase 8: avisa cuando se usa una reaparición (mutación "Segunda vida").
+signal reaparecio
 
 @export var vida = 100
 @export var invulnerable = 0.5
@@ -19,10 +23,14 @@ signal golpeado(danio)
 @export var intervalo_descomposicion = 10.0
 # Fracción de la vida inicial que se pierde en cada intervalo.
 @export var porcentaje_descomposicion = 0.02
+var factor_descomposicion = 1.0
+# Clase 8, mutaciones: "Piel gruesa" baja el daño de los golpes (0.75) y
+# "Regeneración" cura 1 punto cada "regeneracion" segundos (0 = no).
+var factor_danio = 1.0
+var regeneracion = 0.0
+var reloj_regeneracion = 0.0
 var reloj = 0.0
 var acumulado = 0.0
-# Segundos que quedan sin descomponerse (los pone el cerebro).
-var pausa = 0.0
 var vida_inicial = 0
 var punto = Vector3.ZERO
 @onready var pj = get_parent()
@@ -35,15 +43,21 @@ func _ready():
 func _physics_process(delta):
 	reloj = maxf(reloj - delta, 0.0)
 	descomponer(delta)
+	regenerar(delta)
+
+func regenerar(delta):
+	if regeneracion <= 0.0 or vida == 0 or vida >= vida_inicial:
+		return
+	reloj_regeneracion += delta
+	if reloj_regeneracion >= regeneracion:
+		reloj_regeneracion -= regeneracion
+		curar(1)
 
 # No pasa por recibir_golpe: el cuerpo se pudre aunque seas invulnerable.
 func descomponer(delta):
 	if vida == 0:
 		return
-	if pausa > 0.0:
-		pausa = maxf(pausa - delta, 0.0)
-		return
-	acumulado += delta
+	acumulado += delta * factor_descomposicion
 	if acumulado < intervalo_descomposicion:
 		return
 	acumulado -= intervalo_descomposicion
@@ -52,7 +66,9 @@ func descomponer(delta):
 func recibir_golpe(danio):
 	if reloj > 0.001 or vida == 0:
 		return
+	danio = maxi(1, int(round(danio * factor_danio)))
 	reloj = invulnerable
+	Sonidos.tocar("golpe")
 	golpeado.emit(danio)
 	quitar_vida(danio)
 
@@ -71,10 +87,6 @@ func curar(cantidad):
 	vida = mini(vida + int(cantidad), vida_inicial)
 	cambio.emit(vida)
 
-# La llama el cerebro: la descomposición se detiene unos segundos.
-func pausar_descomposicion(segundos):
-	pausa = maxf(pausa, segundos)
-
 # Se busca aquí y no en _ready(): la Partida quizá todavía no existía.
 func _al_quedar_sin_vida():
 	if reapariciones > 0:
@@ -83,6 +95,7 @@ func _al_quedar_sin_vida():
 		pj.global_position = punto
 		reloj = espera_reaparecer
 		cambio.emit(vida)
+		reaparecio.emit()
 		print("reaparece cuadro ", Engine.get_physics_frames())
 		return
 	var partida = get_tree().get_first_node_in_group("partida")

@@ -3,473 +3,585 @@ extends CanvasLayer
 # Taller 10 - Tarea B (María Sofía): el HUD solo muestra; la vida vive en la Salud
 # y el tiempo en la Partida.
 # La vida llega por señal. El tiempo cambia cada cuadro, por eso se lee en _process.
-#
-# Rediseño: el HUD se ordena por lo que el jugador necesita saber, en cuatro
-# esquinas que se leen de un vistazo, con la paleta del juego:
-#   Arriba a la izquierda  -> TU CUERPO: vida y descomposición (el reloj es tu cuerpo).
-#   Arriba al centro       -> el reloj de la zona.
-#   Arriba a la derecha    -> COMIDA: lo que llevas y lo que falta para ganar.
-#   Abajo a la izquierda   -> SIGILO: si te ven y cuánto ruido haces.
-# Y pegado al mundo: el aviso para comer sobre el alimento, "?" / "!" sobre los
-# humanos y los números de vida que salen del zombi.
+# Clase 3: avisos de estado en texto, grandes y arriba: "TE VIO" (rojo, peligro),
+# "SOSPECHA", "SALIDA ABIERTA" y "SALIDA CERRADA". Duran unos segundos y se apagan.
+# Clase 7: el HUD se ordena en recuadros anclados a las esquinas, con el tema flat
+# (ui/tema_flat.tres) y, si están, las texturas del Flat Design UI Pack:
+#   arriba izquierda -> vida          arriba centro -> piso, tiempo y comida
+#   arriba derecha   -> puntos        abajo derecha -> embestida
+#   abajo izquierda  -> mutaciones    centro arriba -> avisos
+# Clase 7: la vida es un elemento vivo. La barra baja con un rastro claro que se
+# queda un momento (se ve cuánto dolió), el recuadro tiembla y se pone rojo con
+# cada golpe, destella al curar y, con poca vida, late junto a un borde rojo en
+# la pantalla. El color va de verde (sano) a ámbar y a rojo.
+# Clase 7: lo demás también reacciona. Los avisos entran con un salto y salen
+# subiendo; los puntos cuentan hacia arriba y sueltan un "+100" flotante; cada
+# alimento comido hace saltar su punto; el reloj se pone rojo y late en los
+# últimos 30 s antes de que cierre la salida; la embestida destella al recargarse.
+# Clase 7: el HUD se adapta y se aparta.
+#  - Lo secundario (puntos, embestida llena, mutaciones) se atenúa si no cambia en
+#    unos segundos y vuelve a encenderse cuando pasa algo. Vida y objetivo, no:
+#    son lo que hace falta para sobrevivir.
+#  - Si el zombi pasa por debajo de un recuadro, ese recuadro se vuelve transparente.
+#  - Con la ventana estrecha pasa a modo compacto, y si el recuadro del centro choca
+#    con los de las esquinas, baja a la fila de abajo. Nada se tapa.
+#  - escala agranda o achica todo el HUD (accesibilidad).
+#  - Con el menú de pausa, las mutaciones o el fin de run abiertos, se esconde.
+# Clase 8: si el cazador te persigue, el borde rojo late con su corazón (lo marca
+# Cazador.amenaza) aunque tengas la vida llena, y su aviso tiene prioridad.
 
-const Partida = preload("res://partida.gd")
-const OJO_ABIERTO = preload("res://ui/iconos/ojo_abierto.png")
-const OJO_CERRADO = preload("res://ui/iconos/ojo_cerrado.png")
-const FUENTE_GRUESA = preload("res://ui/fuentes/BarlowCondensed-ExtraBold.ttf")
+const COLOR_PELIGRO = Color("#B22222")
+const COLOR_HUESO = Color(0.949, 0.929, 0.894)
+const COLOR_COMIDA = Color(0.831, 0.639, 0.451)
+const COLOR_APAGADO = Color(0.09, 0.094, 0.106, 0.9)
+const COLOR_SANO = Color("#7FA650")
+@export var duracion_aviso = 2.0
+# Lo que el rastro de daño espera antes de bajar y lo rápido que baja (vida/s).
+@export var espera_rastro = 0.45
+@export var rapidez_rastro = 60.0
+# Por debajo de esta fracción de vida el recuadro late y aparece el borde rojo.
+@export var umbral_poca_vida = 0.3
+# Segundos antes del cierre de la salida en los que el reloj avisa.
+@export var aviso_cierre = 30.0
+# Tamaño de todo el HUD (1 = normal). Para pantallas pequeñas o lejos de la tele.
+@export_range(0.6, 2.0, 0.05) var escala = 1.0
+# Segundos sin cambios para que lo secundario se atenúe, y cuánto se atenúa.
+@export var espera_calma = 4.0
+@export var alfa_calma = 0.55
+# Por debajo de este ancho (en píxeles del HUD) se usa el modo compacto.
+@export var ancho_compacto = 980.0
+const MARGEN = 16.0
 
-# Paleta Zombivors.
-const HUESO = Color(0.949, 0.929, 0.894)
-const TENUE = Color(0.949, 0.929, 0.894, 0.6)
-const CARNE = Color(0.831, 0.639, 0.451)
-const SANGRE = Color(0.698, 0.133, 0.133)
-const ROJO_VIVO = Color(0.937, 0.267, 0.227)
-const AMBAR = Color(0.96, 0.72, 0.28)
-const PODRIDO = Color(0.55, 0.85, 0.25)
-const CEREBRO = Color(0.96, 0.62, 0.70)
-const OSCURO = Color(0.06, 0.06, 0.07, 0.9)
-
-# Segundos que se ven los controles al empezar (en el primer intento).
-@export var segundos_controles = 8.0
-
-@onready var vineta = $Vineta
-@onready var marcadores = %Marcadores
-@onready var cuerpo = %Cuerpo
-@onready var barra_vida = %BarraVida
-@onready var numero_vida = %NumeroVida
-@onready var icono_vida = %IconoVida
-@onready var icono_pudricion = %IconoPudricion
-@onready var barra_pudricion = %BarraPudricion
-@onready var texto_pudricion = %TextoPudricion
-@onready var reloj = %Reloj
-@onready var anillo_reloj = %AnilloReloj
-@onready var texto_tiempo = %TextoTiempo
-@onready var titulo_tiempo = %TituloTiempo
-@onready var comida = %Comida
-@onready var cuenta_comida = %CuentaComida
-@onready var huecos = %Huecos
-@onready var pista_comida = %PistaComida
-@onready var ojo = %Ojo
-@onready var texto_sigilo = %TextoSigilo
-@onready var barras_ruido = %BarrasRuido
-@onready var texto_ruido = %TextoRuido
-@onready var aviso = %Aviso
-@onready var punta_aviso = %PuntaAviso
-@onready var anillo_aviso = %AnilloAviso
-@onready var icono_aviso = %IconoAviso
-@onready var nombre_aviso = %NombreAviso
-@onready var efecto_aviso = %EfectoAviso
-@onready var accion_aviso = %AccionAviso
-@onready var controles = %Controles
-@onready var final = %Final
-@onready var banda_final = %BandaFinal
-@onready var titulo_final = %TituloFinal
-@onready var detalle_final = %DetalleFinal
-
-var pj = null
-var salud = null
-var interactuar = null
-var partida = null
+@onready var raiz = $Raiz
+@onready var panel_vida = $Raiz/PanelVida
+@onready var valor_vida = $Raiz/PanelVida/Fila/Datos/Cabecera/Valor
+@onready var barra_vida = $Raiz/PanelVida/Fila/Datos/Barras/Barra
+@onready var rastro_vida = $Raiz/PanelVida/Fila/Datos/Barras/Rastro
+@onready var vineta = $Raiz/Vineta
+@onready var panel_objetivo = $Raiz/PanelObjetivo
+@onready var texto_piso = $Raiz/PanelObjetivo/Columna/Fila/Piso
+@onready var texto_tiempo = $Raiz/PanelObjetivo/Columna/Fila/Tiempo
+@onready var fila_comida = $Raiz/PanelObjetivo/Columna/FilaComida
+@onready var pips = $Raiz/PanelObjetivo/Columna/FilaComida/Pips
+@onready var estado_salida = $Raiz/PanelObjetivo/Columna/FilaComida/Estado
+@onready var panel_puntos = $Raiz/PanelPuntos
+@onready var texto_puntos = $Raiz/PanelPuntos/Columna/Fila/Puntos
+@onready var texto_record = $Raiz/PanelPuntos/Columna/Record
+# Clase 8: lo que hay para gastar en la tienda y el multiplicador del piso.
+@onready var texto_saldo = $Raiz/PanelPuntos/Columna/Saldo
+@onready var panel_embestida = $Raiz/PanelEmbestida
+@onready var recarga = $Raiz/PanelEmbestida/Fila/Datos/Recarga
+@onready var estado_embestida = $Raiz/PanelEmbestida/Fila/Datos/Cabecera/Estado
+@onready var mutaciones = $Raiz/Mutaciones
+# Barra de progreso al comer: aparece sobre la cabeza del zombi mientras se
+# mantiene E junto a un alimento. Amarillo carne, el color de la comida.
+@onready var barra = $Raiz/BarraComer
+@onready var aviso = $Raiz/Aviso
+@onready var texto_aviso = $Raiz/Aviso/Texto
+var mordisco = null
+var embestida = null
+var reloj_aviso = 0.0
+# Un aviso importante (TE VIO) no lo tapa uno menor (SOSPECHA) mientras dura.
+var prioridad_aviso = 0
+# Mutación "Olfato": una flecha color comida alrededor del zombi que apunta al
+# alimento más cercano.
+var flecha = null
 var vida_actual = 0
 var vida_max = 100
-var golpe_reciente = false
-var flash = 0.0
-var t = 0.0
-var comidas = 0
-var aviso_de = null
-var marcas = {}
-var pausa_max = 0.0
-var pos_cuerpo = Vector2.ZERO
+var reloj_rastro = 0.0
+var sacudida = 0.0
+var pos_vida = Vector2.ZERO
+var relleno_vida = null
+var latido = 0.0
+var pos_aviso_y = 0.0
+var puntos_mostrados = -1.0
+var puntos_objetivo = -1
+var cargas_vistas = -1
+var segundo_visto = -1
+# Segundos que lleva cada recuadro secundario sin cambiar.
+var calma = {}
+var compacto = false
+var instinto_avisado = false
+var partida = null
+var jugador = null
+var interactuar = null
+var puntos = null
+# Lo que ya se dibujó: solo se reconstruye cuando cambia.
+var metas_dibujadas = -1
+var hechas_dibujadas = -1
+var mutaciones_dibujadas = -1
 
 func _ready():
-	# El HUD sigue vivo en la pausa del final para mostrar el resultado.
+	PielFlat.aplicar(raiz.theme)
+	poner_iconos()
+	var pj = get_tree().get_first_node_in_group("jugador")
+	jugador = pj
+	interactuar = pj.get_node_or_null("Interactuar")
+	mordisco = pj.get_node_or_null("Mordisco")
+	embestida = pj.get_node_or_null("Embestida")
+	panel_embestida.visible = embestida != null
+	var salud = pj.get_node("Salud")
+	vida_max = maxi(salud.vida_inicial if salud.vida_inicial > 0 else salud.vida, 1)
+	barra_vida.max_value = vida_max
+	rastro_vida.max_value = vida_max
+	relleno_vida = barra_vida.get_theme_stylebox("fill").duplicate()
+	barra_vida.add_theme_stylebox_override("fill", relleno_vida)
+	# Las otras barras, color comida: así un relleno blanco del pack sirve para todas.
+	for b in [recarga, barra]:
+		var relleno = b.get_theme_stylebox("fill").duplicate()
+		PielFlat.colorear(relleno, COLOR_COMIDA)
+		b.add_theme_stylebox_override("fill", relleno)
+	pos_vida = panel_vida.position
+	pos_aviso_y = aviso.position.y
+	salud.cambio.connect(mostrar)
+	salud.golpeado.connect(_al_recibir_golpe)
+	if salud.has_signal("reaparecio"):
+		salud.reaparecio.connect(avisar.bind("¡SEGUNDA VIDA!", COLOR_COMIDA, 3))
+	mostrar(salud.vida)
+	barra_vida.value = salud.vida
+	rastro_vida.value = salud.vida
+	# Se crea aquí y no al declarar: así no queda suelta si el HUD se borra antes.
+	flecha = Polygon2D.new()
+	flecha.polygon = PackedVector2Array([Vector2(14, 0), Vector2(-8, -9), Vector2(-8, 9)])
+	flecha.color = COLOR_COMIDA
+	flecha.visible = false
+	add_child(flecha)
+	# Los humanos pueden aparecer después (el cazador): se conectan al entrar.
+	for h in get_tree().get_nodes_in_group("humanos"):
+		conectar_humano(h)
+	# El cazador está escondido (fuera del grupo) hasta que aparece.
+	for nodo in get_tree().get_nodes_in_group("cazador"):
+		conectar_humano(nodo)
+		nodo.aparecio.connect(avisar.bind("LLEGÓ EL CAZADOR", COLOR_PELIGRO, 3))
+	get_tree().node_added.connect(_al_aparecer)
+	call_deferred("conectar_partida")
+	# Always: puede esconderse y volver aunque el juego esté en pausa.
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	pos_cuerpo = cuerpo.position
-	pj = get_tree().get_first_node_in_group("jugador")
-	if pj != null:
-		salud = pj.get_node_or_null("Salud")
-		interactuar = pj.get_node_or_null("Interactuar")
-	if salud != null:
-		salud.cambio.connect(mostrar)
-		salud.golpeado.connect(_al_golpe)
-		vida_max = maxi(1, salud.vida_inicial if salud.vida_inicial > 0 else salud.vida)
-		vida_actual = salud.vida
-		barra_vida.valor = float(vida_actual) / vida_max
-		barra_vida.mostrado = barra_vida.valor
-		barra_vida.rastro = barra_vida.valor
-	for a in get_tree().get_nodes_in_group("alimentos"):
-		if a.has_signal("comido"):
-			a.comido.connect(_al_comer)
-	final.visible = false
-	aviso.modulate.a = 0.0
-	aviso.visible = false
-	crear_huecos(3)
-	buscar_partida()
-	actualizar_vida()
+	for panel in [panel_puntos, panel_embestida, mutaciones]:
+		calma[panel] = 0.0
+	get_viewport().size_changed.connect(acomodar)
+	acomodar.call_deferred()
 
-func _process(delta):
-	t += delta
-	if partida == null:
-		buscar_partida()
-	actualizar_vida()
-	actualizar_pudricion()
-	actualizar_reloj()
-	actualizar_sigilo()
-	actualizar_aviso(delta)
-	actualizar_marcas()
-	actualizar_vineta(delta)
-	actualizar_controles()
+# Iconos del pack (res://ui/flat_ui/iconos/). Sin el PNG, el recuadro queda solo con texto.
+func poner_iconos():
+	var lugares = {
+		"vida": $Raiz/PanelVida/Fila/Icono,
+		"piso": $Raiz/PanelObjetivo/Columna/Fila/IconoPiso,
+		"tiempo": $Raiz/PanelObjetivo/Columna/Fila/IconoTiempo,
+		"comida": $Raiz/PanelObjetivo/Columna/FilaComida/IconoComida,
+		"puntos": $Raiz/PanelPuntos/Columna/Fila/Icono,
+		"embestida": $Raiz/PanelEmbestida/Fila/Icono,
+	}
+	for nombre in lugares:
+		var textura = PielFlat.icono(nombre)
+		lugares[nombre].texture = textura
+		lugares[nombre].visible = textura != null
 
-# Se busca aquí: la Partida quizá todavía no existía en _ready().
-func buscar_partida():
-	partida = get_tree().get_first_node_in_group("partida")
-	if partida == null:
+func conectar_partida():
+	var p = get_tree().get_first_node_in_group("partida")
+	if p == null:
 		return
-	partida.terminada.connect(_al_terminar)
-	crear_huecos(partida.metas)
-	comida.visible = partida.metas > 0
-	titulo_tiempo.text = "AGUANTA" if partida.gana_con_tiempo else "TIEMPO"
+	p.salida_abierta.connect(avisar.bind("SALIDA ABIERTA", COLOR_HUESO, 1))
+	p.zona_cambiada.connect(func(n): avisar("PISO " + str(n), COLOR_HUESO, 1))
+	p.salida_cerrada.connect(avisar.bind("SALIDA CERRADA", COLOR_PELIGRO, 2))
 
-func jugando():
-	return partida == null or partida.estado == Partida.Estado.JUGANDO
+# node_added llega antes de su _ready: el grupo todavía no está puesto.
+func _al_aparecer(nodo):
+	if nodo.has_signal("me_vio"):
+		conectar_humano.call_deferred(nodo)
+	if nodo.has_signal("aparecio"):
+		nodo.aparecio.connect(avisar.bind("LLEGÓ EL CAZADOR", COLOR_PELIGRO, 3))
 
-# ---------------------------------------------------------------- tu cuerpo
-
-func mostrar(vida):
-	var diferencia = vida - vida_actual
-	vida_actual = vida
-	if diferencia > 0:
-		flotar("+%d" % diferencia, CARNE)
-	elif diferencia < 0:
-		# El golpe llega antes que el cambio: así se sabe si fue un humano o la pudrición.
-		flotar("−%d" % -diferencia, ROJO_VIVO if golpe_reciente else PODRIDO)
-		if not golpe_reciente:
-			latir(icono_pudricion)
-	golpe_reciente = false
-	actualizar_vida()
-	print("HUD -> vida ", vida, " / ", vida_max)
-
-func _al_golpe(_danio):
-	golpe_reciente = true
-	flash = 1.0
-	latir(icono_vida)
-	# Sacudida corta del panel del cuerpo.
-	var tw = cuerpo.create_tween()
-	tw.tween_property(cuerpo, "position", pos_cuerpo + Vector2(7, 0), 0.04)
-	tw.tween_property(cuerpo, "position", pos_cuerpo - Vector2(5, 0), 0.05)
-	tw.tween_property(cuerpo, "position", pos_cuerpo, 0.08)
-
-func actualizar_vida():
-	var fraccion = float(vida_actual) / vida_max
-	barra_vida.valor = fraccion
-	numero_vida.text = str(vida_actual)
-	# modulate tiñe sin rehacer el texto: se puede cambiar en cada cuadro.
-	numero_vida.modulate = Color.WHITE
-	if fraccion < 0.3:
-		numero_vida.modulate = Color.WHITE.lerp(ROJO_VIVO, 0.5 + 0.5 * sin(t * 9.0))
-
-func actualizar_pudricion():
-	if salud == null:
+func conectar_humano(h):
+	# Una sola vez por humano (las señales con bind no se reconocen con is_connected).
+	if not is_instance_valid(h) or h.has_meta("hud_conectado"):
 		return
-	if salud.vida == 0:
-		texto_pudricion.text = "ya no queda cuerpo"
+	h.set_meta("hud_conectado", true)
+	# El cazador es el peor: su aviso tapa a los demás.
+	if h.has_signal("aparecio"):
+		h.me_vio.connect(avisar.bind("¡EL CAZADOR TE VIO!", COLOR_PELIGRO, 3))
+	else:
+		h.me_vio.connect(avisar.bind("TE VIO", COLOR_PELIGRO, 2))
+	if h.has_signal("sospecha"):
+		h.sospecha.connect(avisar.bind("SOSPECHA", COLOR_HUESO, 1))
+
+func avisar(texto, color, prioridad):
+	if reloj_aviso > 0.0 and prioridad < prioridad_aviso:
 		return
-	if salud.pausa > 0.0:
-		# El cerebro detiene la descomposición: la barra muestra lo que le queda.
-		pausa_max = maxf(pausa_max, salud.pausa)
-		barra_pudricion.valor = salud.pausa / pausa_max
-		barra_pudricion.color_lleno = CEREBRO
-		icono_pudricion.modulate = CEREBRO
-		texto_pudricion.text = "cerebro: no te pudres %d s" % ceili(salud.pausa)
-		return
-	pausa_max = 0.0
-	var intervalo = maxf(salud.intervalo_descomposicion, 0.01)
-	var perdida = int(round(salud.vida_inicial * salud.porcentaje_descomposicion))
-	barra_pudricion.valor = clampf(salud.acumulado / intervalo, 0.0, 1.0)
-	barra_pudricion.color_lleno = PODRIDO
-	icono_pudricion.modulate = Color.WHITE
-	texto_pudricion.text = "te pudres: −%d en %d s" % [perdida, ceili(intervalo - salud.acumulado)]
+	texto_aviso.text = texto
+	texto_aviso.add_theme_color_override("font_color", color)
+	var caja = aviso.get_theme_stylebox("panel").duplicate()
+	if caja is StyleBoxFlat:
+		caja.border_color = color
+	aviso.add_theme_stylebox_override("panel", caja)
+	aviso.visible = true
+	centrar(aviso)
+	saltar(aviso, 0.6)
+	reloj_aviso = duracion_aviso
+	prioridad_aviso = prioridad
 
-# ---------------------------------------------------------------- la zona
+# Un salto de tamaño que vuelve a 1 con rebote. desde < 1 crece, > 1 encoge.
+func saltar(control, desde = 1.3):
+	control.pivot_offset = control.size * 0.5
+	if control.has_meta("salto") and control.get_meta("salto").is_valid():
+		control.get_meta("salto").kill()
+	control.scale = Vector2.ONE * desde
+	var t = control.create_tween()
+	t.tween_property(control, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	control.set_meta("salto", t)
 
-func actualizar_reloj():
-	reloj.visible = partida != null
-	if partida == null:
-		return
-	var resto = maxf(partida.tiempo, 0.0)
-	anillo_reloj.valor = resto / maxf(partida.tiempo_limite, 0.01)
-	var s = ceili(resto)
-	texto_tiempo.text = "%d:%02d" % [floori(s / 60.0), s % 60]
-	var color = HUESO
-	if resto <= 30.0 and jugando():
-		# Últimos 30 s: el reloj se pone rojo y late.
-		color = HUESO.lerp(ROJO_VIVO, 0.6 + 0.4 * sin(t * 8.0))
-	anillo_reloj.color_lleno = color
-	texto_tiempo.modulate = Color.WHITE if color == HUESO else color
-
-func crear_huecos(total):
-	for h in huecos.get_children():
-		huecos.remove_child(h)
-		h.queue_free()
-	for i in clampi(total, 0, 8):
-		var hueco = Panel.new()
-		hueco.custom_minimum_size = Vector2(46, 46)
-		hueco.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		hueco.add_theme_stylebox_override("panel", estilo_hueco(Color(HUESO, 0.22), false))
-		var icono = TextureRect.new()
-		icono.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icono.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icono.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		icono.position = Vector2(3, 3)
-		icono.size = Vector2(40, 40)
-		icono.pivot_offset = Vector2(20, 20)
-		hueco.add_child(icono)
-		huecos.add_child(hueco)
-	comidas = 0
-	cuenta_comida.text = "0 / %d" % total
-	pista_comida.text = "Come %d para ganar" % total
-
-func estilo_hueco(borde, lleno):
-	var s = StyleBoxFlat.new()
-	s.bg_color = Color(0.13, 0.12, 0.12, 0.95) if lleno else Color(0.04, 0.04, 0.05, 0.6)
-	s.set_border_width_all(2)
-	s.border_color = borde
-	s.corner_radius_top_left = 16
-	s.corner_radius_top_right = 7
-	s.corner_radius_bottom_right = 16
-	s.corner_radius_bottom_left = 7
-	s.anti_aliasing = true
-	return s
-
-func _al_comer(alimento):
-	var total = huecos.get_child_count()
-	if comidas < total:
-		var hueco = huecos.get_child(comidas)
-		var color = alimento.color if "color" in alimento else CARNE
-		hueco.add_theme_stylebox_override("panel", estilo_hueco(color, true))
-		var icono = hueco.get_child(0)
-		icono.texture = alimento.icono if "icono" in alimento else null
-		var tw = icono.create_tween()
-		tw.tween_property(icono, "scale", Vector2.ONE, 0.35).from(Vector2(1.9, 1.9)) \
-			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	comidas += 1
-	cuenta_comida.text = "%d / %d" % [mini(comidas, total), total]
-	latir(cuenta_comida)
-
-# ---------------------------------------------------------------- sigilo
-
-func actualizar_sigilo():
-	var nivel = 0
-	for h in get_tree().get_nodes_in_group("humanos"):
-		if h.has_method("alerta"):
-			nivel = maxi(nivel, h.alerta())
-	var textos = ["NADIE TE VE", "TE ESTÁN BUSCANDO", "¡TE VIERON!", "¡CUIDADO!"]
-	var colores = [TENUE, AMBAR, ROJO_VIVO, ROJO_VIVO]
-	var color = colores[nivel]
-	if nivel >= 2:
-		color = color.lerp(HUESO, 0.35 * (0.5 + 0.5 * sin(t * 12.0)))
-	texto_sigilo.text = textos[nivel]
-	texto_sigilo.modulate = color
-	ojo.texture = OJO_ABIERTO if nivel > 0 else OJO_CERRADO
-	ojo.modulate = Color(TENUE, 0.8) if nivel == 0 else color
-	# Ruido: 0 m quieto, 1 m caminando, 3 m corriendo.
-	var ruido = 0.0
-	var accion = "quieto"
-	if pj != null and "ruido" in pj:
-		ruido = pj.ruido
-		if pj.estado == Personaje.Estado.CAMINAR:
-			accion = "pasos · %d m" % ruido
-		elif pj.estado == Personaje.Estado.CORRER:
-			accion = "corriendo · %d m" % ruido
-		elif pj.estado == Personaje.Estado.COMIENDO:
-			accion = "comiendo"
-	var encendidas = 0
-	if ruido > 0.0:
-		encendidas = 1 if ruido <= 1.0 else (2 if ruido < 3.0 else 3)
-	var color_ruido = AMBAR if encendidas >= 3 else HUESO
-	for i in barras_ruido.get_child_count():
-		var barra = barras_ruido.get_child(i)
-		barra.color = color_ruido if i < encendidas else Color(HUESO, 0.15)
-	texto_ruido.text = accion
-
-func actualizar_marcas():
-	var cam = get_viewport().get_camera_3d()
-	for h in get_tree().get_nodes_in_group("humanos"):
-		if not h.has_method("alerta"):
-			continue
-		var nivel = h.alerta() if jugando() else 0
-		var marca = marcas.get(h)
-		if nivel == 0 or cam == null:
-			if marca != null:
-				marca.visible = false
-				marca.set_meta("nivel", 0)
-			continue
-		if marca == null:
-			marca = crear_marca()
-			marcas[h] = marca
-		var punto = h.global_position + Vector3.UP * 2.3
-		if cam.is_position_behind(punto):
-			marca.visible = false
-			continue
-		marca.visible = true
-		marca.text = "?" if nivel == 1 else ("!" if nivel == 2 else "!!")
-		marca.modulate = AMBAR if nivel == 1 else ROJO_VIVO
-		marca.position = cam.unproject_position(punto) - marca.size * 0.5
-		# Salta cuando sube la alerta.
-		if nivel > marca.get_meta("nivel", 0):
-			var tw = marca.create_tween()
-			tw.tween_property(marca, "scale", Vector2.ONE, 0.3).from(Vector2(1.8, 1.8)) \
-				.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		marca.set_meta("nivel", nivel)
-	# Los humanos que ya no existen (vencidos) se llevan su marca.
-	for h in marcas.keys():
-		if not is_instance_valid(h):
-			marcas[h].queue_free()
-			marcas.erase(h)
-
-func crear_marca():
-	var marca = Label.new()
-	marca.add_theme_font_override("font", FUENTE_GRUESA)
-	marca.add_theme_font_size_override("font_size", 46)
-	marca.add_theme_color_override("font_color", Color.WHITE)
-	marca.add_theme_color_override("font_outline_color", OSCURO)
-	marca.add_theme_constant_override("outline_size", 10)
-	marca.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	marca.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	marca.size = Vector2(64, 56)
-	marca.pivot_offset = marca.size * 0.5
-	marca.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	marcadores.add_child(marca)
-	return marca
-
-# ---------------------------------------------------------------- aviso para comer
-
-func actualizar_aviso(delta):
-	var obj = null
-	if interactuar != null and jugando():
-		obj = interactuar.mas_cercano()
-	var meta = 1.0 if obj != null else 0.0
-	aviso.modulate.a = aviso.modulate.a + (meta - aviso.modulate.a) * (1.0 - exp(-14.0 * delta))
-	aviso.visible = aviso.modulate.a > 0.02
-	if obj == null:
-		anillo_aviso.valor = 0.0
-		return
-	if obj != aviso_de:
-		aviso_de = obj
-		llenar_aviso(obj)
-	var comiendo = interactuar.actual == obj and interactuar.progreso > 0.0
-	anillo_aviso.valor = clampf(interactuar.progreso, 0.0, 1.0) if comiendo else 0.0
-	accion_aviso.text = "comiendo…" if comiendo else "mantén E · %s s" % str(snappedf(interactuar.tiempo_de(obj), 0.1))
-	colocar_aviso(obj)
-
-func llenar_aviso(obj):
-	var color = obj.color if "color" in obj else CARNE
-	var nombre = obj.nombre if "nombre" in obj else String(obj.name)
-	nombre_aviso.text = nombre.to_upper()
-	var efecto = ""
-	if "curacion" in obj:
-		efecto = "+%d de vida" % obj.curacion
-	if "pausa_descomposicion" in obj and obj.pausa_descomposicion > 0.0:
-		efecto += " · no te pudres %d s" % obj.pausa_descomposicion
-	efecto_aviso.text = efecto
-	efecto_aviso.add_theme_color_override("font_color", color.lerp(HUESO, 0.25))
-	icono_aviso.texture = obj.icono if "icono" in obj else null
-	anillo_aviso.color_lleno = color
-	anillo_aviso.mostrado = 0.0
-	aviso.reset_size()
-
-# El aviso flota sobre el alimento: se proyecta su posición 3D a la pantalla.
-func colocar_aviso(obj):
-	var cam = get_viewport().get_camera_3d()
-	if cam == null:
-		return
-	var punto = obj.global_position + Vector3.UP * 1.0
-	if cam.is_position_behind(punto):
-		return
-	var p = cam.unproject_position(punto)
-	var tam = aviso.size
-	var pantalla = get_viewport().get_visible_rect().size
-	var pos = p - Vector2(tam.x * 0.5, tam.y + 12.0)
-	pos.x = clampf(pos.x, 12.0, maxf(12.0, pantalla.x - tam.x - 12.0))
-	pos.y = clampf(pos.y, 12.0, maxf(12.0, pantalla.y - tam.y - 12.0))
-	aviso.position = pos
-	punta_aviso.position = Vector2(clampf(p.x - pos.x, 18.0, tam.x - 18.0), tam.y)
-
-# ---------------------------------------------------------------- efectos
-
-# Número que sube desde la cabeza del zombi y se desvanece.
-func flotar(texto, color):
-	if pj == null:
-		return
-	var cam = get_viewport().get_camera_3d()
-	if cam == null:
-		return
-	var punto = pj.global_position + Vector3.UP * 2.0
-	if cam.is_position_behind(punto):
-		return
+# Texto que sube y se desvanece ("+100").
+func flotar(texto, color, donde):
 	var l = Label.new()
 	l.text = texto
-	l.add_theme_font_override("font", FUENTE_GRUESA)
-	l.add_theme_font_size_override("font_size", 28)
 	l.add_theme_color_override("font_color", color)
-	l.add_theme_color_override("font_outline_color", OSCURO)
-	l.add_theme_constant_override("outline_size", 8)
-	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	l.add_theme_font_size_override("font_size", 20)
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	l.size = Vector2(120, 36)
-	l.position = cam.unproject_position(punto) - l.size * 0.5 + Vector2(randf_range(-16.0, 16.0), 0.0)
-	marcadores.add_child(l)
-	var tw = l.create_tween().set_parallel(true)
-	tw.tween_property(l, "position:y", l.position.y - 48.0, 1.0) \
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tw.tween_property(l, "modulate:a", 0.0, 0.45).set_delay(0.55)
-	tw.chain().tween_callback(l.queue_free)
+	raiz.add_child(l)
+	l.position = donde - l.get_minimum_size() * Vector2(1.0, 0.0)
+	var t = l.create_tween().set_parallel()
+	t.tween_property(l, "position:y", donde.y - 34.0, 0.9).set_ease(Tween.EASE_OUT)
+	t.tween_property(l, "modulate:a", 0.0, 0.9).set_delay(0.3)
+	t.chain().tween_callback(l.queue_free)
 
-# Pequeño "latido" de un control (crece y vuelve).
-func latir(nodo):
-	nodo.pivot_offset = nodo.size * 0.5
-	var tw = nodo.create_tween()
-	tw.tween_property(nodo, "scale", Vector2.ONE, 0.3).from(Vector2(1.35, 1.35)) \
-		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+# Un recuadro anclado al centro se ajusta a su texto y vuelve al medio.
+func centrar(control):
+	control.reset_size()
+	control.position.x = (raiz.size.x - control.size.x) * 0.5
 
-# Bordes rojos: destello al recibir un golpe y pulso cuando queda poca vida.
-func actualizar_vineta(delta):
-	flash = flash + (0.0 - flash) * (1.0 - exp(-5.0 * delta))
+func _process(delta):
+	reloj_aviso = maxf(reloj_aviso - delta, 0.0)
+	# El último medio segundo se desvanece.
+	aviso.modulate.a = clampf(reloj_aviso / 0.5, 0.0, 1.0)
+	aviso.visible = reloj_aviso > 0.0
+	# Y mientras se desvanece, sube un poco.
+	aviso.position.y = pos_aviso_y - (1.0 - aviso.modulate.a) * 14.0
+	esconder_en_menus(delta)
+	apartar(delta)
+	animar_vida(delta)
+	actualizar_objetivo()
+	actualizar_puntos()
+	actualizar_embestida()
+	actualizar_mutaciones()
+	actualizar_barra()
+	actualizar_flecha()
+
+# El progreso lo lleva Interactuar (de 0 a 1); el HUD solo lo dibuja.
+func actualizar_barra():
+	var progreso = interactuar.progreso if interactuar != null else 0.0
+	# El mordisco usa la misma barra: también es comer.
+	if mordisco != null:
+		progreso = maxf(progreso, mordisco.progreso)
+	var camara = get_viewport().get_camera_3d()
+	if progreso <= 0.0 or camara == null:
+		barra.visible = false
+		return
+	barra.visible = true
+	barra.value = progreso
+	# Un poco por encima de la cabeza (el zombi mide unos 1.8 m).
+	var cabeza = jugador.global_position + Vector3(0, 2.3, 0)
+	barra.position = camara.unproject_position(cabeza) / escala - barra.size * 0.5
+
+func actualizar_flecha():
+	var camara = get_viewport().get_camera_3d()
+	flecha.visible = false
+	if not Mutaciones.tiene("Olfato") or camara == null:
+		return
+	var mejor = null
+	var cerca = INF
+	for a in get_tree().get_nodes_in_group("alimentos"):
+		var d = a.global_position.distance_to(jugador.global_position)
+		if d < cerca:
+			cerca = d
+			mejor = a
+	if mejor == null:
+		return
+	var centro = camara.unproject_position(jugador.global_position + Vector3(0, 0.9, 0))
+	var hacia = camara.unproject_position(mejor.global_position) - centro
+	if hacia.length() < 1.0:
+		return
+	flecha.visible = true
+	flecha.position = centro + hacia.normalized() * 70.0
+	flecha.rotation = hacia.angle()
+
+func mostrar(vida):
+	if vida > vida_actual and vida_actual > 0:
+		destellar(panel_vida, Color(1.0, 1.35, 0.9))
+	elif vida < vida_actual:
+		# Cada pérdida reinicia la espera: el rastro baja cuando paran los golpes.
+		reloj_rastro = espera_rastro
+	vida_actual = vida
+	valor_vida.text = str(vida)
+
+func _al_recibir_golpe(_danio):
+	sacudida = 0.3
+	destellar(panel_vida, Color(1.8, 0.55, 0.55))
+
+# Un golpe de color que se apaga solo (lo devuelve a blanco animar_vida).
+func destellar(control, color):
+	control.modulate = color
+
+func animar_vida(delta):
+	# La barra sigue a la vida rápido; el rastro espera y luego baja despacio.
+	barra_vida.value = lerpf(barra_vida.value, vida_actual, 1.0 - exp(-14.0 * delta))
+	if rastro_vida.value < vida_actual:
+		rastro_vida.value = vida_actual
+	reloj_rastro = maxf(reloj_rastro - delta, 0.0)
+	if reloj_rastro <= 0.0:
+		rastro_vida.value = move_toward(rastro_vida.value, vida_actual, rapidez_rastro * delta)
 	var fraccion = float(vida_actual) / vida_max
-	var peligro = 0.0
-	if fraccion < 0.3 and vida_actual > 0:
-		peligro = (0.3 - fraccion) / 0.3 * (0.6 + 0.4 * sin(t * 6.0)) * 0.55
-	vineta.modulate.a = clampf(maxf(flash * 0.85, peligro), 0.0, 1.0)
+	PielFlat.colorear(relleno_vida, color_vida(fraccion))
+	# Temblor del recuadro tras un golpe.
+	sacudida = maxf(sacudida - delta, 0.0)
+	var fuerza = 7.0 * sacudida / 0.3
+	panel_vida.position = pos_vida + Vector2(randf_range(-fuerza, fuerza), randf_range(-fuerza, fuerza))
+	# Con poca vida late (más rápido cuanto menos queda) y el borde rojo aparece.
+	var peligro = clampf(1.0 - fraccion / umbral_poca_vida, 0.0, 1.0) if vida_actual > 0 else 0.0
+	latido += delta * lerpf(4.0, 9.0, peligro)
+	var pulso = (sin(latido) * 0.5 + 0.5) * peligro
+	var base = Color.WHITE.lerp(Color(1.4, 0.75, 0.75), pulso)
+	panel_vida.modulate = panel_vida.modulate.lerp(base, 1.0 - exp(-8.0 * delta))
+	var rojo = peligro * (0.35 + 0.35 * pulso)
+	# El cazador: un golpe de rojo con cada latido que se apaga enseguida.
+	var cazador = get_tree().get_first_node_in_group("cazador")
+	if cazador != null and "amenaza" in cazador and cazador.amenaza > 0.0:
+		rojo = maxf(rojo, cazador.amenaza * (0.25 + 0.45 * exp(-7.0 * cazador.desde_latido)))
+	vineta.modulate.a = lerpf(vineta.modulate.a, rojo, 1.0 - exp(-14.0 * delta))
 
-func actualizar_controles():
-	var dura = segundos_controles if Partida.intentos <= 1 else 3.0
-	controles.modulate.a = clampf(dura - t, 0.0, 1.0)
-	controles.visible = controles.modulate.a > 0.01
+# Verde sano -> ámbar a media vida -> rojo con poca.
+func color_vida(fraccion):
+	if fraccion > 0.5:
+		return COLOR_COMIDA.lerp(COLOR_SANO, (fraccion - 0.5) / 0.5)
+	return COLOR_PELIGRO.lerp(COLOR_COMIDA, clampf((fraccion - 0.15) / 0.35, 0.0, 1.0))
 
-# ---------------------------------------------------------------- final
-
-func _al_terminar(estado, motivo):
-	var gano = estado == Partida.Estado.GANO
-	var color = CARNE if gano else ROJO_VIVO
-	if gano:
-		titulo_final.text = "¡BANQUETE!"
-		var usado = partida.tiempo_limite - partida.tiempo
-		detalle_final.text = "Te lo comiste todo en %s s  ·  mejor: %s s" % [
-			str(snappedf(usado, 0.1)), str(snappedf(Partida.mejor, 0.1))]
-	elif motivo == "se acabó el tiempo":
-		titulo_final.text = "SE ACABÓ EL TIEMPO"
-		detalle_final.text = "Intento %d  ·  volviendo a empezar…" % Partida.intentos
+# Piso, cronómetro y comida que falta para abrir la salida.
+func actualizar_objetivo():
+	# Se busca aquí: la Partida quizá todavía no existía en _ready().
+	if partida == null:
+		partida = get_tree().get_first_node_in_group("partida")
+	panel_objetivo.visible = partida != null
+	if partida == null:
+		return
+	texto_piso.text = "PISO " + str(Partida.zona) + "/" + str(partida.zonas_total)
+	texto_tiempo.text = partida.reloj_texto(partida.tiempo)
+	avisar_cierre()
+	avisar_instinto()
+	colocar_centro()
+	fila_comida.visible = partida.metas > 0
+	if partida.metas != metas_dibujadas or partida.hechas != hechas_dibujadas:
+		dibujar_pips(partida.metas, mini(partida.hechas, partida.metas))
+	var falta = partida.tiempo_tarde - partida.tiempo
+	if partida.tarde:
+		mostrar_estado_salida("SALIDA CERRADA", COLOR_PELIGRO)
+	elif partida.abierta and falta <= aviso_cierre:
+		mostrar_estado_salida("CIERRA EN " + str(ceili(falta)) + " s", COLOR_PELIGRO)
+	elif partida.abierta:
+		mostrar_estado_salida("SALIDA ABIERTA", COLOR_COMIDA)
 	else:
-		titulo_final.text = "TE DESHICISTE"
-		detalle_final.text = "Intento %d  ·  volviendo a empezar…" % Partida.intentos
-	titulo_final.add_theme_color_override("font_color", color)
-	var estilo = banda_final.get_theme_stylebox("panel").duplicate()
-	estilo.border_color = color
-	banda_final.add_theme_stylebox_override("panel", estilo)
-	final.visible = true
-	final.modulate.a = 0.0
-	banda_final.pivot_offset = banda_final.size * 0.5
-	var tw = create_tween().set_parallel(true)
-	tw.tween_property(final, "modulate:a", 1.0, 0.15)
-	tw.tween_property(banda_final, "scale", Vector2.ONE, 0.3).from(Vector2(1.0, 0.1)) \
-		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		estado_salida.visible = false
+
+# Los últimos segundos antes de que cierre la salida: el reloj se pone rojo y late
+# una vez por segundo.
+func avisar_cierre():
+	var falta = partida.tiempo_tarde - partida.tiempo
+	var cerca = not partida.tarde and falta <= aviso_cierre
+	texto_tiempo.add_theme_color_override("font_color", COLOR_PELIGRO if cerca or partida.tarde else COLOR_HUESO)
+	var segundo = ceili(falta)
+	if cerca and segundo != segundo_visto:
+		saltar(texto_tiempo, 1.25)
+	segundo_visto = segundo
+
+# Mutación "Instinto": 15 s antes de que aparezca el cazador, un aviso.
+func avisar_instinto():
+	if instinto_avisado or not Mutaciones.tiene("Instinto"):
+		return
+	var cazador = get_tree().get_first_node_in_group("cazador")
+	if cazador == null or not "antelacion" in cazador or cazador.activo:
+		return
+	if partida.tiempo >= partida.tiempo_tarde - cazador.antelacion - 15.0:
+		instinto_avisado = true
+		avisar("EL CAZADOR LLEGA EN 15 s", COLOR_PELIGRO, 2)
+
+func mostrar_estado_salida(texto, color):
+	if not estado_salida.visible or estado_salida.text.begins_with("SALIDA") != texto.begins_with("SALIDA"):
+		saltar(panel_objetivo, 1.12)
+	estado_salida.visible = true
+	estado_salida.text = texto
+	estado_salida.add_theme_color_override("font_color", color)
+
+# Un punto por alimento de la meta: lleno = comido.
+func dibujar_pips(metas, hechas):
+	if metas != metas_dibujadas:
+		for p in pips.get_children():
+			p.queue_free()
+		for i in metas:
+			var pip = Panel.new()
+			pip.custom_minimum_size = Vector2(14, 14)
+			pip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			pips.add_child(pip)
+		metas_dibujadas = metas
+	for i in pips.get_child_count():
+		pintar_pip(pips.get_child(i), i < hechas)
+		# El que se acaba de comer salta.
+		if i < hechas and i >= hechas_dibujadas and hechas_dibujadas >= 0:
+			saltar.call_deferred(pips.get_child(i), 1.8)
+	hechas_dibujadas = hechas
+
+func pintar_pip(pip, lleno):
+	var caja = StyleBoxFlat.new()
+	caja.bg_color = COLOR_COMIDA if lleno else COLOR_APAGADO
+	caja.set_corner_radius_all(7)
+	caja.set_border_width_all(2)
+	caja.border_color = COLOR_COMIDA
+	pip.add_theme_stylebox_override("panel", caja)
+
+func actualizar_puntos():
+	if puntos == null:
+		puntos = get_tree().get_first_node_in_group("puntuacion")
+	panel_puntos.visible = puntos != null
+	if puntos == null:
+		return
+	var objetivo = puntos.en_curso()
+	if puntos_mostrados < 0.0:
+		puntos_mostrados = objetivo
+	elif objetivo > puntos_objetivo:
+		var r = texto_puntos.get_global_rect()
+		flotar("+" + str(objetivo - puntos_objetivo), COLOR_COMIDA, Vector2(r.end.x, r.end.y + 48.0))
+		saltar(texto_puntos, 1.3)
+		despertar(panel_puntos)
+		panel_puntos.modulate = Color(1.3, 1.2, 1.0)
+	puntos_objetivo = objetivo
+	# Cuenta hacia arriba: rápido si es mucho, nunca más de un segundo.
+	var rapidez = maxf(absf(objetivo - puntos_mostrados) * 3.0, 120.0)
+	puntos_mostrados = move_toward(puntos_mostrados, objetivo, rapidez * get_process_delta_time())
+	texto_puntos.text = str(int(round(puntos_mostrados)))
+	texto_record.text = "RÉCORD " + str(maxi(puntos.record, 0))
+	# Récord superado en esta run: lo dice.
+	if puntos.record > 0 and objetivo > puntos.record:
+		texto_record.text = "¡NUEVO RÉCORD!"
+	var piso = partida.zona if partida != null else 1
+	texto_saldo.text = "SALDO " + str(Puntuacion.saldo()) + " · x" + String.num(Puntuacion.multiplicador(piso))
+
+# Barra que se llena mientras recarga. "LISTA", "x2" con dos cargas.
+func actualizar_embestida():
+	if embestida == null:
+		return
+	var listas = embestida.cargas
+	# Recuperó una carga: la tecla salta y el recuadro destella.
+	if cargas_vistas >= 0 and listas > cargas_vistas:
+		saltar($Raiz/PanelEmbestida/Fila/Tecla, 1.35)
+		panel_embestida.modulate = Color(1.35, 1.25, 1.0)
+		despertar(panel_embestida)
+	cargas_vistas = listas
+	# Recargando no se atenúa: es información que se está usando.
+	if listas < embestida.cargas_max:
+		despertar(panel_embestida)
+	if listas >= embestida.cargas_max:
+		recarga.value = 1.0
+	else:
+		recarga.value = 1.0 - embestida.recarga / maxf(embestida.enfriamiento, 0.01)
+	if listas <= 0:
+		estado_embestida.text = str(snappedf(embestida.recarga, 0.1)) + " s"
+	elif embestida.cargas_max > 1:
+		estado_embestida.text = "x" + str(listas)
+	else:
+		estado_embestida.text = "LISTA"
+
+# Una ficha por mutación elegida (la run entera).
+func actualizar_mutaciones():
+	if Mutaciones.elegidas.size() == mutaciones_dibujadas:
+		return
+	mutaciones_dibujadas = Mutaciones.elegidas.size()
+	for c in mutaciones.get_children():
+		c.queue_free()
+	for nombre in Mutaciones.elegidas:
+		var ficha = PanelContainer.new()
+		ficha.theme_type_variation = &"PanelChip"
+		ficha.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		ficha.tooltip_text = Mutaciones.descripcion(nombre)
+		var texto = Label.new()
+		texto.theme_type_variation = &"LabelChip"
+		texto.text = nombre_corto(nombre) if compacto else nombre
+		ficha.add_child(texto)
+		mutaciones.add_child(ficha)
+	despertar(mutaciones)
+
+# "Estómago de hierro" -> "Estómago" en modo compacto.
+func nombre_corto(nombre):
+	return nombre.split(" ")[0]
+
+func despertar(panel):
+	calma[panel] = 0.0
+
+# Lo secundario se atenúa en calma; lo que tapa al zombi se vuelve transparente.
+func apartar(delta):
+	var zombi = posicion_zombi()
+	var paneles = [panel_vida, panel_objetivo, panel_puntos, panel_embestida, mutaciones]
+	for panel in paneles:
+		var alfa = 1.0
+		if calma.has(panel):
+			calma[panel] += delta
+			if calma[panel] > espera_calma:
+				alfa = alfa_calma
+		if zombi != null and panel.visible and panel.get_rect().grow(24.0).has_point(zombi):
+			alfa = minf(alfa, 0.3)
+		var objetivo = Color(1, 1, 1, alfa)
+		if panel == panel_vida:
+			# La vida lleva su propio color (latido); aquí solo se toca su alfa.
+			panel.modulate.a = lerpf(panel.modulate.a, alfa, 1.0 - exp(-6.0 * delta))
+		else:
+			panel.modulate = panel.modulate.lerp(objetivo, 1.0 - exp(-6.0 * delta))
+
+# Dónde está el zombi en la pantalla, en coordenadas del HUD (con su escala).
+func posicion_zombi():
+	var camara = get_viewport().get_camera_3d()
+	if camara == null or jugador == null:
+		return null
+	return camara.unproject_position(jugador.global_position + Vector3(0, 0.9, 0)) / escala
+
+# Pausa, mutaciones o fin de run: el HUD se esconde para no competir con el menú.
+func esconder_en_menus(delta):
+	var hay_menu = false
+	for grupo in ["fin_run", "pantalla_mutaciones"]:
+		var m = get_tree().get_first_node_in_group(grupo)
+		if m != null and m.visible:
+			hay_menu = true
+	# Pausa con el juego en marcha = el menú de pausa (al terminar la zona también
+	# se pausa, pero ahí el HUD sigue para ver los puntos del piso).
+	if get_tree().paused and partida != null and partida.estado == partida.Estado.JUGANDO:
+		hay_menu = true
+	raiz.modulate.a = move_toward(raiz.modulate.a, 0.0 if hay_menu else 1.0, delta / 0.2)
+
+# Escala, modo compacto y que el centro no choque con las esquinas.
+func acomodar():
+	var pantalla = get_viewport().get_visible_rect().size
+	raiz.scale = Vector2.ONE * escala
+	# Raiz ocupa toda la pantalla medida en píxeles del HUD (ya escalados).
+	raiz.offset_right = pantalla.x / escala - pantalla.x
+	raiz.offset_bottom = pantalla.y / escala - pantalla.y
+	var ancho = pantalla.x / escala
+	var antes = compacto
+	compacto = ancho < ancho_compacto
+	$Raiz/PanelVida/Fila/Datos/Barras.custom_minimum_size.x = 150.0 if compacto else 220.0
+	texto_record.visible = not compacto
+	$Raiz/PanelEmbestida/Fila/Datos/Cabecera/Titulo.visible = not compacto
+	$Raiz/PanelEmbestida/Fila/Tecla/Texto.text = "ESP" if compacto else "ESPACIO"
+	if antes != compacto:
+		mutaciones_dibujadas = -1
+	for panel in [panel_vida, panel_puntos, panel_embestida]:
+		panel.reset_size()
+	panel_puntos.position.x = ancho - MARGEN - panel_puntos.size.x
+	panel_embestida.position = Vector2(ancho, pantalla.y / escala) - panel_embestida.size - Vector2(MARGEN, MARGEN)
+	pos_vida = Vector2(MARGEN, MARGEN)
+	if partida != null:
+		colocar_centro.call_deferred()
+
+# El recuadro del centro va arriba; si no cabe entre las esquinas, baja.
+func colocar_centro():
+	centrar(panel_objetivo)
+	var izquierda = panel_vida.position.x + panel_vida.size.x + 8.0
+	var derecha = panel_puntos.position.x - 8.0
+	var cabe = panel_objetivo.position.x >= izquierda and panel_objetivo.position.x + panel_objetivo.size.x <= derecha
+	var abajo = maxf(panel_vida.position.y + panel_vida.size.y, panel_puntos.position.y + panel_puntos.size.y) + 8.0
+	panel_objetivo.position.y = MARGEN if cabe else abajo
+	pos_aviso_y = panel_objetivo.position.y + panel_objetivo.size.y + 22.0

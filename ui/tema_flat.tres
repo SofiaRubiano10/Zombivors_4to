@@ -1,0 +1,210 @@
+[gd_resource type="Theme" format=3]
+
+; Tema de la interfaz (HUD y menús). Estilo "flat": colores planos, esquinas
+; redondeadas y un borde inferior más oscuro que hace de sombra, como el
+; Flat Design UI Pack de SunGraphica. Usa la paleta del juego:
+;   fondo  #2B2D31 · hueso #F2EDE4 · comida #D4A373 · peligro #B22222
+; Si las texturas del pack están en res://ui/flat_ui/, PielFlat cambia estas
+; cajas por las del pack al arrancar (ver ui/piel_flat.gd).
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.169, 0.176, 0.192, 0.82)
+border_width_bottom = 4
+border_color = Color(0.09, 0.094, 0.106, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing_size = 0.8
+
+[sub_resource type="StyleBoxFlat" id="PanelMenu"]
+content_margin_left = 40.0
+content_margin_top = 28.0
+content_margin_right = 40.0
+content_margin_bottom = 32.0
+bg_color = Color(0.169, 0.176, 0.192, 0.97)
+border_width_bottom = 8
+border_color = Color(0.09, 0.094, 0.106, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 12
+shadow_offset = Vector2(0, 6)
+anti_aliasing_size = 0.8
+
+[sub_resource type="StyleBoxFlat" id="PanelAviso"]
+content_margin_left = 26.0
+content_margin_top = 8.0
+content_margin_right = 26.0
+content_margin_bottom = 12.0
+bg_color = Color(0.169, 0.176, 0.192, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 6
+border_color = Color(0.949, 0.929, 0.894, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+anti_aliasing_size = 0.8
+
+[sub_resource type="StyleBoxFlat" id="Chip"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.831, 0.639, 0.451, 0.9)
+border_width_bottom = 3
+border_color = Color(0.58, 0.42, 0.27, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="Tecla"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 8.0
+content_margin_bottom = 5.0
+bg_color = Color(0.949, 0.929, 0.894, 1)
+border_width_bottom = 4
+border_color = Color(0.62, 0.6, 0.57, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="BarraFondo"]
+bg_color = Color(0.09, 0.094, 0.106, 0.9)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="BarraRelleno"]
+bg_color = Color(0.831, 0.639, 0.451, 1)
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 0.25)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="BarraRastro"]
+bg_color = Color(0.949, 0.929, 0.894, 0.85)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxEmpty" id="Vacio"]
+
+[sub_resource type="StyleBoxFlat" id="BotonNormal"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+bg_color = Color(0.235, 0.247, 0.271, 1)
+border_width_bottom = 6
+border_color = Color(0.09, 0.094, 0.106, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="BotonEncima"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+bg_color = Color(0.831, 0.639, 0.451, 1)
+border_width_bottom = 6
+border_color = Color(0.58, 0.42, 0.27, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="BotonPulsado"]
+content_margin_left = 18.0
+content_margin_top = 13.0
+content_margin_right = 18.0
+content_margin_bottom = 7.0
+bg_color = Color(0.58, 0.42, 0.27, 1)
+border_width_top = 5
+border_width_bottom = 1
+border_color = Color(0.45, 0.32, 0.2, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="BotonFoco"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.949, 0.929, 0.894, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[resource]
+default_font_size = 18
+Button/colors/font_color = Color(0.949, 0.929, 0.894, 1)
+Button/colors/font_focus_color = Color(0.949, 0.929, 0.894, 1)
+Button/colors/font_hover_color = Color(0.169, 0.176, 0.192, 1)
+Button/colors/font_hover_pressed_color = Color(0.949, 0.929, 0.894, 1)
+Button/colors/font_pressed_color = Color(0.949, 0.929, 0.894, 1)
+Button/font_sizes/font_size = 22
+Button/styles/focus = SubResource("BotonFoco")
+Button/styles/hover = SubResource("BotonEncima")
+Button/styles/hover_pressed = SubResource("BotonPulsado")
+Button/styles/normal = SubResource("BotonNormal")
+Button/styles/pressed = SubResource("BotonPulsado")
+Label/colors/font_color = Color(0.949, 0.929, 0.894, 1)
+Label/colors/font_outline_color = Color(0.09, 0.094, 0.106, 1)
+Label/constants/outline_size = 4
+LabelPequeno/base_type = &"Label"
+LabelPequeno/colors/font_color = Color(0.949, 0.929, 0.894, 0.75)
+LabelPequeno/font_sizes/font_size = 13
+LabelGrande/base_type = &"Label"
+LabelGrande/font_sizes/font_size = 28
+LabelTecla/base_type = &"Label"
+LabelTecla/colors/font_color = Color(0.169, 0.176, 0.192, 1)
+LabelTecla/constants/outline_size = 0
+LabelTecla/font_sizes/font_size = 13
+LabelChip/base_type = &"Label"
+LabelChip/colors/font_color = Color(0.169, 0.176, 0.192, 1)
+LabelChip/constants/outline_size = 0
+LabelChip/font_sizes/font_size = 14
+PanelContainer/styles/panel = SubResource("Panel")
+PanelAviso/base_type = &"PanelContainer"
+PanelAviso/styles/panel = SubResource("PanelAviso")
+PanelMenu/base_type = &"PanelContainer"
+PanelMenu/styles/panel = SubResource("PanelMenu")
+PanelChip/base_type = &"PanelContainer"
+PanelChip/styles/panel = SubResource("Chip")
+PanelTecla/base_type = &"PanelContainer"
+PanelTecla/styles/panel = SubResource("Tecla")
+ProgressBar/styles/background = SubResource("BarraFondo")
+ProgressBar/styles/fill = SubResource("BarraRelleno")
+BarraRastro/base_type = &"ProgressBar"
+BarraRastro/styles/background = SubResource("BarraFondo")
+BarraRastro/styles/fill = SubResource("BarraRastro")
+BarraEncima/base_type = &"ProgressBar"
+BarraEncima/styles/background = SubResource("Vacio")
+BarraEncima/styles/fill = SubResource("BarraRelleno")

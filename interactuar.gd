@@ -2,9 +2,12 @@ extends Node
 
 @export var tecla: String = "interactuar"
 @export var alcance: float = 1.5
+# Lo que se usa si el objeto no dice cuánto tarda (tiempo_comer).
 @export var tiempo_necesario: float = 1.5
 
 @onready var pj = get_parent()
+# Mientras el zombi muerde a un humano, la E es del mordisco.
+@onready var mordisco = pj.get_node_or_null("Mordisco") if pj else null
 
 var progreso: float = 0.0
 var actual: Node = null
@@ -12,6 +15,8 @@ var actual: Node = null
 func _physics_process(delta: float) -> void:
 	# Mantener la tecla junto a un interactivo hasta completar
 	var obj = mas_cercano()
+	if mordisco != null and mordisco.objetivo != null:
+		obj = null
 	if not Input.is_action_pressed(tecla) or obj == null:
 		if progreso > 0.0 and pj:
 			pj.multiplicador = 1.0
@@ -28,8 +33,10 @@ func _physics_process(delta: float) -> void:
 		pj.multiplicador = 0.0
 		pj.accion = "pick-up"
 	
+	# Cada alimento dice cuánto tarda en comerse: la carroña es rápida, la carne no.
+	var tiempo: float = obj.tiempo_comer if "tiempo_comer" in obj else tiempo_necesario
 	var antes = progreso
-	progreso += delta / maxf(0.01, tiempo_de(obj))
+	progreso += delta / maxf(0.01, tiempo)
 	
 	# Imprime retroalimentación visual en cada cuarto de progreso (25%, 50%, 75%)
 	if int(progreso * 4) > int(antes * 4) and progreso < 0.999:
@@ -45,12 +52,6 @@ func _physics_process(delta: float) -> void:
 			obj.usar()
 		progreso = 0.0
 		actual = null
-
-# Cada alimento puede pedir su propio tiempo (la carroña se come más rápido).
-func tiempo_de(obj: Node) -> float:
-	if "tiempo_comer" in obj:
-		return obj.tiempo_comer
-	return tiempo_necesario
 
 func mas_cercano() -> Node:
 	var mejor: Node = null
