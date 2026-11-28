@@ -1,11 +1,17 @@
 [gd_resource type="Theme" format=3]
 
+[ext_resource type="FontFile" path="res://ui/fuentes/BarlowCondensed-Bold.ttf" id="1_fuente"]
+[ext_resource type="FontFile" path="res://ui/fuentes/BarlowCondensed-ExtraBold.ttf" id="2_gruesa"]
+
 ; Tema de la interfaz (HUD y menús). Estilo "flat": colores planos, esquinas
 ; redondeadas y un borde inferior más oscuro que hace de sombra, como el
 ; Flat Design UI Pack de SunGraphica. Usa la paleta del juego:
 ;   fondo  #2B2D31 · hueso #F2EDE4 · comida #D4A373 · peligro #B22222
 ; Si las texturas del pack están en res://ui/flat_ui/, PielFlat cambia estas
 ; cajas por las del pack al arrancar (ver ui/piel_flat.gd).
+; Rediseño del HUD: letra Barlow Condensed (ui/fuentes, licencia OFL) y recuadros
+; "orgánicos" para el HUD (PanelHudIzq, PanelHudDer, PanelHudCentro): esquinas
+; desiguales, como un trozo de carne, con la línea de abajo del color de su tema.
 
 [sub_resource type="StyleBoxFlat" id="Panel"]
 content_margin_left = 14.0
@@ -104,6 +110,74 @@ corner_radius_top_right = 7
 corner_radius_bottom_right = 7
 corner_radius_bottom_left = 7
 
+[sub_resource type="StyleBoxFlat" id="HudIzq"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.11, 0.114, 0.125, 0.86)
+border_width_bottom = 3
+border_color = Color(0.831, 0.639, 0.451, 0.7)
+corner_radius_top_left = 24
+corner_radius_top_right = 10
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+anti_aliasing_size = 0.8
+
+[sub_resource type="StyleBoxFlat" id="HudDer"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.11, 0.114, 0.125, 0.86)
+border_width_bottom = 3
+border_color = Color(0.831, 0.639, 0.451, 0.7)
+corner_radius_top_left = 10
+corner_radius_top_right = 24
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 26
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+anti_aliasing_size = 0.8
+
+[sub_resource type="StyleBoxFlat" id="HudCentro"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.11, 0.114, 0.125, 0.86)
+border_width_bottom = 3
+border_color = Color(0.831, 0.639, 0.451, 0.7)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+anti_aliasing_size = 0.8
+
+[sub_resource type="StyleBoxFlat" id="HudVerde"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.11, 0.114, 0.125, 0.86)
+border_width_top = 3
+border_color = Color(0.498, 0.651, 0.314, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 26
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 24
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+anti_aliasing_size = 0.8
+
 [sub_resource type="StyleBoxEmpty" id="Vacio"]
 
 [sub_resource type="StyleBoxFlat" id="BotonNormal"]
@@ -163,7 +237,8 @@ expand_margin_right = 3.0
 expand_margin_bottom = 3.0
 
 [resource]
-default_font_size = 18
+default_font = ExtResource("1_fuente")
+default_font_size = 19
 Button/colors/font_color = Color(0.949, 0.929, 0.894, 1)
 Button/colors/font_focus_color = Color(0.949, 0.929, 0.894, 1)
 Button/colors/font_hover_color = Color(0.169, 0.176, 0.192, 1)
@@ -182,6 +257,7 @@ LabelPequeno/base_type = &"Label"
 LabelPequeno/colors/font_color = Color(0.949, 0.929, 0.894, 0.75)
 LabelPequeno/font_sizes/font_size = 13
 LabelGrande/base_type = &"Label"
+LabelGrande/fonts/font = ExtResource("2_gruesa")
 LabelGrande/font_sizes/font_size = 28
 LabelTecla/base_type = &"Label"
 LabelTecla/colors/font_color = Color(0.169, 0.176, 0.192, 1)
@@ -208,3 +284,15 @@ BarraRastro/styles/fill = SubResource("BarraRastro")
 BarraEncima/base_type = &"ProgressBar"
 BarraEncima/styles/background = SubResource("Vacio")
 BarraEncima/styles/fill = SubResource("BarraRelleno")
+PanelHudIzq/base_type = &"PanelContainer"
+PanelHudIzq/styles/panel = SubResource("HudIzq")
+PanelHudDer/base_type = &"PanelContainer"
+PanelHudDer/styles/panel = SubResource("HudDer")
+PanelHudCentro/base_type = &"PanelContainer"
+PanelHudCentro/styles/panel = SubResource("HudCentro")
+PanelHudVerde/base_type = &"PanelContainer"
+PanelHudVerde/styles/panel = SubResource("HudVerde")
+LabelTitulo/base_type = &"Label"
+LabelTitulo/colors/font_color = Color(0.949, 0.929, 0.894, 0.6)
+LabelTitulo/constants/outline_size = 0
+LabelTitulo/font_sizes/font_size = 12

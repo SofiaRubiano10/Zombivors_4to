@@ -2,6 +2,13 @@
 
 [ext_resource type="Script" path="res://hud.gd" id="1_hud"]
 [ext_resource type="Theme" path="res://ui/tema_flat.tres" id="2_tema"]
+[ext_resource type="Script" path="res://ui/barra_organica.gd" id="3_barra"]
+[ext_resource type="Script" path="res://ui/anillo.gd" id="4_anillo"]
+[ext_resource type="Texture2D" path="res://ui/iconos/corazon.png" id="5_corazon"]
+[ext_resource type="Texture2D" path="res://ui/iconos/gota.png" id="6_gota"]
+[ext_resource type="Texture2D" path="res://ui/iconos/ojo_cerrado.png" id="7_ojo"]
+[ext_resource type="Texture2D" path="res://ui/iconos/puerta.png" id="8_puerta"]
+[ext_resource type="FontFile" path="res://ui/fuentes/Creepster-Regular.ttf" id="9_terror"]
 
 [sub_resource type="Gradient" id="Gradiente_vineta"]
 offsets = PackedFloat32Array(0, 0.6, 1)
@@ -14,6 +21,23 @@ height = 128
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1.05, 1.05)
+
+[sub_resource type="StyleBoxFlat" id="Caja_avisoE"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+bg_color = Color(0.11, 0.114, 0.125, 0.92)
+border_width_bottom = 3
+border_color = Color(0.949, 0.929, 0.894, 0.3)
+corner_radius_top_left = 30
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 30
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 10
+shadow_offset = Vector2(0, 4)
+anti_aliasing_size = 0.8
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -40,157 +64,348 @@ mouse_filter = 2
 texture = SubResource("Textura_vineta")
 expand_mode = 1
 
-[node name="PanelVida" type="PanelContainer" parent="Raiz"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 286.0
-offset_bottom = 74.0
+[node name="Mundo" type="Control" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
-[node name="Fila" type="HBoxContainer" parent="Raiz/PanelVida"]
+[node name="MarcaSalida" type="Control" parent="Raiz/Mundo"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_right = 90.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="Flecha" type="Polygon2D" parent="Raiz/Mundo/MarcaSalida"]
+unique_name_in_owner = true
+position = Vector2(45, 34)
+color = Color(0.2, 0.8, 0.3, 1)
+polygon = PackedVector2Array(-10, -8, 10, -8, 0, 6)
+
+[node name="Texto" type="Label" parent="Raiz/Mundo/MarcaSalida"]
+layout_mode = 0
+offset_right = 90.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0.2, 0.8, 0.3, 1)
+theme_override_constants/outline_size = 7
+text = "SALIDA"
+horizontal_alignment = 1
+
+[node name="AvisoE" type="PanelContainer" parent="Raiz/Mundo"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 476.0
+offset_top = 260.0
+offset_right = 676.0
+offset_bottom = 330.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Caja_avisoE")
+
+[node name="Punta" type="Polygon2D" parent="Raiz/Mundo/AvisoE"]
+unique_name_in_owner = true
+position = Vector2(100, 70)
+color = Color(0.11, 0.114, 0.125, 0.92)
+polygon = PackedVector2Array(-9, -1, 9, -1, 0, 10)
+
+[node name="Fila" type="HBoxContainer" parent="Raiz/Mundo/AvisoE"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 10
 
-[node name="Icono" type="TextureRect" parent="Raiz/PanelVida/Fila"]
-visible = false
-custom_minimum_size = Vector2(34, 34)
+[node name="Circulo" type="Control" parent="Raiz/Mundo/AvisoE/Fila"]
+custom_minimum_size = Vector2(54, 54)
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="AnilloE" type="Control" parent="Raiz/Mundo/AvisoE/Fila/Circulo"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_anillo")
+valor = 0.0
+grosor = 4.0
+color_lleno = Color(0.831, 0.639, 0.451, 1)
+color_pista = Color(0.949, 0.929, 0.894, 0.18)
+k_suave = 30.0
+
+[node name="IconoE" type="TextureRect" parent="Raiz/Mundo/AvisoE/Fila/Circulo"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = -7.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Datos" type="VBoxContainer" parent="Raiz/PanelVida/Fila"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 4
+[node name="Tecla" type="PanelContainer" parent="Raiz/Mundo/AvisoE/Fila/Circulo"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -20.0
+offset_right = 6.0
+offset_bottom = 3.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_type_variation = &"PanelTecla"
 
-[node name="Cabecera" type="HBoxContainer" parent="Raiz/PanelVida/Fila/Datos"]
+[node name="Letra" type="Label" parent="Raiz/Mundo/AvisoE/Fila/Circulo/Tecla"]
 layout_mode = 2
+theme_type_variation = &"LabelTecla"
+text = "E"
+horizontal_alignment = 1
 
-[node name="Titulo" type="Label" parent="Raiz/PanelVida/Fila/Datos/Cabecera"]
+[node name="Textos" type="VBoxContainer" parent="Raiz/Mundo/AvisoE/Fila"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 8
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = -3
+
+[node name="NombreE" type="Label" parent="Raiz/Mundo/AvisoE/Fila/Textos"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelGrande"
+theme_override_font_sizes/font_size = 21
+text = "CARNE"
+
+[node name="EfectoE" type="Label" parent="Raiz/Mundo/AvisoE/Fila/Textos"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "+20 de vida"
+
+[node name="AccionE" type="Label" parent="Raiz/Mundo/AvisoE/Fila/Textos"]
+unique_name_in_owner = true
+layout_mode = 2
 theme_type_variation = &"LabelPequeno"
-text = "VIDA"
+theme_override_font_sizes/font_size = 14
+text = "mantén E · 1.5 s"
 
-[node name="Valor" type="Label" parent="Raiz/PanelVida/Fila/Datos/Cabecera"]
+[node name="PanelVida" type="PanelContainer" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 330.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_type_variation = &"PanelHudIzq"
+
+[node name="Columna" type="VBoxContainer" parent="Raiz/PanelVida"]
 layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 5
+
+[node name="Fila" type="HBoxContainer" parent="Raiz/PanelVida/Columna"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 9
+
+[node name="IconoVida" type="TextureRect" parent="Raiz/PanelVida/Columna/Fila"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("5_corazon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Datos" type="VBoxContainer" parent="Raiz/PanelVida/Columna/Fila"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="Titulo" type="Label" parent="Raiz/PanelVida/Columna/Fila/Datos"]
+layout_mode = 2
+theme_type_variation = &"LabelTitulo"
+text = "TU CUERPO"
+
+[node name="BarraVida" type="Control" parent="Raiz/PanelVida/Columna/Fila/Datos"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 18)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("3_barra")
+color_auto = false
+
+[node name="ValorVida" type="Label" parent="Raiz/PanelVida/Columna/Fila"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_vertical = 8
+theme_type_variation = &"LabelGrande"
 text = "100"
 horizontal_alignment = 2
 
-[node name="Barras" type="Control" parent="Raiz/PanelVida/Fila/Datos"]
-custom_minimum_size = Vector2(220, 16)
+[node name="Pudricion" type="HBoxContainer" parent="Raiz/PanelVida/Columna"]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 9
 
-[node name="Rastro" type="ProgressBar" parent="Raiz/PanelVida/Fila/Datos/Barras"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="IconoPudricion" type="TextureRect" parent="Raiz/PanelVida/Columna/Pudricion"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 20)
+layout_mode = 2
 mouse_filter = 2
-theme_type_variation = &"BarraRastro"
-step = 0.01
-value = 100.0
-show_percentage = false
+texture = ExtResource("6_gota")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Barra" type="ProgressBar" parent="Raiz/PanelVida/Fila/Datos/Barras"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="BarraPudricion" type="Control" parent="Raiz/PanelVida/Columna/Pudricion"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 10)
+layout_mode = 2
+size_flags_vertical = 4
 mouse_filter = 2
-theme_type_variation = &"BarraEncima"
-step = 0.01
-value = 100.0
-show_percentage = false
+script = ExtResource("3_barra")
+valor = 0.0
+color_lleno = Color(0.55, 0.85, 0.25, 1)
+color_borde = Color(0.949, 0.929, 0.894, 0.45)
+color_rastro = Color(0.55, 0.85, 0.25, 0.35)
+grosor_borde = 1.5
+rugosidad = 0.5
+puntadas = 0
+semilla = 11
+k_suave = 18.0
+caida_rastro = 3.0
+espera_rastro = 0.0
+color_auto = false
+umbral_latido = 0.0
+
+[node name="TextoPudricion" type="Label" parent="Raiz/PanelVida/Columna/Pudricion"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+theme_override_font_sizes/font_size = 15
+text = "te pudres: −2 en 10 s"
 
 [node name="PanelObjetivo" type="PanelContainer" parent="Raiz"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -120.0
+offset_left = -200.0
 offset_top = 16.0
-offset_right = 120.0
-offset_bottom = 80.0
+offset_right = 200.0
+offset_bottom = 96.0
 grow_horizontal = 2
 mouse_filter = 2
+theme_type_variation = &"PanelHudCentro"
 
 [node name="Columna" type="VBoxContainer" parent="Raiz/PanelObjetivo"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 4
 
 [node name="Fila" type="HBoxContainer" parent="Raiz/PanelObjetivo/Columna"]
 layout_mode = 2
-theme_override_constants/separation = 8
+mouse_filter = 2
+theme_override_constants/separation = 10
 alignment = 1
-
-[node name="IconoPiso" type="TextureRect" parent="Raiz/PanelObjetivo/Columna/Fila"]
-visible = false
-custom_minimum_size = Vector2(24, 24)
-layout_mode = 2
-size_flags_vertical = 4
-expand_mode = 1
-stretch_mode = 5
 
 [node name="Piso" type="Label" parent="Raiz/PanelObjetivo/Columna/Fila"]
+unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"LabelTitulo"
+theme_override_font_sizes/font_size = 14
 text = "PISO 1/3"
+vertical_alignment = 1
 
-[node name="Punto" type="Label" parent="Raiz/PanelObjetivo/Columna/Fila"]
-layout_mode = 2
-theme_type_variation = &"LabelPequeno"
-text = "•"
-
-[node name="IconoTiempo" type="TextureRect" parent="Raiz/PanelObjetivo/Columna/Fila"]
-visible = false
-custom_minimum_size = Vector2(24, 24)
+[node name="Huecos" type="HBoxContainer" parent="Raiz/PanelObjetivo/Columna/Fila"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Tiempo" type="Label" parent="Raiz/PanelObjetivo/Columna/Fila"]
-layout_mode = 2
-text = "00:00"
-
-[node name="FilaComida" type="HBoxContainer" parent="Raiz/PanelObjetivo/Columna"]
-layout_mode = 2
-theme_override_constants/separation = 6
-alignment = 1
-
-[node name="IconoComida" type="TextureRect" parent="Raiz/PanelObjetivo/Columna/FilaComida"]
-visible = false
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 2
-size_flags_vertical = 4
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Titulo" type="Label" parent="Raiz/PanelObjetivo/Columna/FilaComida"]
-layout_mode = 2
-theme_type_variation = &"LabelPequeno"
-text = "COMIDA"
-
-[node name="Pips" type="HBoxContainer" parent="Raiz/PanelObjetivo/Columna/FilaComida"]
-layout_mode = 2
-size_flags_vertical = 4
+mouse_filter = 2
 theme_override_constants/separation = 5
 
-[node name="Estado" type="Label" parent="Raiz/PanelObjetivo/Columna/FilaComida"]
-visible = false
+[node name="Paso" type="Label" parent="Raiz/PanelObjetivo/Columna/Fila"]
 layout_mode = 2
-theme_type_variation = &"LabelPequeno"
-text = "SALIDA ABIERTA"
+theme_type_variation = &"LabelTitulo"
+theme_override_font_sizes/font_size = 22
+text = "›"
+vertical_alignment = 1
+
+[node name="Puerta" type="TextureRect" parent="Raiz/PanelObjetivo/Columna/Fila"]
+unique_name_in_owner = true
+modulate = Color(0.949, 0.929, 0.894, 0.45)
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("8_puerta")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Paso2" type="Label" parent="Raiz/PanelObjetivo/Columna/Fila"]
+layout_mode = 2
+theme_type_variation = &"LabelTitulo"
+theme_override_font_sizes/font_size = 22
+text = "›"
+vertical_alignment = 1
+
+[node name="Reloj" type="Control" parent="Raiz/PanelObjetivo/Columna/Fila"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="AnilloReloj" type="Control" parent="Raiz/PanelObjetivo/Columna/Fila/Reloj"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_anillo")
+grosor = 4.0
+
+[node name="Tiempo" type="Label" parent="Raiz/PanelObjetivo/Columna/Fila"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelGrande"
+theme_override_font_sizes/font_size = 24
+text = "00:00"
+vertical_alignment = 1
+
+[node name="Pista" type="Label" parent="Raiz/PanelObjetivo/Columna"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Come 3 para abrir la salida"
+horizontal_alignment = 1
 
 [node name="PanelPuntos" type="PanelContainer" parent="Raiz"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -201,38 +416,53 @@ offset_right = -16.0
 offset_bottom = 82.0
 grow_horizontal = 0
 mouse_filter = 2
+theme_type_variation = &"PanelHudDer"
 
 [node name="Columna" type="VBoxContainer" parent="Raiz/PanelPuntos"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="Fila" type="HBoxContainer" parent="Raiz/PanelPuntos/Columna"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 8
 alignment = 2
 
-[node name="Icono" type="TextureRect" parent="Raiz/PanelPuntos/Columna/Fila"]
+[node name="IconoPuntos" type="TextureRect" parent="Raiz/PanelPuntos/Columna/Fila"]
+unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Titulo" type="Label" parent="Raiz/PanelPuntos/Columna/Fila"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"LabelTitulo"
+text = "PUNTOS"
+vertical_alignment = 1
+
 [node name="Puntos" type="Label" parent="Raiz/PanelPuntos/Columna/Fila"]
-custom_minimum_size = Vector2(110, 0)
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 theme_type_variation = &"LabelGrande"
 text = "0"
 horizontal_alignment = 2
 
 [node name="Record" type="Label" parent="Raiz/PanelPuntos/Columna"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelPequeno"
 text = "RÉCORD 0"
 horizontal_alignment = 2
 
 [node name="Saldo" type="Label" parent="Raiz/PanelPuntos/Columna"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelPequeno"
 theme_override_colors/font_color = Color(0.831, 0.639, 0.451, 1)
@@ -240,6 +470,7 @@ text = "SALDO 0 · x1"
 horizontal_alignment = 2
 
 [node name="PanelEmbestida" type="PanelContainer" parent="Raiz"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -253,18 +484,22 @@ offset_bottom = -16.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
+theme_type_variation = &"PanelHudDer"
 
 [node name="Fila" type="HBoxContainer" parent="Raiz/PanelEmbestida"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 10
 
 [node name="Tecla" type="PanelContainer" parent="Raiz/PanelEmbestida/Fila"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
 theme_type_variation = &"PanelTecla"
 
-[node name="Texto" type="Label" parent="Raiz/PanelEmbestida/Fila/Tecla"]
+[node name="TextoTecla" type="Label" parent="Raiz/PanelEmbestida/Fila/Tecla"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelTecla"
 text = "ESPACIO"
@@ -272,41 +507,146 @@ text = "ESPACIO"
 [node name="Datos" type="VBoxContainer" parent="Raiz/PanelEmbestida/Fila"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 3
+mouse_filter = 2
+theme_override_constants/separation = 4
 
 [node name="Cabecera" type="HBoxContainer" parent="Raiz/PanelEmbestida/Fila/Datos"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="Titulo" type="Label" parent="Raiz/PanelEmbestida/Fila/Datos/Cabecera"]
+[node name="TituloEmbestida" type="Label" parent="Raiz/PanelEmbestida/Fila/Datos/Cabecera"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"LabelPequeno"
+theme_type_variation = &"LabelTitulo"
 text = "EMBESTIDA"
 
-[node name="Estado" type="Label" parent="Raiz/PanelEmbestida/Fila/Datos/Cabecera"]
+[node name="EstadoEmbestida" type="Label" parent="Raiz/PanelEmbestida/Fila/Datos/Cabecera"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelPequeno"
 text = "LISTA"
 horizontal_alignment = 2
 
-[node name="Recarga" type="ProgressBar" parent="Raiz/PanelEmbestida/Fila/Datos"]
-custom_minimum_size = Vector2(110, 10)
+[node name="Recarga" type="Control" parent="Raiz/PanelEmbestida/Fila/Datos"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 11)
 layout_mode = 2
 mouse_filter = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-show_percentage = false
+script = ExtResource("3_barra")
+color_lleno = Color(0.831, 0.639, 0.451, 1)
+color_borde = Color(0.949, 0.929, 0.894, 0.5)
+grosor_borde = 1.5
+rugosidad = 0.6
+puntadas = 0
+semilla = 5
+caida_rastro = 5.0
+espera_rastro = 0.0
+color_auto = false
+umbral_latido = 0.0
 
-[node name="Icono" type="TextureRect" parent="Raiz/PanelEmbestida/Fila"]
+[node name="IconoEmbestida" type="TextureRect" parent="Raiz/PanelEmbestida/Fila"]
+unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
+[node name="PanelSigilo" type="PanelContainer" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 540.0
+offset_right = 250.0
+offset_bottom = 614.0
+mouse_filter = 2
+theme_type_variation = &"PanelHudVerde"
+
+[node name="Fila" type="HBoxContainer" parent="Raiz/PanelSigilo"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="Ojo" type="TextureRect" parent="Raiz/PanelSigilo/Fila"]
+unique_name_in_owner = true
+modulate = Color(0.949, 0.929, 0.894, 0.7)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("7_ojo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Datos" type="VBoxContainer" parent="Raiz/PanelSigilo/Fila"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Titulo" type="Label" parent="Raiz/PanelSigilo/Fila/Datos"]
+layout_mode = 2
+theme_type_variation = &"LabelTitulo"
+text = "SIGILO"
+
+[node name="TextoSigilo" type="Label" parent="Raiz/PanelSigilo/Fila/Datos"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelGrande"
+theme_override_font_sizes/font_size = 20
+text = "NADIE TE VE"
+
+[node name="Ruido" type="HBoxContainer" parent="Raiz/PanelSigilo/Fila/Datos"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Titulo" type="Label" parent="Raiz/PanelSigilo/Fila/Datos/Ruido"]
+layout_mode = 2
+theme_type_variation = &"LabelTitulo"
+text = "RUIDO"
+vertical_alignment = 1
+
+[node name="BarrasRuido" type="HBoxContainer" parent="Raiz/PanelSigilo/Fila/Datos/Ruido"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="Barra1" type="ColorRect" parent="Raiz/PanelSigilo/Fila/Datos/Ruido/BarrasRuido"]
+custom_minimum_size = Vector2(5, 6)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.949, 0.929, 0.894, 0.15)
+
+[node name="Barra2" type="ColorRect" parent="Raiz/PanelSigilo/Fila/Datos/Ruido/BarrasRuido"]
+custom_minimum_size = Vector2(5, 10)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.949, 0.929, 0.894, 0.15)
+
+[node name="Barra3" type="ColorRect" parent="Raiz/PanelSigilo/Fila/Datos/Ruido/BarrasRuido"]
+custom_minimum_size = Vector2(5, 14)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.949, 0.929, 0.894, 0.15)
+
+[node name="TextoRuido" type="Label" parent="Raiz/PanelSigilo/Fila/Datos/Ruido"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+theme_override_font_sizes/font_size = 14
+text = "quieto"
+vertical_alignment = 1
+
 [node name="Mutaciones" type="HBoxContainer" parent="Raiz"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -319,33 +659,112 @@ grow_vertical = 0
 mouse_filter = 2
 theme_override_constants/separation = 6
 
+[node name="Controles" type="HBoxContainer" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -46.0
+offset_right = 260.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="T1" type="PanelContainer" parent="Raiz/Controles"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"PanelTecla"
+
+[node name="L" type="Label" parent="Raiz/Controles/T1"]
+layout_mode = 2
+theme_type_variation = &"LabelTecla"
+text = "WASD"
+
+[node name="D1" type="Label" parent="Raiz/Controles"]
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+theme_override_font_sizes/font_size = 15
+text = "moverte  "
+
+[node name="T2" type="PanelContainer" parent="Raiz/Controles"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"PanelTecla"
+
+[node name="L" type="Label" parent="Raiz/Controles/T2"]
+layout_mode = 2
+theme_type_variation = &"LabelTecla"
+text = "SHIFT"
+
+[node name="D2" type="Label" parent="Raiz/Controles"]
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+theme_override_font_sizes/font_size = 15
+text = "correr (ruido y vida)  "
+
+[node name="T3" type="PanelContainer" parent="Raiz/Controles"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"PanelTecla"
+
+[node name="L" type="Label" parent="Raiz/Controles/T3"]
+layout_mode = 2
+theme_type_variation = &"LabelTecla"
+text = "E"
+
+[node name="D3" type="Label" parent="Raiz/Controles"]
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+theme_override_font_sizes/font_size = 15
+text = "comer / morder  "
+
+[node name="T4" type="PanelContainer" parent="Raiz/Controles"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"PanelTecla"
+
+[node name="L" type="Label" parent="Raiz/Controles/T4"]
+layout_mode = 2
+theme_type_variation = &"LabelTecla"
+text = "ESC"
+
+[node name="D4" type="Label" parent="Raiz/Controles"]
+layout_mode = 2
+theme_type_variation = &"LabelPequeno"
+theme_override_font_sizes/font_size = 15
+text = "pausa"
+
 [node name="Aviso" type="PanelContainer" parent="Raiz"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -110.0
-offset_top = 104.0
+offset_top = 110.0
 offset_right = 110.0
-offset_bottom = 164.0
+offset_bottom = 170.0
 grow_horizontal = 2
 mouse_filter = 2
 theme_type_variation = &"PanelAviso"
 
-[node name="Texto" type="Label" parent="Raiz/Aviso"]
+[node name="TextoAviso" type="Label" parent="Raiz/Aviso"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelGrande"
-theme_override_font_sizes/font_size = 32
+theme_override_fonts/font = ExtResource("9_terror")
+theme_override_font_sizes/font_size = 36
 text = "TE VIO"
 horizontal_alignment = 1
-
-[node name="BarraComer" type="ProgressBar" parent="Raiz"]
-visible = false
-layout_mode = 0
-offset_right = 70.0
-offset_bottom = 10.0
-mouse_filter = 2
-max_value = 1.0
-step = 0.001
-show_percentage = false

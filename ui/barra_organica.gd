@@ -20,23 +20,38 @@ extends Control
 @export var puntadas: int = 3
 @export var semilla: int = 3
 @export var k_suave: float = 10.0
-# Fracción por segundo que baja el rastro.
-@export var caida_rastro: float = 0.35
+# Fracción por segundo que baja el rastro, y lo que espera antes de bajar.
+@export var caida_rastro: float = 0.6
+@export var espera_rastro: float = 0.45
+# true: el color va de color_vacio a color_lleno según el valor.
+# false: se pinta con color_lleno tal cual (el HUD decide el color).
+@export var color_auto: bool = true
 # Por debajo de este valor la barra palpita.
 @export var umbral_latido: float = 0.3
 
 var mostrado = 1.0
 var rastro = 1.0
 var t = 0.0
+var reloj_rastro = 0.0
+var anterior = 1.0
 
 func _ready():
 	mostrado = valor
 	rastro = valor
+	anterior = valor
 
 func _process(delta):
 	t += delta
+	# Cada bajada reinicia la espera: el rastro cae cuando paran los golpes.
+	if valor < anterior - 0.0001:
+		reloj_rastro = espera_rastro
+	anterior = valor
 	mostrado = decaer(mostrado, valor, k_suave, delta)
-	rastro = maxf(mostrado, move_toward(rastro, mostrado, caida_rastro * delta))
+	reloj_rastro = maxf(reloj_rastro - delta, 0.0)
+	if rastro < mostrado:
+		rastro = mostrado
+	elif reloj_rastro <= 0.0:
+		rastro = move_toward(rastro, mostrado, caida_rastro * delta)
 	queue_redraw()
 
 func _draw():
@@ -49,7 +64,9 @@ func _draw():
 	if rastro > mostrado + 0.002:
 		pintar_recorte(interior, rastro, color_rastro, false)
 	# Relleno: pasa de rojo a carne según el valor, y palpita si queda poco.
-	var color = color_vacio.lerp(color_lleno, smoothstep(0.15, 0.7, mostrado))
+	var color = color_lleno
+	if color_auto:
+		color = color_vacio.lerp(color_lleno, smoothstep(0.15, 0.7, mostrado))
 	if mostrado < umbral_latido:
 		color = color.lerp(Color(1, 0.85, 0.8), 0.25 * (0.5 + 0.5 * sin(t * 9.0)))
 	pintar_recorte(interior, mostrado, color, true)

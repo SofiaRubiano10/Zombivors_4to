@@ -13,7 +13,8 @@ const CARPETA = "res://ui/flat_ui/"
 
 # PNG -> [tipo del tema, nombre de la caja, margen 9-slice en px]
 const CAJAS = {
-	"panel.png": [["PanelContainer", "panel"]],
+	"panel.png": [["PanelContainer", "panel"], ["PanelHudIzq", "panel"], ["PanelHudDer", "panel"],
+		["PanelHudCentro", "panel"], ["PanelHudVerde", "panel"]],
 	"aviso.png": [["PanelAviso", "panel"]],
 	"panel_menu.png": [["PanelMenu", "panel"]],
 	"chip.png": [["PanelChip", "panel"]],
