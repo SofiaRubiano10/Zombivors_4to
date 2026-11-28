@@ -26,6 +26,7 @@ var jugador = null
 @onready var anim = get_node_or_null("Modelo/AnimationPlayer")
 
 func _ready():
+	add_to_group("humanos")
 	jugador = get_tree().get_first_node_in_group("jugador")
 
 func _physics_process(delta):
@@ -78,6 +79,15 @@ func cambiar_a(nuevo):
 		reloj = tiempo_aviso
 	elif estado == Estado.RECARGA:
 		reloj = tiempo_recarga
+
+# Para el HUD: 0 tranquilo, 2 te persigue, 3 va a golpear (el aviso).
+func alerta():
+	match estado:
+		Estado.ACERCARSE, Estado.RECARGA:
+			return 2
+		Estado.AVISO, Estado.GOLPE:
+			return 3
+	return 0
 
 # El aviso le da tiempo al jugador: el golpe mira DÓNDE ESTÁ AHORA.
 func golpear():

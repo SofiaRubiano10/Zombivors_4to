@@ -1,15 +1,712 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_hud"]
+[ext_resource type="FontFile" path="res://ui/fuentes/BarlowCondensed-Bold.ttf" id="2_fuente"]
+[ext_resource type="FontFile" path="res://ui/fuentes/BarlowCondensed-ExtraBold.ttf" id="3_gruesa"]
+[ext_resource type="FontFile" path="res://ui/fuentes/Creepster-Regular.ttf" id="4_terror"]
+[ext_resource type="Script" path="res://ui/barra_organica.gd" id="5_barra"]
+[ext_resource type="Script" path="res://ui/anillo.gd" id="6_anillo"]
+[ext_resource type="Texture2D" path="res://ui/iconos/corazon.png" id="7_corazon"]
+[ext_resource type="Texture2D" path="res://ui/iconos/gota.png" id="8_gota"]
+[ext_resource type="Texture2D" path="res://ui/iconos/ojo_cerrado.png" id="9_ojo"]
+
+[sub_resource type="Gradient" id="Gradient_vineta"]
+offsets = PackedFloat32Array(0.5, 1)
+colors = PackedColorArray(0.698, 0.133, 0.133, 0, 0.45, 0.03, 0.03, 0.85)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vineta"]
+gradient = SubResource("Gradient_vineta")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1.1, 0.5)
+
+[sub_resource type="FontVariation" id="FontVariation_titulo"]
+base_font = ExtResource("2_fuente")
+spacing_glyph = 2
+
+[sub_resource type="Theme" id="Theme_hud"]
+default_font = ExtResource("2_fuente")
+default_font_size = 16
+Label/colors/font_color = Color(0.949, 0.929, 0.894, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.5)
+Label/constants/shadow_offset_x = 0
+Label/constants/shadow_offset_y = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cuerpo"]
+content_margin_left = 12.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.09, 0.09, 0.1, 0.78)
+border_width_bottom = 3
+border_color = Color(0.831, 0.639, 0.451, 0.6)
+corner_radius_top_left = 24
+corner_radius_top_right = 10
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_comida"]
+content_margin_left = 14.0
+content_margin_top = 9.0
+content_margin_right = 14.0
+content_margin_bottom = 9.0
+bg_color = Color(0.09, 0.09, 0.1, 0.78)
+border_width_bottom = 3
+border_color = Color(0.831, 0.639, 0.451, 0.6)
+corner_radius_top_left = 10
+corner_radius_top_right = 24
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 26
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sigilo"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+bg_color = Color(0.09, 0.09, 0.1, 0.72)
+border_width_top = 3
+border_color = Color(0.341, 0.451, 0.212, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 26
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 24
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aviso"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+bg_color = Color(0.09, 0.09, 0.1, 0.9)
+border_width_bottom = 2
+border_color = Color(0.949, 0.929, 0.894, 0.25)
+corner_radius_top_left = 30
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 30
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 10
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tecla"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.949, 0.929, 0.894, 1)
+border_width_bottom = 2
+border_color = Color(0.55, 0.52, 0.48, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_final"]
+content_margin_top = 14.0
+content_margin_bottom = 16.0
+bg_color = Color(0.05, 0.05, 0.06, 0.92)
+border_width_top = 3
+border_width_bottom = 3
+border_color = Color(0.937, 0.267, 0.227, 1)
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 18
 
 [node name="HUD" type="CanvasLayer"]
+process_mode = 3
 script = ExtResource("1_hud")
 
-[node name="Texto" type="Label" parent="."]
-offset_left = 18.0
+[node name="Vineta" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_vineta")
+expand_mode = 1
+
+[node name="Raiz" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_hud")
+
+[node name="Marcadores" type="Control" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Aviso" type="PanelContainer" parent="Raiz"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 476.0
+offset_top = 260.0
+offset_right = 676.0
+offset_bottom = 330.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_aviso")
+
+[node name="PuntaAviso" type="Polygon2D" parent="Raiz/Aviso"]
+unique_name_in_owner = true
+position = Vector2(100, 70)
+color = Color(0.09, 0.09, 0.1, 0.9)
+polygon = PackedVector2Array(-9, -1, 9, -1, 0, 10)
+
+[node name="HBox" type="HBoxContainer" parent="Raiz/Aviso"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="Circulo" type="Control" parent="Raiz/Aviso/HBox"]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="AnilloAviso" type="Control" parent="Raiz/Aviso/HBox/Circulo"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_anillo")
+valor = 0.0
+grosor = 4.0
+color_lleno = Color(0.831, 0.639, 0.451, 1)
+color_pista = Color(0.949, 0.929, 0.894, 0.18)
+k_suave = 30.0
+
+[node name="IconoAviso" type="TextureRect" parent="Raiz/Aviso/HBox/Circulo"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = -7.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Tecla" type="PanelContainer" parent="Raiz/Aviso/HBox/Circulo"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -17.0
+offset_right = 5.0
+offset_bottom = 3.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tecla")
+
+[node name="Letra" type="Label" parent="Raiz/Aviso/HBox/Circulo/Tecla"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.09, 0.09, 0.1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_fonts/font = ExtResource("3_gruesa")
+theme_override_font_sizes/font_size = 15
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Textos" type="VBoxContainer" parent="Raiz/Aviso/HBox"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = -3
+
+[node name="NombreAviso" type="Label" parent="Raiz/Aviso/HBox/Textos"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_gruesa")
+theme_override_font_sizes/font_size = 21
+text = "CARNE"
+
+[node name="EfectoAviso" type="Label" parent="Raiz/Aviso/HBox/Textos"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.71, 0.56, 1)
+theme_override_font_sizes/font_size = 16
+text = "+20 de vida"
+
+[node name="AccionAviso" type="Label" parent="Raiz/Aviso/HBox/Textos"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.6)
+theme_override_font_sizes/font_size = 14
+text = "mantén E · 1.5 s"
+
+[node name="Cuerpo" type="PanelContainer" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 16.0
 offset_top = 14.0
-offset_right = 318.0
-offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 1)
+offset_right = 330.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cuerpo")
+
+[node name="VBox" type="VBoxContainer" parent="Raiz/Cuerpo"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 5
+
+[node name="Vida" type="HBoxContainer" parent="Raiz/Cuerpo/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="IconoVida" type="TextureRect" parent="Raiz/Cuerpo/VBox/Vida"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("7_corazon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Columna" type="VBoxContainer" parent="Raiz/Cuerpo/VBox/Vida"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="Titulo" type="Label" parent="Raiz/Cuerpo/VBox/Vida/Columna"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.6)
+theme_override_fonts/font = SubResource("FontVariation_titulo")
+theme_override_font_sizes/font_size = 12
+text = "TU CUERPO"
+
+[node name="BarraVida" type="Control" parent="Raiz/Cuerpo/VBox/Vida/Columna"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 18)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("5_barra")
+
+[node name="NumeroVida" type="Label" parent="Raiz/Cuerpo/VBox/Vida"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(38, 0)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("3_gruesa")
+theme_override_font_sizes/font_size = 26
+text = "100"
+horizontal_alignment = 2
+
+[node name="Pudricion" type="HBoxContainer" parent="Raiz/Cuerpo/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="IconoPudricion" type="TextureRect" parent="Raiz/Cuerpo/VBox/Pudricion"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 22)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("8_gota")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BarraPudricion" type="Control" parent="Raiz/Cuerpo/VBox/Pudricion"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 10)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("5_barra")
+valor = 0.0
+color_lleno = Color(0.55, 0.85, 0.25, 1)
+color_vacio = Color(0.55, 0.85, 0.25, 1)
+color_borde = Color(0.949, 0.929, 0.894, 0.45)
+color_rastro = Color(0.55, 0.85, 0.25, 0.35)
+grosor_borde = 1.5
+rugosidad = 0.5
+puntadas = 0
+semilla = 11
+k_suave = 18.0
+caida_rastro = 3.0
+umbral_latido = 0.0
+
+[node name="TextoPudricion" type="Label" parent="Raiz/Cuerpo/VBox/Pudricion"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.72)
+theme_override_font_sizes/font_size = 15
+text = "te pudres: −2 en 10 s"
+
+[node name="Reloj" type="Control" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -46.0
+offset_top = 10.0
+offset_right = 46.0
+offset_bottom = 102.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="AnilloReloj" type="Control" parent="Raiz/Reloj"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_anillo")
+grosor = 6.0
+
+[node name="Centro" type="VBoxContainer" parent="Raiz/Reloj"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = -6
+alignment = 1
+
+[node name="TextoTiempo" type="Label" parent="Raiz/Reloj/Centro"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_gruesa")
+theme_override_font_sizes/font_size = 30
+text = "2:00"
+horizontal_alignment = 1
+
+[node name="TituloTiempo" type="Label" parent="Raiz/Reloj/Centro"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.55)
+theme_override_fonts/font = SubResource("FontVariation_titulo")
+theme_override_font_sizes/font_size = 11
+text = "TIEMPO"
+horizontal_alignment = 1
+
+[node name="Comida" type="PanelContainer" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = 110.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_comida")
+
+[node name="VBox" type="VBoxContainer" parent="Raiz/Comida"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Cabecera" type="HBoxContainer" parent="Raiz/Comida/VBox"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Titulo" type="Label" parent="Raiz/Comida/VBox/Cabecera"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.6)
+theme_override_fonts/font = SubResource("FontVariation_titulo")
+theme_override_font_sizes/font_size = 12
+text = "COMIDA"
+vertical_alignment = 1
+
+[node name="CuentaComida" type="Label" parent="Raiz/Comida/VBox/Cabecera"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_gruesa")
 theme_override_font_sizes/font_size = 22
-text = "Vida: "
+text = "0 / 3"
+horizontal_alignment = 2
+
+[node name="Huecos" type="HBoxContainer" parent="Raiz/Comida/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 7
+alignment = 1
+
+[node name="PistaComida" type="Label" parent="Raiz/Comida/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.6)
+theme_override_font_sizes/font_size = 14
+text = "Come 3 para ganar"
+horizontal_alignment = 1
+
+[node name="Sigilo" type="PanelContainer" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -90.0
+offset_right = 250.0
+offset_bottom = -16.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sigilo")
+
+[node name="HBox" type="HBoxContainer" parent="Raiz/Sigilo"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="Ojo" type="TextureRect" parent="Raiz/Sigilo/HBox"]
+unique_name_in_owner = true
+modulate = Color(0.949, 0.929, 0.894, 0.8)
+custom_minimum_size = Vector2(42, 42)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("9_ojo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Columna" type="VBoxContainer" parent="Raiz/Sigilo/HBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="Titulo" type="Label" parent="Raiz/Sigilo/HBox/Columna"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.6)
+theme_override_fonts/font = SubResource("FontVariation_titulo")
+theme_override_font_sizes/font_size = 12
+text = "SIGILO"
+
+[node name="TextoSigilo" type="Label" parent="Raiz/Sigilo/HBox/Columna"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_gruesa")
+theme_override_font_sizes/font_size = 20
+text = "NADIE TE VE"
+
+[node name="Ruido" type="HBoxContainer" parent="Raiz/Sigilo/HBox/Columna"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Titulo" type="Label" parent="Raiz/Sigilo/HBox/Columna/Ruido"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.6)
+theme_override_fonts/font = SubResource("FontVariation_titulo")
+theme_override_font_sizes/font_size = 12
+text = "RUIDO"
+vertical_alignment = 1
+
+[node name="BarrasRuido" type="HBoxContainer" parent="Raiz/Sigilo/HBox/Columna/Ruido"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="Barra1" type="ColorRect" parent="Raiz/Sigilo/HBox/Columna/Ruido/BarrasRuido"]
+custom_minimum_size = Vector2(5, 6)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.949, 0.929, 0.894, 0.15)
+
+[node name="Barra2" type="ColorRect" parent="Raiz/Sigilo/HBox/Columna/Ruido/BarrasRuido"]
+custom_minimum_size = Vector2(5, 10)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.949, 0.929, 0.894, 0.15)
+
+[node name="Barra3" type="ColorRect" parent="Raiz/Sigilo/HBox/Columna/Ruido/BarrasRuido"]
+custom_minimum_size = Vector2(5, 14)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.949, 0.929, 0.894, 0.15)
+
+[node name="TextoRuido" type="Label" parent="Raiz/Sigilo/HBox/Columna/Ruido"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.72)
+theme_override_font_sizes/font_size = 14
+text = "quieto"
+vertical_alignment = 1
+
+[node name="Controles" type="HBoxContainer" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = -44.0
+offset_right = -18.0
+offset_bottom = -18.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 6
+alignment = 2
+
+[node name="Tecla1" type="PanelContainer" parent="Raiz/Controles"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tecla")
+
+[node name="Letra" type="Label" parent="Raiz/Controles/Tecla1"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.09, 0.09, 0.1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_fonts/font = ExtResource("3_gruesa")
+theme_override_font_sizes/font_size = 14
+text = "WASD"
+
+[node name="Texto1" type="Label" parent="Raiz/Controles"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.8)
+theme_override_font_sizes/font_size = 15
+text = "moverte   "
+
+[node name="Tecla2" type="PanelContainer" parent="Raiz/Controles"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tecla")
+
+[node name="Letra" type="Label" parent="Raiz/Controles/Tecla2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.09, 0.09, 0.1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_fonts/font = ExtResource("3_gruesa")
+theme_override_font_sizes/font_size = 14
+text = "SHIFT"
+
+[node name="Texto2" type="Label" parent="Raiz/Controles"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.8)
+theme_override_font_sizes/font_size = 15
+text = "correr (hace ruido)   "
+
+[node name="Tecla3" type="PanelContainer" parent="Raiz/Controles"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tecla")
+
+[node name="Letra" type="Label" parent="Raiz/Controles/Tecla3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.09, 0.09, 0.1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_fonts/font = ExtResource("3_gruesa")
+theme_override_font_sizes/font_size = 14
+text = "E"
+
+[node name="Texto3" type="Label" parent="Raiz/Controles"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.8)
+theme_override_font_sizes/font_size = 15
+text = "mantener junto a la comida"
+
+[node name="Final" type="Control" parent="Raiz"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Sombra" type="ColorRect" parent="Raiz/Final"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="BandaFinal" type="PanelContainer" parent="Raiz/Final"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -74.0
+offset_bottom = 74.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_final")
+
+[node name="VBox" type="VBoxContainer" parent="Raiz/Final/BandaFinal"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="TituloFinal" type="Label" parent="Raiz/Final/BandaFinal/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.937, 0.267, 0.227, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6)
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/font = ExtResource("4_terror")
+theme_override_font_sizes/font_size = 68
+text = "TE DESHICISTE"
+horizontal_alignment = 1
+
+[node name="DetalleFinal" type="Label" parent="Raiz/Final/BandaFinal/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.929, 0.894, 0.75)
+theme_override_font_sizes/font_size = 19
+text = "Intento 1  ·  volviendo a empezar…"
+horizontal_alignment = 1

@@ -21,6 +21,8 @@ signal golpeado(danio)
 @export var porcentaje_descomposicion = 0.02
 var reloj = 0.0
 var acumulado = 0.0
+# Segundos que quedan sin descomponerse (los pone el cerebro).
+var pausa = 0.0
 var vida_inicial = 0
 var punto = Vector3.ZERO
 @onready var pj = get_parent()
@@ -37,6 +39,9 @@ func _physics_process(delta):
 # No pasa por recibir_golpe: el cuerpo se pudre aunque seas invulnerable.
 func descomponer(delta):
 	if vida == 0:
+		return
+	if pausa > 0.0:
+		pausa = maxf(pausa - delta, 0.0)
 		return
 	acumulado += delta
 	if acumulado < intervalo_descomposicion:
@@ -65,6 +70,10 @@ func curar(cantidad):
 		return
 	vida = mini(vida + int(cantidad), vida_inicial)
 	cambio.emit(vida)
+
+# La llama el cerebro: la descomposición se detiene unos segundos.
+func pausar_descomposicion(segundos):
+	pausa = maxf(pausa, segundos)
 
 # Se busca aquí y no en _ready(): la Partida quizá todavía no existía.
 func _al_quedar_sin_vida():

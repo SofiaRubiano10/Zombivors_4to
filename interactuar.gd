@@ -29,7 +29,7 @@ func _physics_process(delta: float) -> void:
 		pj.accion = "pick-up"
 	
 	var antes = progreso
-	progreso += delta / maxf(0.01, tiempo_necesario)
+	progreso += delta / maxf(0.01, tiempo_de(obj))
 	
 	# Imprime retroalimentación visual en cada cuarto de progreso (25%, 50%, 75%)
 	if int(progreso * 4) > int(antes * 4) and progreso < 0.999:
@@ -45,6 +45,12 @@ func _physics_process(delta: float) -> void:
 			obj.usar()
 		progreso = 0.0
 		actual = null
+
+# Cada alimento puede pedir su propio tiempo (la carroña se come más rápido).
+func tiempo_de(obj: Node) -> float:
+	if "tiempo_comer" in obj:
+		return obj.tiempo_comer
+	return tiempo_necesario
 
 func mas_cercano() -> Node:
 	var mejor: Node = null

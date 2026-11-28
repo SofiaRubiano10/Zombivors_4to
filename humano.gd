@@ -30,6 +30,7 @@ var busca = 0.0
 @onready var vision = $Vision
 
 func _ready():
+	add_to_group("humanos")
 	jugador = get_tree().get_first_node_in_group("jugador")
 	for d in ruta:
 		puntos.append(global_position + d)
@@ -85,6 +86,17 @@ func decidir(d, ve):
 	if reloj > 0.001:
 		return Estado.ESPERAR
 	return Estado.PATRULLAR
+
+# Para el HUD: 0 tranquilo, 1 te busca, 2 te vio, 3 te está golpeando.
+func alerta():
+	match estado:
+		Estado.BUSCAR:
+			return 1
+		Estado.PERSEGUIR:
+			return 2
+		Estado.ATACAR:
+			return 3
+	return 0
 
 # Mientras siga pegado, golpea: la invulnerabilidad de la Salud decide cada cuánto cuenta.
 func golpear():
